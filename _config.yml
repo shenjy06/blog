@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
-keywords:
-author: John Doe
-language: en
+title: Mark's Blog
+subtitle: 'Tech Blog'
+description: '本博客主要记录工作中遇到的一些问题，新技术学习笔记，读书笔记，游记等。'
+keywords: tech language algorithms
+author: Mark Shen
+language: zh-CN
 timezone: ''
 
 # URL
