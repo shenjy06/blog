@@ -23,6 +23,7 @@ jobs:
         # 将编译后的博客文件推送到指定仓库
         run: |
           cd ./public
+          echo "markshen1992.top" > CNAME
           git init
           git config user.name "shenjunyu"
           git config user.email "18009838166@163.com"
