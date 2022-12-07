@@ -24,7 +24,8 @@ jobs:
         run: |
           git config user.name "shenjunyu"
           git config user.email "18009838166@163.com"
-          cd ./public && git init && git add .
+          cd ./public
+          git init 
+          git add .
           git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
-          git branch -M master
-          git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:main
+          git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" main:main
