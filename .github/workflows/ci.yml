@@ -22,12 +22,14 @@ jobs:
           GITHUB_REPO: github.com/MarkShen1992/markshen1992.github.io
         # 将编译后的博客文件推送到指定仓库
         run: |
+          cp theme/cactus/LICENSE public/
+          cp README.md public/
           cd ./public
           echo "markshen1992.top" > CNAME
           git init
           git config user.name "shenjunyu"
           git config user.email "18009838166@163.com"
           git add .
-          git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
+          git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d')"
           git branch -M main
           git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" main:main
