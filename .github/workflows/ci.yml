@@ -22,8 +22,7 @@ jobs:
           GITHUB_REPO: github.com/MarkShen1992/markshen1992.github.io
         # 将编译后的博客文件推送到指定仓库
         run: |
-          ls
-          cp theme/cactus/LICENSE public/
+          cp themes/cactus/LICENSE public/
           cp README.md public/
           cd ./public
           echo "markshen1992.top" > CNAME
