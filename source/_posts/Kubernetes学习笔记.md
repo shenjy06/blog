@@ -6,7 +6,7 @@ tags:
   - 运维
 
 category:
-  - sajl
+  - kubernetes
 ---
 
 ## Coming soon...

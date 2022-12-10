@@ -6,6 +6,10 @@ A responsive, clean and simple [Hexo](http://hexo.io) theme for a personal websi
 
 ![screenshot](https://user-images.githubusercontent.com/2175271/137625287-24a4ac77-fbc9-4c99-a4cd-90455d93d13c.png)
 
+## Tech Stack
+
+- [EJS](https://ejs.co/)
+
 ## Summary
 
 - [General](#general)
@@ -30,7 +34,7 @@ A responsive, clean and simple [Hexo](http://hexo.io) theme for a personal websi
 - Projects list
 - I18n support
 - Disqus / Utterances
-- Google analytics / Baidu Tongji / [Umami Analytics](https://umami.is) 
+- Google analytics / Baidu Tongji / [Umami Analytics](https://umami.is)
 - Font Awesome icons
 - Simplicity
 
@@ -40,47 +44,47 @@ A responsive, clean and simple [Hexo](http://hexo.io) theme for a personal websi
 
 2. Create the `root` directory for the blog by initializing it with hexo:
 
-    ```sh
-    $ hexo init my-blog
-    ```
+   ```sh
+   $ hexo init my-blog
+   ```
 
 3. Navigate into the new directory:
 
-    ```sh
-    $ cd my-blog
-    ```
+   ```sh
+   $ cd my-blog
+   ```
 
 ## Install
 
 1. In the `root` directory:
 
-    ```sh
-    $ git clone https://github.com/probberechts/hexo-theme-cactus.git themes/cactus
-    ```
+   ```sh
+   $ git clone https://github.com/probberechts/hexo-theme-cactus.git themes/cactus
+   ```
 
 2. Change the `theme` property in the `_config.yml` file.
 
-    ```yml
-    # theme: landscape
-    theme: cactus
-    ```
-   
+   ```yml
+   # theme: landscape
+   theme: cactus
+   ```
+
    See below for more information on how to customize this theme.
 
 3. Create pages and articles with the `hexo new [layout] <title>` command.
    For example, to create an "about me" page, run:
-   
-    ```sh
-    $ hexo new page about
-    ```
-   
+
+   ```sh
+   $ hexo new page about
+   ```
+
    This will create a new file in `source/about/index.md`
    Similarly, you can create a new article with
-   
-    ```sh
-    $ hexo new post "hello world"
-    ```
-   
+
+   ```sh
+   $ hexo new post "hello world"
+   ```
+
    and add some interesting content in `source/_posts/hello-world.md`.
 
 4. Run: `hexo generate` and `hexo server`
@@ -90,7 +94,7 @@ A responsive, clean and simple [Hexo](http://hexo.io) theme for a personal websi
 ## Configuration
 
 You can (and should) modify a couple of settings. An overview of all settings
-can be found in  [_config.yml](_config.yml). The most important ones are
+can be found in [\_config.yml](_config.yml). The most important ones are
 discussed below.
 
 There are two possible methods to override the defaults. As a first option,
@@ -141,20 +145,20 @@ nav:
 
 You have two options for the list of blog posts on the home page:
 
-  - Show only the 5 most recent posts (default)
+- Show only the 5 most recent posts (default)
 
-    ```yml
-    posts_overview:
-      show_all_posts: false
-      post_count: 5
-    ```
+  ```yml
+  posts_overview:
+    show_all_posts: false
+    post_count: 5
+  ```
 
-  - Show all posts
+- Show all posts
 
-    ```yml
-    posts_overview:
-      show_all_posts: true
-    ```
+  ```yml
+  posts_overview:
+    show_all_posts: true
+  ```
 
 ### Projects list
 
@@ -162,16 +166,16 @@ Create a projects file `source/_data/projects.json` to show a list of your proje
 
 ```json
 [
-    {
-       "name":"Hexo",
-       "url":"https://hexo.io/",
-       "desc":"A fast, simple & powerful blog framework"
-    },
-    {
-       "name":"Font Awesome",
-       "url":"http://fontawesome.io/",
-       "desc":"The iconic font and CSS toolkit"
-    }
+  {
+    "name": "Hexo",
+    "url": "https://hexo.io/",
+    "desc": "A fast, simple & powerful blog framework"
+  },
+  {
+    "name": "Font Awesome",
+    "url": "http://fontawesome.io/",
+    "desc": "The iconic font and CSS toolkit"
+  }
 ]
 ```
 
@@ -330,10 +334,10 @@ utterances:
 
 where each of the parameters are the respective values ​​provided during the configuration of the Utterances:
 
-* `repo`:  the repository Utterances will connect to.
-* `issue_term`: the mapping between blog posts and GitHub issues.
-* `label`: the label that will be assigned to issues created by Utterances
-* `theme`: the selected Utterances theme.
+- `repo`: the repository Utterances will connect to.
+- `issue_term`: the mapping between blog posts and GitHub issues.
+- `label`: the label that will be assigned to issues created by Utterances
+- `theme`: the selected Utterances theme.
 
 ### Code Highlighting
 
@@ -351,10 +355,12 @@ Tags and categories can be included in the front-matter of your posts. For examp
 title: Tags and Categories
 date: 2017-12-24 23:29:53
 tags:
+
 - Foo
 - Bar
-categories: 
+  categories:
 - Baz
+
 ---
 
 This post contains 2 tags and 1 category.
@@ -375,7 +381,7 @@ Similarly, you can create a page with an overview of all categories by running:
 $ hexo new page categories
 ```
 
-and adding `type: categories` to the front-matter of `source/categories/index.md`. 
+and adding `type: categories` to the front-matter of `source/categories/index.md`.
 
 Finally, don't forget to create a link to these pages, for example in the navigation menu:
 
@@ -405,6 +411,7 @@ and put `type: search` in the front-matter.
 ```markdown
 title: Search
 type: search
+
 ---
 ```
 
