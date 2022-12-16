@@ -45,11 +45,11 @@ java -war jenkins.war --httpPort=9090
 
 `Jenkins` 启动完成后, 需要安装一些插件, 我这里直接使用 `Jenkins` 默认安装的一些插件. 安装完后, 创建用户, 登录进入 `Jenkins` 就好了. 这是首先要创建一个 `pipeline` , 首先要配置 `pipeline` 中的构建触发器, 主要配置 `Gitlab` 与 `Jenkins` 的联动, 在 `Gitlab` 中还要设置 `Webhook` , 当提交代码或者合并代码时候触发 `Webhook` 执行构建.
 
-![alt](Jenkins持续集成/01.png)
+![](./../images/Jenkins持续集成/01.png)
 
 上图是在 Jenkins 中配置的内容, 下图是在 `Gitlab` 中的配置.
 
-![alt](Jenkins持续集成/02.png)
+![](./../images/Jenkins持续集成/02.png)
 
 配置好 `Webhook` 后要测试下, 这里 `Gitlab` 中可以模拟 `Push events` , 这里还要做一个小小的配置, 配置`-Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true` ,完整命令如下
 
@@ -59,7 +59,7 @@ java -jar -Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PRO
 
 除了配置以上内容还要配置如下参数: `Manage Jenkins` → `Configure Global Security` → `授权策略`, 具体如下图:
 
-![alt](Jenkins持续集成/03.png)
+![](./../images/Jenkins持续集成/03.png)
 
 以上操作完成后, 就可以使用 `Jenkins` 完成构建.
 
