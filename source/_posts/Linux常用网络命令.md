@@ -15,7 +15,7 @@ category:
 
 Linux 命令都可以通过 Linux 提供的手册自己学习，一般来讲有三种方式查看命令的用法，如下：
 
-就拿最常用的 ls 命令来举例子吧
+就拿最常用的 `ls` 命令来举例子吧
 
 第一种：
 
@@ -35,11 +35,11 @@ info ls
 man ls
 ```
 
-大家可以使用 `命令 --help`, `info + 命令`, `man + 命令` 三种方式来学习新的命令，大家也可以使用 [The Linux man-pages project](https://www.kernel.org/doc/man-pages/) 来查找对应的命令说到这里，让我们来学习下 Linux 的常用网路命令吧
+大家可以使用 `命令 --help`, `info + 命令`, `man + 命令` 三种方式来学习新的命令，大家也可以使用 [The Linux man-pages project](https://www.kernel.org/doc/man-pages/) 来查找对应的命令。说到这里，让我们来学习下 Linux 的常用网路命令吧
 
 #### Linux 常用网络命令
 
-今天主要跟大家分享下 Linux 系统网络剧哦常用的命令。常用的命令主要包括以下命令:
+今天主要跟大家分享下 Linux 系统常用网络的命令:
 
 - ifconfig
 - ifup
@@ -136,7 +136,7 @@ wifi2: flags=64<RUNNING>  mtu 1500
 激活网络接口`eth0`
 
 ```sh
-ifup eth0
+shenjy@DESKTOP-MCQT724:~$ ifup eth0
 ```
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ifup-command-in-linux-with-examples/) 学习这个命令。
@@ -146,7 +146,7 @@ ifup eth0
 禁用网络端口`eth0`
 
 ```sh
-ifdown eth0
+shenjy@DESKTOP-MCQT724:~$ ifdown eth0
 ```
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ifdown-command-in-linux-with-examples/) 学习这个命令。
@@ -156,7 +156,7 @@ ifdown eth0
 查看机器所有网卡的 ip
 
 ```sh
-ip a
+shenjy@DESKTOP-MCQT724:~$ ip a
 ```
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ip-command-in-linux-with-examples/) 学习这个命令。
@@ -166,7 +166,7 @@ ip a
 查看 Linux 内核路由表
 
 ```sh
-route
+shenjy@DESKTOP-MCQT724:~$ route
 ```
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/route-command-in-linux-with-examples/) 学习这个命令。
@@ -176,7 +176,7 @@ route
 查看默认路由表（main）路由
 
 ```sh
-ip route
+shenjy@DESKTOP-MCQT724:~$ ip route
 ```
 
 大家也可以参照[这篇 Blog](https://blog.csdn.net/zhongmushu/article/details/108220232) 学习这个命令。
@@ -186,9 +186,9 @@ ip route
 查看网络链路是否通
 
 ```sh
-ping www.baidu.com
-ping localhost
-ping 127.0.0.1
+shenjy@DESKTOP-MCQT724:~$ ping www.baidu.com
+shenjy@DESKTOP-MCQT724:~$ ping localhost
+shenjy@DESKTOP-MCQT724:~$ ping 127.0.0.1
 ```
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ping-command-in-linux-with-examples/) 学习这个命令。
@@ -198,7 +198,7 @@ ping 127.0.0.1
 追踪网络数据包的路由途径，也可以顺道学习下 `tracert` 这个命令
 
 ```sh
-traceroute www.baidu.com
+shenjy@DESKTOP-MCQT724:~$ traceroute www.baidu.com
 ```
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/traceroute-command-in-linux-with-examples/) 学习这个命令。
