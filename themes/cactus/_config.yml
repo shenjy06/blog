@@ -170,12 +170,12 @@ google_analytics:
 
 # Fill in your Baidu Analytics tracking ID to enable Baidu Analytics.
 baidu_analytics:
-  enabled: false
+  enabled: true
   id: 2bf556e2c4bfb436b933c9c12d4a0057
 
 # Fill in your Cloudflare Analytics tracking ID to enable Cloudflare Analytics.
 cloudflare_analytics:
-  enabled: true
+  enabled: false
   id: 04a331374f014cdbaa7671ecf04dd66c
 
 # Fill in your Umami Analytics tracking ID to enable Umami Analytics.
