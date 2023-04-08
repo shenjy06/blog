@@ -8,10 +8,5 @@
     "name": "bookstore",
     "url": "https://github.com/MarkShen1992/bookstore",
     "desc": "自己搜集到的一些好书，好资料。"
-  },
-  {
-    "name": "ebook",
-    "url": "https://github.com/shenyushun/ebook",
-    "desc": "容器，大数据，推荐系统，机器学习，统计学等"
   }
 ]
