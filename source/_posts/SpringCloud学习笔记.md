@@ -17,6 +17,7 @@ tags:
 - [IBM-What are microservices?][6]
 - [Microsoft-Why use a microservices approach to building applications][7]
 - [Microsoft-What are Microservices?][8]
+- [【Nginx】introduction-to-microservices][13]
 
 ## [Spring Framework][10]
 
@@ -38,3 +39,4 @@ tags:
 [10]: https://spring.io/projects/spring-framework
 [11]: https://spring.io/projects/spring-cloud
 [12]: https://spring.io/projects
+[13]: https://www.nginx.com/blog/introduction-to-microservices/
