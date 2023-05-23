@@ -24,61 +24,61 @@ tags:
 
 ### 高级选项
 
-| 具体用法                        | 例子                              |
-| ------------------------------- | --------------------------------- |
-| **user:**MarkShen1992           | `github, atom, electron, octokit` |
-| **repo:**MarkShen1992/leet-code | `twbs/bootstrap, rails/rails`     |
-| **created:**>2023-01-01         | `>YYYY-MM-DD, YYYY-MM-DD`         |
-| **language:**Java               | [programming lang][6]             |
+| 具体用法                    | 例子                            |
+| --------------------------- | ------------------------------- |
+| user:MarkShen1992           | github, atom, electron, octokit |
+| repo:MarkShen1992/leet-code | twbs/bootstrap, rails/rails     |
+| created:>2023-01-01         | >YYYY-MM-DD, YYYY-MM-DD         |
+| language:Java               | [programming lang][6]           |
 
 ### 仓库选项
 
-| 具体用法                                                | 例子                    |
-| ------------------------------------------------------- | ----------------------- |
-| **stars:**>1000                                         | `0..100, 200, >1000`    |
-| **forks:**>1000                                         | `50..100, 200, <5`      |
-| **size:**100KB                                          | `Repository size in KB` |
-| **pushed:**<2020-01-01                                  | `<YYYY-MM-DD`           |
-| **license:**artistic-2.0                                | `license:artistic-2.0`  |
-| Return repositories **not\|and\|only** including forks. | -                       |
+| 具体用法                                               | 例子                  |
+| ------------------------------------------------------ | --------------------- |
+| stars:>1000                                            | 0..100, 200, >1000    |
+| forks:>1000                                            | 50..100, 200, <5      |
+| size:100KB                                             | Repository size in KB |
+| pushed:<2020-01-01                                     | <YYYY-MM-DD           |
+| license:artistic-2.0                                   | license:artistic-2.0  |
+| Return repositories {not\|and\|only}  including forks. | -                     |
 
 ### Code 选项
 
-| 具体用法                                        | 例子                 |
-| ----------------------------------------------- | -------------------- |
-| **path:***.rb                                   | `rb, py, jpg`        |
-| **path:**/net                                   | `/foo/bar/baz/qux`   |
-| **path:****/README.md                           | `app.rb, footer.erb` |
-| Return code **not\|and\|only** including forks. | -                    |
+| 具体用法                                      | 例子               |
+| --------------------------------------------- | ------------------ |
+| path:*.rb                                     | rb, py, jpg        |
+| path:/net                                     | /foo/bar/baz/qux   |
+| path:**/README.md                             | app.rb, footer.erb |
+| Return code {not\|and\|only} including forks. | -                  |
 
 ### Issues 选项
 
-| 具体用法                | 例子                                       |
-| ----------------------- | ------------------------------------------ |
-| **state:**open\|close   | `open|close`                               |
-| **reason:**completed    | `completed|not planned|reopened`           |
-| **comments:**100..1000  | `100..1000, 100, >100, >=100, <100, <=100` |
-| **label:**bug           | `bug, ie6`                                 |
-| **author:**octocat      | `hubot, octocat`                           |
-| **mentions:**mattt      | `tpope, mattt`                             |
-| **assignee:**jim        | `twp, jim`                                 |
-| **updated:**<2020-01-01 | `<2020-01-01`                              |
+| 具体用法            | 例子                                     |
+| ------------------- | ---------------------------------------- |
+| state:open\|close   | open\|close                              |
+| reason:completed    | completed\|not planned\|reopened         |
+| comments:100..1000  | 100..1000, 100, >100, >=100, <100, <=100 |
+| label:bug           | bug, ie6                                 |
+| author:octocat      | hubot, octocat                           |
+| mentions:mattt      | tpope, mattt                             |
+| assignee:jim        | twp, jim                                 |
+| updated:<2020-01-01 | <2020-01-01                              |
 
 ### 用户选项
 
-| 具体用法                  | 例子                  |
-| ------------------------- | --------------------- |
-| **fullname:**MarkShen1992 | `Grace Hopper`        |
-| **location:**San          | `San Francisco, CA`   |
-| **followers:**20..50      | `20..50, >100`        |
-| **repos:**<100            | `<100, 100..200`      |
-| **language:**C++          | [programming lang][6] |
+| 具体用法              | 例子                  |
+| --------------------- | --------------------- |
+| fullname:MarkShen1992 | Grace Hopper          |
+| location:San          | San Francisco, CA     |
+| followers:20..50      | 20..50, >100          |
+| repos:<100            | <100, 100..200        |
+| language:C++          | [programming lang][6] |
 
 ### Wiki选项
 
-| 具体用法            | 例子          |
-| ------------------- | ------------- |
-| updated:<2023-01-01 | `<YYYY-MM-DD` |
+| 具体用法            | 例子        |
+| ------------------- | ----------- |
+| updated:<2023-01-01 | <YYYY-MM-DD |
 
 ### 平时经常使用的一些例子
 
