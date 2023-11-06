@@ -169,7 +169,10 @@ zkServer.sh status
 
 - [分布式锁][2]
 - 服务注册发现，跟 [Dubbo][3] 结合使用
+- [Kafka 集群搭建][4]
+  - 使用 ZK 存储 Kafka 集群元数据信息和消费者客户端详情
 
 [1]: http://markshen1992.top/2023/10/23/Java%E5%9C%A8Linux%E4%B8%8A%E5%AE%89%E8%A3%85/
 [2]: https://www.bilibili.com/video/BV1mw411d7Cc/?spm_id_from=333.337.search-card.all.click
 [3]: https://cn.dubbo.apache.org/zh-cn/
+[4]: https://www.oreilly.com/library/view/kafka-the-definitive/9781492043072/
