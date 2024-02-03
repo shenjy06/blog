@@ -62,3 +62,24 @@ func1:
 
 - [Instruction Set Reference, A-Z](https://cdrdv2-public.intel.com/782156/325383-sdm-vol-2abcd.pdf)
 
+以上仅仅是一个简单例子，可以使用上面的方法来看一看c语言中的那些关键字都是怎么实现的。实现方式都是基于CPU中的ISA(Instruction Set Architecture)来实现的。
+
+使用gcc生成汇编代码除了上面的命令还是如下的方法
+
+```shell
+gcc -Og -S xxx.c
+```
+
+生成`xxx.o`文件
+
+```
+gcc -Og -c xxx.c
+```
+
+将`xxx.o`文件反汇编成`xxx.s`文件
+
+```
+objdump -d xxx.o
+```
+
+本文会不断完善，c语言关键字对应的汇编码。
