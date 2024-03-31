@@ -2,7 +2,7 @@
 title: Sam Altman的创业手册
 date: 2024-03-31 8:00:00
 tags:
-  - Go, 微服务
+  - 创业
 ---
 
 > 中文版原文：https://jxp73q7qjsg.feishu.cn/docx/WCNZdKDa4o2eUrxK5ElcfBXEnah
