@@ -2,7 +2,7 @@
   "name": "hexo-site",
   "version": "0.0.0",
   "private": true,
-  "homepage": "https://www.markshen1992.top",
+  "homepage": "https://markshen1992.top",
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
