@@ -1,8 +1,8 @@
 {
-  "name": "hexo-site",
+  "name": "blog",
   "version": "0.0.0",
   "private": true,
-  "homepage": "https://markshen1992.top",
+  "homepage": "https://shenjy06.github.io/blog",
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
