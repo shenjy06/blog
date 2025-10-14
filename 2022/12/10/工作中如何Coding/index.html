@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="当我接到一个开发任务的时候，我不是第一时间就去着手开发，我首先要干的是以下几件事情：  第一，看产品的文档，根据当前系统的功能，评估下产品的设计是否合理。不合适的地方，还要跟产品讨论，如果问题在刚开始的时候没有被发现，而是干着干着才发现这个问题，这就非常糟糕，这就需要平时经验的积累。一般是问题越早发现，解决的成本越低。  第二，分析这次开发的影响范围。如果都是新功能，新建数据库表等，这就无所谓了；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工作中如何Coding">
+<meta property="og:url" content="http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="当我接到一个开发任务的时候，我不是第一时间就去着手开发，我首先要干的是以下几件事情：  第一，看产品的文档，根据当前系统的功能，评估下产品的设计是否合理。不合适的地方，还要跟产品讨论，如果问题在刚开始的时候没有被发现，而是干着干着才发现这个问题，这就非常糟糕，这就需要平时经验的积累。一般是问题越早发现，解决的成本越低。  第二，分析这次开发的影响范围。如果都是新功能，新建数据库表等，这就无所谓了；">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-10T09:04:30.000Z">
+<meta property="article:modified_time" content="2025-10-14T03:50:36.284Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="团队开发">
+<meta property="article:tag" content="coding">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>工作中如何Coding</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2022/12/16/Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2022/12/07/%E5%A5%BD%E7%94%A8%E7%9A%84%E5%B7%A5%E5%85%B7%E9%9B%86%E5%90%88/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&text=工作中如何Coding"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&is_video=false&description=工作中如何Coding"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工作中如何Coding&body=Check out this article: http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&name=工作中如何Coding&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&t=工作中如何Coding"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        工作中如何Coding
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-12-10T09:04:30.000Z" itemprop="datePublished">2022-12-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91/">团队开发</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/coding/" rel="tag">coding</a>, <a class="tag-link-link" href="/tags/%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91/" rel="tag">团队开发</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>当我接到一个开发任务的时候，我不是第一时间就去着手开发，我首先要干的是以下几件事情：</p>
+<ul>
+<li><p><strong>第一，看产品的文档，根据当前系统的功能，评估下产品的设计是否合理。</strong>不合适的地方，还要跟产品讨论，如果问题在刚开始的时候没有被发现，而是干着干着才发现这个问题，这就非常糟糕，这就需要平时经验的积累。一般是<strong>问题越早发现，解决的成本越低</strong>。</p>
+</li>
+<li><p><strong>第二，分析这次开发的影响范围</strong>。如果都是新功能，新建数据库表等，这就无所谓了；但如果此次开发是基于原有代码的变更，就要注意影响范围了。比方说，这次版本变更会影响到的点有 3 点，但是如果你只修改了 2 点，剩下的一点就是 Bug。这是非常可怕的事情，在实际开发的时候一定要注意这个问题。那如果你是个新人，你并不知道系统有多少个地方需要修改的时候，那么你可以问下团队中对系统了解非常透彻的人，让他帮你确定系统变更范围。但是，这种事情还是少做，<strong>自己要在没有事情的时候多去熟悉系统，熟悉业务</strong>。</p>
+</li>
+<li><p><strong>第三，确定影响范围后，要整理出一个文档</strong>。文档中要写明，系统变更版本，相关人员。此次变更的功能点。对于变更的功能点还要写明：</p>
+<ul>
+<li>变更背景（为什么这个变更？）</li>
+<li>变更的 log，原来是什么样的，现在变更成什么样子的</li>
+</ul>
+</li>
+<li><p><strong>第四，前后端合作沟通，确定完成这些需求需要多少个接口</strong>。前后端沟通的时候，最好也要注意接口定义的几个问题：</p>
+<ul>
+<li>返回数据格式，都返回哪些字段</li>
+<li>请求方法，Get, Post 等</li>
+<li>出错处理</li>
+</ul>
+</li>
+<li><p><strong>第五，测试开发的功能</strong>。写测试 case, 按 case 来做相关的测试。测试的一般顺序是，自己开发的功能自己测一遍，然后团队成员测，如果没问题，发生产环境。否则，修改代码，本地测试，测试环境测试功能，如果还有问题，重复以上步骤，直至功能发线上环境。</p>
+</li>
+<li><p><strong>第六，提交代码时要注意的问题</strong>。两个后端或者两个前端或几个全站一起工作的时候，在本地编译没问题后才能提交代码，你不能提完代码，大家本地都运行不了了，这不行。</p>
+</li>
+<li><p><strong>第七，提交信息如何填写</strong>。这里推荐一篇阮一峰老师的文章《<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html">Commit message 和 Change log 编写指南</a>》。</p>
+</li>
+</ul>
+<p>本次分享就到这里啦~</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&text=工作中如何Coding"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&is_video=false&description=工作中如何Coding"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工作中如何Coding&body=Check out this article: http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&title=工作中如何Coding"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&name=工作中如何Coding&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/12/10/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%A6%82%E4%BD%95Coding/&t=工作中如何Coding"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2030 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/MarkShen1992"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'MarkShen1992/markshen1992.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="哪个框架是最适合你的呢？  Go 作为一种流行的编程语言不断增长，现在已经成为2024年构建云原生微服务应用程序的常见选择。Go 甚至进入了 TIOBE 编程语言排行榜的前十名。 尽管 Go 在历史上并没有强烈使用框架的文化，但已经有一些框架得到了确立，如今开发人员应该考虑它们以提高生产力。 然而，做出正确的选择可能具有挑战性，因此在本文中我们将介绍主要框架并比较功能、关键用例和潜在缺点。 Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2024年的Go微服务框架">
+<meta property="og:url" content="http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="哪个框架是最适合你的呢？  Go 作为一种流行的编程语言不断增长，现在已经成为2024年构建云原生微服务应用程序的常见选择。Go 甚至进入了 TIOBE 编程语言排行榜的前十名。 尽管 Go 在历史上并没有强烈使用框架的文化，但已经有一些框架得到了确立，如今开发人员应该考虑它们以提高生产力。 然而，做出正确的选择可能具有挑战性，因此在本文中我们将介绍主要框架并比较功能、关键用例和潜在缺点。 Go">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-03-30T15:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-14T03:50:36.283Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="Go, 微服务">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>2024年的Go微服务框架</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/03/31/Sam%20Altman%E7%9A%84%E5%88%9B%E4%B8%9A%E6%89%8B%E5%86%8C/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&text=2024年的Go微服务框架"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&is_video=false&description=2024年的Go微服务框架"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2024年的Go微服务框架&body=Check out this article: http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&name=2024年的Go微服务框架&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&t=2024年的Go微服务框架"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6%EF%BC%9A%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">Go 微服务框架：概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Encore"><span class="toc-number">2.</span> <span class="toc-text">Encore</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">2.2.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">2.3.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6"><span class="toc-number">2.4.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E"><span class="toc-number">2.5.</span> <span class="toc-text">适用于</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GoMicro-Orb"><span class="toc-number">3.</span> <span class="toc-text">GoMicro (Orb)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-1"><span class="toc-number">3.1.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF-1"><span class="toc-number">3.2.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6-1"><span class="toc-number">3.3.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E-1"><span class="toc-number">3.4.</span> <span class="toc-text">适用于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%80%83%E8%99%91GoMicro"><span class="toc-number">3.5.</span> <span class="toc-text">什么时候考虑GoMicro?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-kit"><span class="toc-number">4.</span> <span class="toc-text">Go kit</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">4.1.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF-2"><span class="toc-number">4.2.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6-2"><span class="toc-number">4.3.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E-2"><span class="toc-number">4.4.</span> <span class="toc-text">适用于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8Go-kit"><span class="toc-number">4.5.</span> <span class="toc-text">什么使用考虑使用Go kit?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gin"><span class="toc-number">5.</span> <span class="toc-text">Gin</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-3"><span class="toc-number">5.1.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF-3"><span class="toc-number">5.2.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6-3"><span class="toc-number">5.3.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E-3"><span class="toc-number">5.4.</span> <span class="toc-text">适用于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8Gin"><span class="toc-number">5.5.</span> <span class="toc-text">什么时候考虑使用Gin?</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        2024年的Go微服务框架
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-03-30T15:00:00.000Z" itemprop="datePublished">2024-03-30</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Go-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">Go, 微服务</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>哪个框架是最适合你的呢？</p>
+</blockquote>
+<p>Go 作为一种流行的编程语言不断增长，现在已经成为2024年构建云原生微服务应用程序的常见选择。Go 甚至进入了 <a target="_blank" rel="noopener" href="https://www.tiobe.com/tiobe-index/">TIOBE 编程语言排行榜的前十名</a>。</p>
+<p>尽管 Go 在历史上并没有强烈使用框架的文化，但已经有一些框架得到了确立，如今开发人员应该考虑它们以提高生产力。</p>
+<p>然而，做出正确的选择可能具有挑战性，因此在本文中我们将介绍主要框架并比较功能、关键用例和潜在缺点。</p>
+<h2 id="Go-微服务框架：概述"><a href="#Go-微服务框架：概述" class="headerlink" title="Go 微服务框架：概述"></a>Go 微服务框架：概述</h2><p>这里是本文中包含的不同框架的高级概述，这些框架根据对各种用例和功能的内置支持水平进行比较。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Encore</th>
+<th>GoMicro</th>
+<th>Go Kit</th>
+<th>Gin</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>描述</td>
+<td>微服务框架和基础设施 SDK</td>
+<td>微服务框架</td>
+<td>Go库集合</td>
+<td>Web框架</td>
+</tr>
+<tr>
+<td>使用案例</td>
+<td>事件驱动、分布式系统</td>
+<td>事件驱动、分布式系统</td>
+<td>分布式系统</td>
+<td>高性能的HTTP API</td>
+</tr>
+<tr>
+<td>支持协议</td>
+<td>HTTP</td>
+<td>HTTP,gRPC</td>
+<td>HTTP,gRPC</td>
+<td>HTTP</td>
+</tr>
+<tr>
+<td>低模板</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>✅︎</td>
+</tr>
+<tr>
+<td>认证</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>✅︎</td>
+</tr>
+<tr>
+<td>服务发现</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>异步消息</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内置API文档</td>
+<td>✅︎</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>自动本地开发基础设施</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内置跟踪</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内置架构图</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内置的秘密管理</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内置预览环境</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内置云基础设施自动化</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内置云成本分析</td>
+<td>✅︎</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<h2 id="Encore"><a href="#Encore" class="headerlink" title="Encore"></a>Encore</h2><p>Encore是构建Go微服务的现代替代方案，旨在使构建面向事件驱动和分布式系统变得更简单。Encore解决了本地开发体验，并通过使用来自AWS和GCP的强大可扩展服务协助部署。它通过提供微服务框架和基础设施SDK来工作，让您将基础设施语义声明为应用程序代码的一部分。官方文档：<a target="_blank" rel="noopener" href="https://encore.dev/%E3%80%82">https://encore.dev/。</a></p>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><p>定义一个服务</p>
+<p>使用Encore，您通过在常规Go包中定义API来定义服务。 Encore将此视为服务，并使用包名称作为服务名称。部署时，Encore将自动为每个服务提供所需的基础设施。</p>
+<p>在磁盘上的展示如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/my-app</span><br><span class="line">├── encore.app          // ... and other top-level project files</span><br><span class="line">│</span><br><span class="line">├── hello               // hello service (a Go package)</span><br><span class="line">│   ├── hello.go        // hello service code</span><br><span class="line">│   └── hello_test.go   // tests for hello service</span><br><span class="line">│</span><br><span class="line">└── world               // world service (a Go package)</span><br><span class="line">    └── world.go        // world service code</span><br></pre></td></tr></table></figure>
+
+<p>这意味着构建微服务架构就像在应用程序中创建多个 Go 包一样简单。有关更多详细信息，请参阅应用程序结构文档。</p>
+<p>定义一个API</p>
+<p>要定义一个 API，只需在任何普通的 Go 函数上添加 <code>//encore:api</code> 注解。这会告诉 Encore 该函数是一个 API 端点。Encore 将自动在编译时生成必要的样板代码。</p>
+<p>在下面的示例中，我们定义了 API 端点 <code>Ping</code>，在 <code>hello</code> 服务中，它会暴露为 <code>hello.Ping</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package hello // service name</span><br><span class="line"></span><br><span class="line">//encore:api public</span><br><span class="line">func Ping(ctx context.Context, params *PingParams) (*PingResponse, error) &#123;</span><br><span class="line">    msg := fmt.Sprintf(&quot;Hello, %s!&quot;, params.Name)</span><br><span class="line">    return &amp;PingResponse&#123;Message: msg&#125;, nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义一个 Pub/Sub topic</p>
+<p>如果您想要一个发布/订阅主题，可以直接在应用程序代码中声明它，就像这样。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &quot;encore.dev/pubsub&quot;</span><br><span class="line"> </span><br><span class="line">type User struct &#123; /* fields... */ &#125;</span><br><span class="line"> </span><br><span class="line">var Signup = pubsub.NewTopic[*User](&quot;signup&quot;, pubsub.TopicConfig&#123;</span><br><span class="line">  DeliveryGuarantee: pubsub.AtLeastOnce,</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">// Publish messages by calling a method</span><br><span class="line">Signup.Publish(ctx, &amp;User&#123;...&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>要运行您的应用程序，只需使用<code>encore run</code>命令。Encore将自动设置本地基础设施并生成必要的样板代码。您还可以获得<a target="_blank" rel="noopener" href="https://encore.dev/docs/observability/dev-dash">一个带有分布式跟踪功能的本地开发仪表板</a>，以帮助您轻松理解和调试应用程序行为。</p>
+<p>当您想要部署到云端时，您的代码不会发生变化。Encore将在所有环境中生成必要的样板并配置必要的基础设施：</p>
+<ul>
+<li>NSQ 用于本地开发</li>
+<li>GCP Pub/Sub 适用于 GCP 上的环境。</li>
+<li>AWS 上的环境中的 SNS/SQS</li>
+</ul>
+<h3 id="关键特性"><a href="#关键特性" class="headerlink" title="关键特性"></a>关键特性</h3><ul>
+<li>无样板文件：使用任何函数上的注释声明API，从Go包创建服务。</li>
+<li>内置分布式跟踪：轻松追踪请求的路径和性能。</li>
+<li>自动化API文档和架构图：自动保持文档和图表最新。</li>
+<li>内置机密管理：安全处理敏感数据。</li>
+<li>云基础设施自动化：在本地、预览以及GCP和AWS中自动配置基础设施。</li>
+</ul>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>可扩展性：Encore旨在设计大规模应用程序，是使用可伸缩云服务构建大型分布式系统的高效方式。</li>
+<li>简单和快速：Encore将许多基础设施管理复杂性抽象化，使开发人员能够专注于编码。</li>
+<li>标准化：提供了一种统一的构建微服务和API以及配置基础设施的方式，遵循最佳实践。</li>
+<li>内置工具：Encore提供内置的分布式跟踪、自动化API文档、预览环境等功能。</li>
+<li>云无关性：Encore应用可以部署到任何云提供商，提供灵活性并防止厂商锁定。</li>
+</ul>
+<h3 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>为了从Encore中获得最大价值，您应该同时使用API框架和基础设施SDK，这取决于您当前的情况可能需要对当前基础设施管理流程进行更改。</li>
+</ul>
+<h3 id="适用于"><a href="#适用于" class="headerlink" title="适用于"></a>适用于</h3><ul>
+<li>在<a target="_blank" rel="noopener" href="https://encore.dev/signup">这里</a>注册，体验一下 Encore。</li>
+<li>查看此<a target="_blank" rel="noopener" href="https://encore.dev/docs/how-to/try-encore">指南</a>，了解如何根据您的情况和优先事项最好地评估 Encore。</li>
+</ul>
+<h2 id="GoMicro-Orb"><a href="#GoMicro-Orb" class="headerlink" title="GoMicro (Orb)"></a>GoMicro (Orb)</h2><p><a target="_blank" rel="noopener" href="https://github.com/go-micro/go-micro">GoMicro（将更名为Orb）</a>是一个微服务框架，旨在简化构建可扩展和易维护应用程序的挑战。GoMicro提供了一种可插拔的架构，允许开发人员选择并调整框架以满足其需求，并与各种服务发现系统集成。</p>
+<blockquote>
+<p><strong>注意</strong>：自2023年4月以来，GoMicro尚未发布新版本，因此可能需要谨慎对待。</p>
+</blockquote>
+<h3 id="关键特性-1"><a href="#关键特性-1" class="headerlink" title="关键特性"></a>关键特性</h3><ul>
+<li><p>可插拔架构：根据您项目的需求调整和扩展 GoMicro。</p>
+</li>
+<li><p>服务发现与负载均衡：原生集成确保高效且平稳运行。</p>
+<blockquote>
+<p>更多特性，可以查看官网：<a target="_blank" rel="noopener" href="https://github.com/go-micro/go-micro">https://github.com/go-micro/go-micro</a></p>
+</blockquote>
+<h3 id="优势-1"><a href="#优势-1" class="headerlink" title="优势"></a>优势</h3></li>
+<li><p>可扩展性：GoMicro旨在设计大规模应用程序，可以轻松处理增加的负载。</p>
+</li>
+<li><p>灵活性：可插拔的特性意味着它可以根据各种项目需求进行定制。</p>
+</li>
+</ul>
+<h3 id="限制-1"><a href="#限制-1" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>复杂性：功能的广泛范围和可插拔性可能会让新手感到畏惧。</li>
+<li>云原生依赖：可能不适合那些没有专注于云原生部署的项目。</li>
+</ul>
+<h3 id="适用于-1"><a href="#适用于-1" class="headerlink" title="适用于"></a>适用于</h3><p>对于专注于云原生应用程序的团队，尤其是那些受益于事件驱动方法的团队。</p>
+<h3 id="什么时候考虑GoMicro"><a href="#什么时候考虑GoMicro" class="headerlink" title="什么时候考虑GoMicro?"></a>什么时候考虑GoMicro?</h3><ul>
+<li>在开发可扩展、云原生和事件驱动的应用程序时。</li>
+<li>当框架的灵活性和定制化是您的首要任务，并且愿意花费大量时间进行手动基础设施设置和维护时。</li>
+</ul>
+<h2 id="Go-kit"><a href="#Go-kit" class="headerlink" title="Go kit"></a>Go kit</h2><p><a target="_blank" rel="noopener" href="https://gokit.io/">Go kit</a> 是一组 Go 包（库），用于在 Go 中构建微服务。它专注于提供常见挑战的解决方案，同时保持相对中立。</p>
+<h3 id="关键特性-2"><a href="#关键特性-2" class="headerlink" title="关键特性"></a>关键特性</h3><ul>
+<li>服务发现：与各种服务发现系统无缝集成。</li>
+<li>可插拔传输：提供一系列传输机制，如HTTP和gRPC。</li>
+</ul>
+<h3 id="优势-2"><a href="#优势-2" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>标准化：提供了一种统一的构建服务的方式，符合最佳实践。</li>
+<li>灵活性：尽管有自己的观点，但它提供了插入不同组件的方法。</li>
+</ul>
+<h3 id="限制-2"><a href="#限制-2" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>陡峭的学习曲线：它特有的做事方式可能需要一定时间的初始投资才能掌握。</li>
+<li>潜在开销：对于更简单的项目，Go kit 可能显得过度复杂。</li>
+</ul>
+<h3 id="适用于-2"><a href="#适用于-2" class="headerlink" title="适用于"></a>适用于</h3><p>对于重视标准化但又保持灵活性的团队。</p>
+<h3 id="什么使用考虑使用Go-kit"><a href="#什么使用考虑使用Go-kit" class="headerlink" title="什么使用考虑使用Go kit?"></a>什么使用考虑使用Go kit?</h3><ul>
+<li>当您需要一个平衡标准化方法和灵活性的工具包时。</li>
+<li>当您不介意投入时间和精力手动设置和维护云基础设施和可观测工具时。</li>
+</ul>
+<h2 id="Gin"><a href="#Gin" class="headerlink" title="Gin"></a>Gin</h2><p><a target="_blank" rel="noopener" href="https://gin-gonic.com/">Gin</a> 是一个专注于性能的 Go Web 框架。Gin 的特点是极简主义，适用于构建小型、专注的应用程序。</p>
+<h3 id="关键特性-3"><a href="#关键特性-3" class="headerlink" title="关键特性"></a>关键特性</h3><ul>
+<li>快速入门：其极简的特性意味着您可以快速启动和运行。</li>
+<li>多功能性：作为一款极简产品，Gin提供了很大的灵活性，但牺牲了内置工具。</li>
+</ul>
+<h3 id="优势-3"><a href="#优势-3" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>快速入门：其极简的特性意味着您可以快速启动和运行。</li>
+<li>多功能性：作为一款极简产品，Gin提供了很大的灵活性，但牺牲了内置工具。</li>
+</ul>
+<h3 id="限制-3"><a href="#限制-3" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>面向Web：主要针对Web应用程序，可能不适合非Web微服务。</li>
+<li>功能不够丰富：对于更复杂的需求，您可能需要依赖第三方工具和扩展。</li>
+</ul>
+<h3 id="适用于-3"><a href="#适用于-3" class="headerlink" title="适用于"></a>适用于</h3><ul>
+<li>对于注重性能并希望创建简单轻量级网络应用的开发人员和小团队</li>
+</ul>
+<h3 id="什么时候考虑使用Gin"><a href="#什么时候考虑使用Gin" class="headerlink" title="什么时候考虑使用Gin?"></a>什么时候考虑使用Gin?</h3><ul>
+<li>当您的项目需要性能并且整体范围较小时。</li>
+<li>当您正在构建少量和简单的服务时，因此在设置基础设施方面的总时间投资较小。</li>
+</ul>
+<blockquote>
+<p>原文链接: <a target="_blank" rel="noopener" href="https://encore.dev/resources/go-frameworks">https://encore.dev/resources/go-frameworks</a></p>
+</blockquote>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6%EF%BC%9A%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">Go 微服务框架：概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Encore"><span class="toc-number">2.</span> <span class="toc-text">Encore</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">2.2.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">2.3.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6"><span class="toc-number">2.4.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E"><span class="toc-number">2.5.</span> <span class="toc-text">适用于</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GoMicro-Orb"><span class="toc-number">3.</span> <span class="toc-text">GoMicro (Orb)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-1"><span class="toc-number">3.1.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF-1"><span class="toc-number">3.2.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6-1"><span class="toc-number">3.3.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E-1"><span class="toc-number">3.4.</span> <span class="toc-text">适用于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%80%83%E8%99%91GoMicro"><span class="toc-number">3.5.</span> <span class="toc-text">什么时候考虑GoMicro?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-kit"><span class="toc-number">4.</span> <span class="toc-text">Go kit</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">4.1.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF-2"><span class="toc-number">4.2.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6-2"><span class="toc-number">4.3.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E-2"><span class="toc-number">4.4.</span> <span class="toc-text">适用于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8Go-kit"><span class="toc-number">4.5.</span> <span class="toc-text">什么使用考虑使用Go kit?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gin"><span class="toc-number">5.</span> <span class="toc-text">Gin</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-3"><span class="toc-number">5.1.</span> <span class="toc-text">关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF-3"><span class="toc-number">5.2.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6-3"><span class="toc-number">5.3.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E-3"><span class="toc-number">5.4.</span> <span class="toc-text">适用于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8Gin"><span class="toc-number">5.5.</span> <span class="toc-text">什么时候考虑使用Gin?</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&text=2024年的Go微服务框架"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&is_video=false&description=2024年的Go微服务框架"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2024年的Go微服务框架&body=Check out this article: http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&title=2024年的Go微服务框架"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&name=2024年的Go微服务框架&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/&t=2024年的Go微服务框架"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2030 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/MarkShen1992"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'MarkShen1992/markshen1992.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

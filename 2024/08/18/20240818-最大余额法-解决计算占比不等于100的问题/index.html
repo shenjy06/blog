@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="简介在使用 Echarts 可视化数据的时候，往往饼图中每块占比加和不等于100%，所以就有了最大余额法。下面是最大余额法的简介：  最大余额方法（英语：largest remainder method）又称数额制、汉弥尔顿法（英语：Hamilton method），是比例代表制投票制度下，一种议席分配的方法，相对于最高均数方法。 这个方法要求候选人透过名单形式参选。每个名单上的候选人数不能超过该">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最大余额法-解决计算占比不等于100的问题">
+<meta property="og:url" content="http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="简介在使用 Echarts 可视化数据的时候，往往饼图中每块占比加和不等于100%，所以就有了最大余额法。下面是最大余额法的简介：  最大余额方法（英语：largest remainder method）又称数额制、汉弥尔顿法（英语：Hamilton method），是比例代表制投票制度下，一种议席分配的方法，相对于最高均数方法。 这个方法要求候选人透过名单形式参选。每个名单上的候选人数不能超过该">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-18T19:28:00.000Z">
+<meta property="article:modified_time" content="2025-10-14T03:50:36.283Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="错误笔记">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>最大余额法-解决计算占比不等于100的问题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/08/17/20240817-%E6%83%A8%E7%97%9B%E7%9A%84%E6%95%99%E8%AE%AD/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&text=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=最大余额法-解决计算占比不等于100的问题&body=Check out this article: http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&name=最大余额法-解决计算占比不等于100的问题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&t=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">算法实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">结果</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        最大余额法-解决计算占比不等于100的问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-18T19:28:00.000Z" itemprop="datePublished">2024-08-18</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E9%94%99%E8%AF%AF%E7%AC%94%E8%AE%B0/" rel="tag">错误笔记</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在使用 <a target="_blank" rel="noopener" href="https://echarts.apache.org/en/index.html">Echarts</a> 可视化数据的时候，往往饼图中每块占比加和不等于100%，所以就有了最大余额法。下面是最大余额法的简介：</p>
+<blockquote>
+<p><strong>最大余额方法</strong>（英语：largest remainder method）又称<strong>数额制</strong>、<strong>汉弥尔顿法</strong>（英语：Hamilton method），是比例代表制投票制度下，一种议席分配的方法，相对于最高均数方法。</p>
+<p>这个方法要求候选人透过名单形式参选。每个名单上的候选人数不能超过该选区的议席数。候选人在名单上是有排名顺序的。选民投票时，是投给整个名单，而不是单个候选人。</p>
+<p>投票结束后，会用一个特定的“数额”（见下）去除所有有效票数。每个名单如果得票数达到这个数额的整数倍，就可以获得相应数量的议席。名单上的候选人按照名单上的排名顺序获得议席。</p>
+<p>如果还有剩余的议席没分配完，就会看每个名单超过上一轮数额整数倍的票数（即“余额”）。这些剩余议席会根据各名单的余额大小顺序分配，所以这种方法叫做“最大余额法”。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/CoderSilence/p/16775866.html">https://www.cnblogs.com/CoderSilence/p/16775866.html</a></p>
+</blockquote>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.problem;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 最大余额法</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> shenjunyu</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LargestRemainderMethod</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] arr = &#123;<span class="number">1</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">88</span>&#125;;</span><br><span class="line">        System.out.println(Arrays.toString(getPercentValue(arr, <span class="number">2</span>)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 最大余额法，用于解决百分比不足100%或者超过100%的问题</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     *            数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> idx</span></span><br><span class="line"><span class="comment">     *            索引</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> precision</span></span><br><span class="line"><span class="comment">     *            精度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 每一次计算的结果</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">double</span> <span class="title function_">getPercentValue</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> idx, <span class="type">int</span> precision)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ((arr.length - <span class="number">1</span>) &lt; idx) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 求和</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j : arr) &#123;</span><br><span class="line">            sum += j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (sum == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 10的2次幂是100，用于计算精度。</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">digits</span> <span class="operator">=</span> Math.pow(<span class="number">10</span>, precision);</span><br><span class="line">        <span class="comment">// 扩大比例100</span></span><br><span class="line">        <span class="type">double</span>[] votesPerQuota = <span class="keyword">new</span> <span class="title class_">double</span>[arr.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="type">double</span> <span class="variable">val</span> <span class="operator">=</span> arr[i] / sum * digits * <span class="number">100</span>;</span><br><span class="line">            votesPerQuota[i] = val;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 总数,扩大比例意味的总数要扩大</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">targetSeats</span> <span class="operator">=</span> digits * <span class="number">100</span>;</span><br><span class="line">        <span class="comment">// 再向下取值，组成数组</span></span><br><span class="line">        <span class="type">double</span>[] seats = <span class="keyword">new</span> <span class="title class_">double</span>[arr.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; votesPerQuota.length; i++) &#123;</span><br><span class="line">            seats[i] = Math.floor(votesPerQuota[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 再新计算合计，用于判断与总数量是否相同,相同则占比会100%</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">currentSum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">double</span> seat : seats) &#123;</span><br><span class="line">            currentSum += seat;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 余数部分的数组:原先数组减去向下取值的数组,得到余数部分的数组</span></span><br><span class="line">        <span class="type">double</span>[] remainder = <span class="keyword">new</span> <span class="title class_">double</span>[arr.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; seats.length; i++) &#123;</span><br><span class="line">            remainder[i] = votesPerQuota[i] - seats[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (currentSum &lt; targetSeats) &#123;</span><br><span class="line">            <span class="type">double</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="type">int</span> <span class="variable">maxId</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; remainder.length; ++i) &#123;</span><br><span class="line">                <span class="keyword">if</span> (remainder[i] &gt; max) &#123;</span><br><span class="line">                    max = remainder[i];</span><br><span class="line">                    maxId = i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 对最大项余额加1</span></span><br><span class="line">            ++seats[maxId];</span><br><span class="line">            <span class="comment">// 已经增加最大余数加1,则下次判断就可以不需要再判断这个余额数。</span></span><br><span class="line">            remainder[maxId] = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">// 总的也要加1,为了判断是否总数是否相同,跳出循环。</span></span><br><span class="line">            ++currentSum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 这时候的seats就会总数占比会100%</span></span><br><span class="line">        <span class="keyword">return</span> seats[idx] / digits;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 最大余额法，用于解决百分比不足100%或者超过100%的问题</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     *            数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> precision</span></span><br><span class="line"><span class="comment">     *            精度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 按照数组顺序排列的百分比</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">double</span>[] getPercentValue(<span class="type">int</span>[] arr, <span class="type">int</span> precision) &#123;</span><br><span class="line">        <span class="type">double</span>[] result = <span class="keyword">new</span> <span class="title class_">double</span>[arr.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            result[i] = getPercentValue(arr, i, precision);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[0.85, 3.42, 5.13, 6.84, 8.55, 75.21]</span><br></pre></td></tr></table></figure>
+
+<p>完~</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">算法实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">结果</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&text=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=最大余额法-解决计算占比不等于100的问题&body=Check out this article: http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&title=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&name=最大余额法-解决计算占比不等于100的问题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/&t=最大余额法-解决计算占比不等于100的问题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2030 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/MarkShen1992"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'MarkShen1992/markshen1992.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

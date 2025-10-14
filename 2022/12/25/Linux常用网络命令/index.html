@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Linux 常用网络命令Linux 命令学习方法Linux 命令都可以通过 Linux 提供的手册自己学习，一般来讲有三种方式查看命令的用法，如下： 就拿最常用的 ls 命令来举例子吧 第一种： 1ls --help  第二种： 1info ls  第三种： 1man ls  大家可以使用 命令 --help, info + 命令, man + 命令 三种方式来学习新的命令，大家也可以使用 The">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux常用网络命令">
+<meta property="og:url" content="http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="Linux 常用网络命令Linux 命令学习方法Linux 命令都可以通过 Linux 提供的手册自己学习，一般来讲有三种方式查看命令的用法，如下： 就拿最常用的 ls 命令来举例子吧 第一种： 1ls --help  第二种： 1info ls  第三种： 1man ls  大家可以使用 命令 --help, info + 命令, man + 命令 三种方式来学习新的命令，大家也可以使用 The">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-25T09:04:24.000Z">
+<meta property="article:modified_time" content="2025-10-14T03:50:36.284Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="network command">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Linux常用网络命令</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2023/01/01/2022%E5%B9%B4%E4%BF%9E%E8%80%81%E5%B8%88%E8%B7%A8%E5%B9%B4%E7%9B%B4%E6%92%AD%E5%86%85%E5%AE%B9%E7%AC%94%E8%AE%B0/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2022/12/16/Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&text=Linux常用网络命令"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&is_video=false&description=Linux常用网络命令"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux常用网络命令&body=Check out this article: http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&name=Linux常用网络命令&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&t=Linux常用网络命令"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">Linux 常用网络命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">Linux 命令学习方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4-1"><span class="toc-number">1.2.</span> <span class="toc-text">Linux 常用网络命令</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ifconfig"><span class="toc-number">1.2.1.</span> <span class="toc-text">ifconfig</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ifup"><span class="toc-number">1.2.2.</span> <span class="toc-text">ifup</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ifdown"><span class="toc-number">1.2.3.</span> <span class="toc-text">ifdown</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ip"><span class="toc-number">1.2.4.</span> <span class="toc-text">ip</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#route"><span class="toc-number">1.2.5.</span> <span class="toc-text">route</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ip-route"><span class="toc-number">1.2.6.</span> <span class="toc-text">ip route</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ping"><span class="toc-number">1.2.7.</span> <span class="toc-text">ping</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#traceroute"><span class="toc-number">1.2.8.</span> <span class="toc-text">traceroute</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#netstat"><span class="toc-number">1.2.9.</span> <span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nslookup"><span class="toc-number">1.2.10.</span> <span class="toc-text">nslookup</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Linux常用网络命令
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-12-25T09:04:24.000Z" itemprop="datePublished">2022-12-25</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Linux/" rel="tag">Linux</a>, <a class="tag-link-link" href="/tags/network-command/" rel="tag">network command</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="Linux-常用网络命令"><a href="#Linux-常用网络命令" class="headerlink" title="Linux 常用网络命令"></a>Linux 常用网络命令</h3><h4 id="Linux-命令学习方法"><a href="#Linux-命令学习方法" class="headerlink" title="Linux 命令学习方法"></a>Linux 命令学习方法</h4><p>Linux 命令都可以通过 Linux 提供的手册自己学习，一般来讲有三种方式查看命令的用法，如下：</p>
+<p>就拿最常用的 <code>ls</code> 命令来举例子吧</p>
+<p>第一种：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<p>第二种：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">info <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<p>第三种：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">man <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<p>大家可以使用 <code>命令 --help</code>, <code>info + 命令</code>, <code>man + 命令</code> 三种方式来学习新的命令，大家也可以使用 <a target="_blank" rel="noopener" href="https://www.kernel.org/doc/man-pages/">The Linux man-pages project</a> 来查找对应的命令。说到这里，让我们来学习下 Linux 的常用网路命令吧</p>
+<h4 id="Linux-常用网络命令-1"><a href="#Linux-常用网络命令-1" class="headerlink" title="Linux 常用网络命令"></a>Linux 常用网络命令</h4><p>今天主要跟大家分享下 Linux 系统常用网络的命令:</p>
+<ul>
+<li>ifconfig</li>
+<li>ifup</li>
+<li>ifdown</li>
+<li>ip</li>
+<li>route</li>
+<li>ip route</li>
+<li>ping</li>
+<li>traceroute</li>
+<li>netstat</li>
+<li>nslookup</li>
+</ul>
+<h5 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a>ifconfig</h5><p>查看所有网卡信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ ifconfig -a</span><br><span class="line">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.3.2  netmask 255.255.255.0  broadcast 192.168.3.255</span><br><span class="line">        ether b4:b6:86:<span class="built_in">fc</span>:12:07  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">eth1: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.56.1  netmask 255.255.255.0  broadcast 192.168.56.255</span><br><span class="line">        inet6 fe80::6715:52aa:2c80:112f  prefixlen 64  scopeid 0xfd&lt;compat,<span class="built_in">link</span>,site,host&gt;</span><br><span class="line">        ether 0a:00:27:00:00:03  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">eth2: flags=64&lt;RUNNING&gt;  mtu 1500</span><br><span class="line">        inet 169.254.202.32  netmask 255.255.0.0</span><br><span class="line">        inet6 fe80::971b:12ac:b88c:961d  prefixlen 64  scopeid 0xfd&lt;compat,<span class="built_in">link</span>,site,host&gt;</span><br><span class="line">        ether 7c:76:35:43:62:9f  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">eth3: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 172.22.96.1  netmask 255.255.240.0  broadcast 172.22.111.255</span><br><span class="line">        inet6 fe80::584c:ccd0:e077:634c  prefixlen 64  scopeid 0xfd&lt;compat,<span class="built_in">link</span>,site,host&gt;</span><br><span class="line">        ether 00:15:5d:41:e6:ee  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 1500</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br><span class="line">        inet6 ::1  prefixlen 128  scopeid 0xfe&lt;compat,<span class="built_in">link</span>,site,host&gt;</span><br><span class="line">        loop  (Local Loopback)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">wifi0: flags=64&lt;RUNNING&gt;  mtu 1500</span><br><span class="line">        inet 169.254.169.148  netmask 255.255.0.0</span><br><span class="line">        ether 7c:76:35:43:62:9b  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">wifi1: flags=64&lt;RUNNING&gt;  mtu 1500</span><br><span class="line">        inet 169.254.112.16  netmask 255.255.0.0</span><br><span class="line">        ether 7c:76:35:43:62:9c  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">wifi2: flags=64&lt;RUNNING&gt;  mtu 1500</span><br><span class="line">        inet 169.254.241.4  netmask 255.255.0.0</span><br><span class="line">        ether 7e:76:35:43:62:9b  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br></pre></td></tr></table></figure>
+
+<p>其余，参数大家可以通过手册自行学习，这里要大家注意下 <a target="_blank" rel="noopener" href="https://www.cloudflare.com/learning/network-layer/what-is-mtu/">MTU</a> 这个关键参数，大家可以根据着篇 blog 进行学习。</p>
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/ifconfig-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="ifup"><a href="#ifup" class="headerlink" title="ifup"></a>ifup</h5><p>激活网络接口<code>eth0</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ ifup eth0</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/ifup-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="ifdown"><a href="#ifdown" class="headerlink" title="ifdown"></a>ifdown</h5><p>禁用网络端口<code>eth0</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ ifdown eth0</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/ifdown-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="ip"><a href="#ip" class="headerlink" title="ip"></a>ip</h5><p>查看机器所有网卡的 ip</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ ip a</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/ip-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="route"><a href="#route" class="headerlink" title="route"></a>route</h5><p>查看 Linux 内核路由表</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ route</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/route-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="ip-route"><a href="#ip-route" class="headerlink" title="ip route"></a>ip route</h5><p>查看默认路由表（main）路由</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ ip route</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhongmushu/article/details/108220232">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h5><p>查看网络链路是否通</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ ping www.baidu.com</span><br><span class="line">shenjy@DESKTOP-MCQT724:~$ ping localhost</span><br><span class="line">shenjy@DESKTOP-MCQT724:~$ ping 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/ping-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="traceroute"><a href="#traceroute" class="headerlink" title="traceroute"></a>traceroute</h5><p>追踪网络数据包的路由途径，也可以顺道学习下 <code>tracert</code> 这个命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ traceroute www.baidu.com</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/traceroute-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h5><p>Print network connections, routing tables, interface statistics, masquerade connections, and multicast member‐<br>ships</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ netstat -i</span><br><span class="line">Kernel Interface table</span><br><span class="line">Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg</span><br><span class="line">eth0      1500        0      0      0 0             0      0      0      0 BMRU</span><br><span class="line">eth1      1500        0      0      0 0             0      0      0      0 BMRU</span><br><span class="line">eth3      1500        0      0      0 0             0      0      0      0 BMRU</span><br><span class="line">lo        1500        0      0      0 0             0      0      0      0 LRU</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/netstat-command-linux/">这篇 Blog</a> 学习这个命令。</p>
+<h5 id="nslookup"><a href="#nslookup" class="headerlink" title="nslookup"></a>nslookup</h5><p>Nslookup is a program to query Internet domain name servers. Nslookup has two modes: interactive and non-interactive.<br>Interactive mode allows the user to query name servers for information about various hosts and domains or to print a list<br>of hosts in a domain. Non-interactive mode is used to print just the name and requested information for a host or domain.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">shenjy@DESKTOP-MCQT724:~$ nslookup baidu.com</span><br><span class="line">Server:         8.8.8.8</span><br><span class="line">Address:        8.8.8.8#53</span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">Name:   baidu.com</span><br><span class="line">Address: 39.156.66.10</span><br></pre></td></tr></table></figure>
+
+<p>大家也可以参照<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/nslookup-command-in-linux-with-examples/">这篇 Blog</a> 学习这个命令。</p>
+<p>以上就是一些常用的 Linux 网络命令了，但是还没有完，以后如果遇到一些新的命令，我还会继续往这里追加的, 也欢迎大家留言~</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">Linux 常用网络命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">Linux 命令学习方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4-1"><span class="toc-number">1.2.</span> <span class="toc-text">Linux 常用网络命令</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ifconfig"><span class="toc-number">1.2.1.</span> <span class="toc-text">ifconfig</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ifup"><span class="toc-number">1.2.2.</span> <span class="toc-text">ifup</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ifdown"><span class="toc-number">1.2.3.</span> <span class="toc-text">ifdown</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ip"><span class="toc-number">1.2.4.</span> <span class="toc-text">ip</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#route"><span class="toc-number">1.2.5.</span> <span class="toc-text">route</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ip-route"><span class="toc-number">1.2.6.</span> <span class="toc-text">ip route</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ping"><span class="toc-number">1.2.7.</span> <span class="toc-text">ping</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#traceroute"><span class="toc-number">1.2.8.</span> <span class="toc-text">traceroute</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#netstat"><span class="toc-number">1.2.9.</span> <span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nslookup"><span class="toc-number">1.2.10.</span> <span class="toc-text">nslookup</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&text=Linux常用网络命令"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&is_video=false&description=Linux常用网络命令"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux常用网络命令&body=Check out this article: http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&title=Linux常用网络命令"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&name=Linux常用网络命令&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/12/25/Linux%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/&t=Linux常用网络命令"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2030 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/MarkShen1992"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'MarkShen1992/markshen1992.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

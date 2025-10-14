@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="软件简介 Apache ZooKeeper is an open-source server for highly reliable distributed coordination of cloud applications.2 It is a project of the Apache Software Foundation. ZooKeeper is essentially a servic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zookeeper学习笔记">
+<meta property="og:url" content="http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="软件简介 Apache ZooKeeper is an open-source server for highly reliable distributed coordination of cloud applications.2 It is a project of the Apache Software Foundation. ZooKeeper is essentially a servic">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-26T20:10:14.000Z">
+<meta property="article:modified_time" content="2025-10-14T03:50:36.284Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="Zookeeper">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Zookeeper学习笔记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/01/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E8%AF%BE%E7%A8%8B/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/10/23/Java%E5%9C%A8Linux%E4%B8%8A%E5%AE%89%E8%A3%85/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&text=Zookeeper学习笔记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&is_video=false&description=Zookeeper学习笔记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Zookeeper学习笔记&body=Check out this article: http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&name=Zookeeper学习笔记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&t=Zookeeper学习笔记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">软件简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">安装前准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85-1"><span class="toc-number">2.2.</span> <span class="toc-text">软件安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZK-%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">ZK 集群环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZK-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.</span> <span class="toc-text">ZK 的使用场景</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Zookeeper学习笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-10-26T20:10:14.000Z" itemprop="datePublished">2023-10-26</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Zookeeper/" rel="tag">Zookeeper</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h2><ul>
+<li>Apache ZooKeeper is an open-source server for highly reliable distributed coordination of cloud applications.<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1mw411d7Cc/?spm_id_from=333.337.search-card.all.click">2</a> It is a project of the Apache Software Foundation.</li>
+<li>ZooKeeper is essentially a service for distributed systems offering a hierarchical key-value store, which is used to provide a distributed configuration service, synchronization service, and naming registry for large distributed systems (see Use cases).<a target="_blank" rel="noopener" href="https://cn.dubbo.apache.org/zh-cn/">3</a> ZooKeeper was a sub-project of Hadoop but is now a top-level Apache project in its own right.</li>
+<li>如果你想了解更多信息，可以访问软件的官网:<ul>
+<li><a target="_blank" rel="noopener" href="https://zookeeper.apache.org/doc/r3.9.1/index.html">https://zookeeper.apache.org/doc/r3.9.1/index.html</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><h3 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h3><ul>
+<li>在软件安装前，要先下载软件，可以到官网的下载页面下载软件，我们使用的软件版本是 3.6.4，请注意，选择这个版本仅是学习使用，如果要在线上环境使用，请选择非 EoL 版本。<ul>
+<li><a target="_blank" rel="noopener" href="https://zookeeper.apache.org/releases.html">https://zookeeper.apache.org/releases.html</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 软件下载</span></span><br><span class="line">wget https://archive.apache.org/dist/zookeeper/zookeeper-3.6.4/apache-zookeeper-3.6.4-bin.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在本软件安装教程中前置条件<ul>
+<li>虚拟机软件 VMWare16 pro</li>
+<li>操作系统：CentOS 7</li>
+<li>JDK 的安装可以参照之前的文章<a target="_blank" rel="noopener" href="http://markshen1992.top/2023/10/23/Java%E5%9C%A8Linux%E4%B8%8A%E5%AE%89%E8%A3%85/">在 Linux 系统上安装 Java 环境</a>一文</li>
+</ul>
+</li>
+</ul>
+<p>以上准备好之后，就可以进行软件安装了</p>
+<h3 id="软件安装-1"><a href="#软件安装-1" class="headerlink" title="软件安装"></a>软件安装</h3><ul>
+<li>创建软件安装目录</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /opt/zk</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将下载好的软件拷贝到这个目录中</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> apache-zookeeper-3.6.4-bin.tar.gz /opt/zk</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压软件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xvf apache-zookeeper-3.6.4-bin.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>进入软件路径修改软件配置</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.6.4-bin/conf</span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在配置文件中配置<code>ZK_HOME</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑 /etc/profile 文件</span></span><br><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment"># 添加如下代码</span></span><br><span class="line"><span class="comment">#ZK</span></span><br><span class="line"><span class="built_in">export</span> ZK_HOME=/opt/zk/apache-zookeeper-3.6.4-bin</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ZK_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 重新生效</span></span><br><span class="line"><span class="built_in">source</span>|. /etc/profile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动 ZK</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zkServer.sh start|stop|restart|status</span><br><span class="line"><span class="comment"># 启动软件的话，直接使用下面的命令</span></span><br><span class="line">zkServer.sh start</span><br></pre></td></tr></table></figure>
+
+<p>以上就可以在 CentOS7 上启动 ZK 了。</p>
+<h2 id="ZK-集群环境搭建"><a href="#ZK-集群环境搭建" class="headerlink" title="ZK 集群环境搭建"></a>ZK 集群环境搭建</h2><p>对于集群环境，需要做的前置准备就是要准备三台虚拟机，现阶段给其做的规划如下表</p>
+<table>
+<thead>
+<tr>
+<th>IP 地址</th>
+<th>ZK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.32.10</td>
+<td>ZK1</td>
+</tr>
+<tr>
+<td>192.168.32.11</td>
+<td>ZK2</td>
+</tr>
+<tr>
+<td>192.168.32.12</td>
+<td>ZK3</td>
+</tr>
+</tbody></table>
+<p>11，12 这两台机器是基于 10 虚拟机的镜像版本，如果这样的话，这三台虚拟机上都有 ZK 软件了，接下来的操作就是搭建集群环境了</p>
+<ul>
+<li>修改 10 机器上 ZK 的配置文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/zk/apache-zookeeper-3.6.4-bin</span><br><span class="line"><span class="comment"># 创建data文件夹</span></span><br><span class="line"><span class="built_in">mkdir</span> data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在进入存放配置的文件夹</span></span><br><span class="line"><span class="built_in">cd</span> conf</span><br><span class="line"><span class="comment"># 编辑配置文件</span></span><br><span class="line">vim zoo.cfg</span><br><span class="line"><span class="comment"># 修改 `dataDir` 属性为下面的值</span></span><br><span class="line">dataDir=/opt/zk/apache-zookeeper-3.6.4-bin/data</span><br><span class="line"><span class="comment"># 以下三行在配置文件末尾加</span></span><br><span class="line">server.1=192.168.32.10:2888:3888</span><br><span class="line">server.2=192.168.32.11:2888:3888</span><br><span class="line">server.3=192.168.32.12:2888:3888</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将配制好的内容分发到其他两台计算机，同时创建 data 数据目录，再在这个目录下创建一个 myid 文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在这个目录，创建myid文件</span></span><br><span class="line">/opt/zk/apache-zookeeper-3.6.4-bin/data</span><br><span class="line"><span class="comment"># 对于10那台机器:</span></span><br><span class="line"><span class="built_in">echo</span> 1 &gt; myid</span><br><span class="line"><span class="comment"># 对于11那台机器</span></span><br><span class="line"><span class="built_in">echo</span> 2 &gt; myid</span><br><span class="line"><span class="comment"># 对于12那台机器</span></span><br><span class="line"><span class="built_in">echo</span> 3 &gt; myid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将11，12两台机器上的zk全删除</span></span><br><span class="line"><span class="built_in">rm</span> -rf /opt/zk/apache-zookeeper-3.6.4-bin</span><br><span class="line"><span class="comment"># 将10上的zk分发到11，12服务器上，如果配置免密的话，执行这句话的时候不需要输入用户名密码</span></span><br><span class="line">scp -r /opt/zk/apache-zookeeper-3.6.4-bin/ root@192.168.32.11|12:/opt/zk</span><br><span class="line"><span class="comment"># 然后修改 /opt/zk/apache-zookeeper-3.6.4-bin/data 目录中的 myid 文件，将其该成对应的 2, 3</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>关闭系统防火墙</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开启命令：</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="comment">#临时关闭命令：</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"><span class="comment">#永久关闭命令：</span></span><br><span class="line">systemctl <span class="built_in">disable</span>|<span class="built_in">enable</span> firewalld</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>或者，开启指定的端口</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> firewall-cmd --zone=public --add-port=3000/tcp --permanent</span><br><span class="line"><span class="built_in">sudo</span> firewall-cmd --reload</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> firewall-cmd --remove-port=3000/tcp --permanent</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动服务，分别在三台机器上执行下面命令</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zkServer.sh start</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证 ZK 是否启动成功以及服务具体角色，结果是一台机器上的 ZK 角色是 leader，其他两台角色是 follower</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zkServer.sh status</span><br></pre></td></tr></table></figure>
+
+<h2 id="ZK-的使用场景"><a href="#ZK-的使用场景" class="headerlink" title="ZK 的使用场景"></a>ZK 的使用场景</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1mw411d7Cc/?spm_id_from=333.337.search-card.all.click">分布式锁</a></li>
+<li>服务注册发现，跟 <a target="_blank" rel="noopener" href="https://cn.dubbo.apache.org/zh-cn/">Dubbo</a> 结合使用</li>
+<li><a target="_blank" rel="noopener" href="https://www.oreilly.com/library/view/kafka-the-definitive/9781492043072/">Kafka 集群搭建</a><ul>
+<li>使用 ZK 存储 Kafka 集群元数据信息和消费者客户端详情</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">软件简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">安装前准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85-1"><span class="toc-number">2.2.</span> <span class="toc-text">软件安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZK-%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">ZK 集群环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZK-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.</span> <span class="toc-text">ZK 的使用场景</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&text=Zookeeper学习笔记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&is_video=false&description=Zookeeper学习笔记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Zookeeper学习笔记&body=Check out this article: http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=Zookeeper学习笔记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&name=Zookeeper学习笔记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2023/10/26/ZooKeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&t=Zookeeper学习笔记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2030 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/MarkShen1992"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'MarkShen1992/markshen1992.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

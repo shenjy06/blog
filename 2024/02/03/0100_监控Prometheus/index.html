@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="监控简介 Prometheus-陈皓，本书的核心是Prometheus，一个开源的监控系统，它从应用程序中实时获取时间序列数据，然后通过功能强大的规则引擎，帮助你识别监控环境所需的信息。本书可以指导你使用Prometheus来构建监控系统，重点放在动态云环境、Kubernetes环境和容器环境的监控。同时，还将研究如何从应用程序获取数据并将这些数据用于警报和可视化。  相关的开源地址：  prom">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Prometheus监控实战》读书笔记">
+<meta property="og:url" content="http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="监控简介 Prometheus-陈皓，本书的核心是Prometheus，一个开源的监控系统，它从应用程序中实时获取时间序列数据，然后通过功能强大的规则引擎，帮助你识别监控环境所需的信息。本书可以指导你使用Prometheus来构建监控系统，重点放在动态云环境、Kubernetes环境和容器环境的监控。同时，还将研究如何从应用程序获取数据并将这些数据用于警报和可视化。  相关的开源地址：  prom">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/4cc08049-13a3-42c2-adad-6918e7e4eba7">
+<meta property="og:image" content="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/a6983db4-68f5-4f59-b5b5-a0acd1baea57">
+<meta property="og:image" content="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/5e79a6d1-200d-416c-8661-0e6cf65f1846">
+<meta property="og:image" content="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/f00ffda4-f33e-4dd3-926b-3f6fd961fa15">
+<meta property="og:image" content="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/e6c63884-c309-4cac-a4db-20312d35bc6e">
+<meta property="article:published_time" content="2024-02-03T19:54:30.000Z">
+<meta property="article:modified_time" content="2025-10-14T03:50:36.283Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="监控">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/4cc08049-13a3-42c2-adad-6918e7e4eba7">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>《Prometheus监控实战》读书笔记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/03/30/2024%E5%B9%B4%E7%9A%84Go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/01/26/%E8%AF%B7%E5%91%8A%E8%AF%89%E5%AD%A9%E5%AD%90%EF%BC%8C%E5%8E%9F%E6%9D%A5%E8%BF%99%E6%89%8D%E6%98%AF%E6%AD%A3%E7%A1%AE%E7%9A%84%E8%AF%BB%E4%B9%A6%E6%96%B9%E5%BC%8F/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&text=《Prometheus监控实战》读书笔记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&is_video=false&description=《Prometheus监控实战》读书笔记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=《Prometheus监控实战》读书笔记&body=Check out this article: http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&name=《Prometheus监控实战》读书笔记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&t=《Prometheus监控实战》读书笔记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">监控简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87"><span class="toc-number">1.0.1.</span> <span class="toc-text">指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E6%91%98%E8%A6%81"><span class="toc-number">1.0.2.</span> <span class="toc-text">指标摘要</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E6%96%B9%E6%B3%95%E8%AE%BA"><span class="toc-number">1.1.</span> <span class="toc-text">监控方法论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Brendan-Gregg-%E7%9A%84-USE-Utilization-Saturation%E5%92%8CError"><span class="toc-number">1.1.1.</span> <span class="toc-text">Brendan Gregg 的 USE(Utilization, Saturation和Error)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Google%E7%9A%84%E5%9B%9B%E4%B8%AA%E9%BB%84%E9%87%91%E6%8C%87%E6%A0%87"><span class="toc-number">1.1.2.</span> <span class="toc-text">Google的四个黄金指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Weaveworks%E7%9A%84RED-Rate-Error%E5%92%8CDuration"><span class="toc-number">1.1.3.</span> <span class="toc-text">Weaveworks的RED(Rate, Error和Duration)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E6%8A%A5%E5%92%8C%E9%80%9A%E7%9F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">警报和通知</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%9A%84%E6%A0%87%E5%87%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">通知的标准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E6%9E%84%E5%BB%BA"><span class="toc-number">1.3.1.</span> <span class="toc-text">可视化构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E4%B9%A6%E7%B1%8D"><span class="toc-number">1.3.2.</span> <span class="toc-text">推荐书籍</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Prometheus%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">Prometheus安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E8%BD%AF%E4%BB%B6Prometheus"><span class="toc-number">2.0.1.</span> <span class="toc-text">下载软件Prometheus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.0.2.</span> <span class="toc-text">启动程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Docker%E8%BF%90%E8%A1%8CPrometheus"><span class="toc-number">2.0.3.</span> <span class="toc-text">使用Docker运行Prometheus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8prometheus-grafana-node-exporter%E6%90%AD%E5%BB%BA%E6%9C%BA%E5%99%A8%E7%9A%84%E7%9B%91%E6%8E%A7"><span class="toc-number">2.0.4.</span> <span class="toc-text">使用prometheus + grafana + node_exporter搭建机器的监控</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.0.4.1.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.0.4.2.</span> <span class="toc-text">安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%9B%91%E6%8E%A7"><span class="toc-number">2.0.5.</span> <span class="toc-text">配置监控</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        《Prometheus监控实战》读书笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-03T19:54:30.000Z" itemprop="datePublished">2024-02-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="监控简介"><a href="#监控简介" class="headerlink" title="监控简介"></a>监控简介</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1a64y1X7ys/">Prometheus-陈皓</a>，本书的核心是Prometheus，一个开源的监控系统，它从应用程序中实时获取时间序列数据，然后通过功能强大的规则引擎，帮助你识别监控环境所需的信息。本书可以指导你使用Prometheus来构建监控系统，重点放在动态云环境、Kubernetes环境和容器环境的监控。同时，还将研究如何从应用程序获取数据并将这些数据用于警报和可视化。</p>
+</blockquote>
+<p>相关的开源地址：</p>
+<ul>
+<li>prometheus 官网：<a target="_blank" rel="noopener" href="https://prometheus.io/">https://prometheus.io/</a></li>
+<li>prometheus github地址：<a target="_blank" rel="noopener" href="https://github.com/prometheus/prometheus">https://github.com/prometheus/prometheus</a></li>
+</ul>
+<p>监控是构建和管理应用程序服务层级结构的基础。</p>
+<p><strong>从底向上</strong>依次是监控，应急事件处理，事后总结/问题根源分析，测试+发布，容量规划，软件开发，产品设计。</p>
+<p>根据服务价值设计自上而下的健康空系统是一个很好的方式，自上而下分别是业务逻辑，应用程序，操作系统，监控框架。</p>
+<h3 id="指标"><a href="#指标" class="headerlink" title="指标"></a>指标</h3><ul>
+<li>测量型：类型是上下增减的数字，本质上是特定度量的快照。如CPU, 内存和磁盘使用率等。</li>
+<li>计数型：随时间增加而不会减少的数字。</li>
+<li>直方图：对观察点进行采样的指标类型。</li>
+</ul>
+<h3 id="指标摘要"><a href="#指标摘要" class="headerlink" title="指标摘要"></a>指标摘要</h3><ul>
+<li>计数：计算特定时间间隔内的观察点数。</li>
+<li>求和：将特定时间间隔内所有观察点的值累计相加。</li>
+<li>平均值：提供特定时间间隔内所有值的平均值。</li>
+<li>中间数：数值的几何中点，正好50%的数值位于它前面，而另外一半位于它的后面。</li>
+<li>百分位数：度量占总数特定百分比的观察点的值。</li>
+<li>标准差：显示指标分布中与平均值的标准差，这可以侧聊出数据集的差异程度。标准差为0表示数据都等于平均值，较高的标准差意味着数据分布的范围很广。</li>
+<li>变化率：显示时间序列中数据之间的变化程度。</li>
+</ul>
+<h2 id="监控方法论"><a href="#监控方法论" class="headerlink" title="监控方法论"></a>监控方法论</h2><h3 id="Brendan-Gregg-的-USE-Utilization-Saturation和Error"><a href="#Brendan-Gregg-的-USE-Utilization-Saturation和Error" class="headerlink" title="Brendan Gregg 的 USE(Utilization, Saturation和Error)"></a>Brendan Gregg 的 USE(Utilization, Saturation和Error)</h3><p>这个方法侧重于主机级监控，其中U指的是使用率，S指的是饱和度，E指的是错误。具体<a target="_blank" rel="noopener" href="https://www.brendangregg.com/usemethod.html">USE方法</a>描述。USE可以被概括成<strong>针对每个资源，检查使用率，饱和度和错误。</strong></p>
+<ul>
+<li><strong>资源</strong>：系统的一个组件。在Gregg对模型的定义中，他是一个传统意义上的物理服务器组件，入CPU,磁盘等，但许多人也将软件资源定义在内。</li>
+<li><strong>使用率</strong>：资源忙于平时工作的平均时间。它通常用随时间变化的百分比表示。</li>
+<li><strong>饱和度</strong>：资源排队工作的指标，无法再处理额外的工作。通常用队列长度表示。</li>
+<li><strong>错误</strong>：资源错误事件的技术。</li>
+</ul>
+<p>例如：从CPU开始</p>
+<ul>
+<li>CPU使用率随时间的百分比</li>
+<li>CPU饱和度，等待CPU的进程数。</li>
+<li>错误，通常对CPU资源不太有影响。</li>
+</ul>
+<h3 id="Google的四个黄金指标"><a href="#Google的四个黄金指标" class="headerlink" title="Google的四个黄金指标"></a>Google的四个黄金指标</h3><p>这四个指标分别是<strong>延迟，流量，错误和饱和度</strong>。这四个指标来自于Google SRE手册，是专注与应用程序级的监控。</p>
+<ul>
+<li><strong>延迟</strong>：服务请求所花费的时间，需要区分成功请求和失败请求。</li>
+<li><strong>流量</strong>：针对系统，如每秒HTTP的请求数，或者数据库系统的事务。</li>
+<li><strong>错误</strong>：请求失败的速率，如HTTP 500错误等显示失败，或者是返回错误内容或无效内容等隐式失败，或者是基于策略原因导致的失败。</li>
+<li><strong>饱和度</strong>：应用程序有多“满”，或者受限的资源，如内存，IO【网络IO，磁盘IO】，磁盘。</li>
+</ul>
+<h3 id="Weaveworks的RED-Rate-Error和Duration"><a href="#Weaveworks的RED-Rate-Error和Duration" class="headerlink" title="Weaveworks的RED(Rate, Error和Duration)"></a>Weaveworks的RED(Rate, Error和Duration)</h3><p>可以读这篇<a target="_blank" rel="noopener" href="https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/">文章</a>，也可以看下这个<a target="_blank" rel="noopener" href="https://grafana.com/files/grafanacon_eu_2018/Tom_Wilkie_GrafanaCon_EU_2018.pdf">PPT</a>。</p>
+<h2 id="警报和通知"><a href="#警报和通知" class="headerlink" title="警报和通知"></a>警报和通知</h2><p>要建立一个出色的通知系统，需要考虑一下基础信息：</p>
+<ul>
+<li>哪些问题需要通知</li>
+<li>谁需要被告知</li>
+<li>如何告知他们</li>
+<li>多久告知他们一次</li>
+<li>何时停止告知以及何时升级到其他人</li>
+</ul>
+<h3 id="通知的标准"><a href="#通知的标准" class="headerlink" title="通知的标准"></a>通知的标准</h3><ul>
+<li>使通知清晰、准确、可操作。使用由人而不是计算机编写的通知在清晰度和实用性方面有显著差异</li>
+<li>为通知添加上下文，通知应包含组件的其他相关信息</li>
+<li>仅发有意义的通知。</li>
+</ul>
+<h2 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h2><h3 id="可视化构建"><a href="#可视化构建" class="headerlink" title="可视化构建"></a>可视化构建</h3><ul>
+<li>清晰地显示数据</li>
+<li>引发思考（而不是视觉效果）</li>
+<li>避免扭曲数据</li>
+<li>使数据集保持一致</li>
+<li>允许更改颗粒度而不影响理解</li>
+</ul>
+<h3 id="推荐书籍"><a href="#推荐书籍" class="headerlink" title="推荐书籍"></a>推荐书籍</h3><ul>
+<li>The Visual Display of Quantitative Information-Edward Tufte</li>
+<li><a target="_blank" rel="noopener" href="https://www.datadoghq.com/blog/timeseries-metric-graphs-101/">https://www.datadoghq.com/blog/timeseries-metric-graphs-101/</a></li>
+<li>The Art of Monitoring</li>
+<li><a target="_blank" rel="noopener" href="https://riemann.io/">https://riemann.io/</a></li>
+</ul>
+<h1 id="Prometheus安装"><a href="#Prometheus安装" class="headerlink" title="Prometheus安装"></a>Prometheus安装</h1><h3 id="下载软件Prometheus"><a href="#下载软件Prometheus" class="headerlink" title="下载软件Prometheus"></a>下载软件<code>Prometheus</code></h3><ul>
+<li><a target="_blank" rel="noopener" href="https://prometheus.io/download/">https://prometheus.io/download/</a></li>
+</ul>
+<p>在Linux上安装prometheus</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">mkdir prometheus</span><br><span class="line">cd prometheus</span><br><span class="line">wget https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz</span><br><span class="line">tar xvf prometheus-2.49.1.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>Prometheus默认的配置</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my global config</span></span><br><span class="line"><span class="attr">global:</span></span><br><span class="line">  <span class="attr">scrape_interval:</span> <span class="string">15s</span> <span class="comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span></span><br><span class="line">  <span class="attr">evaluation_interval:</span> <span class="string">15s</span> <span class="comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span></span><br><span class="line">  <span class="comment"># scrape_timeout is set to the global default (10s).</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Alertmanager configuration</span></span><br><span class="line"><span class="attr">alerting:</span></span><br><span class="line">  <span class="attr">alertmanagers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">static_configs:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">targets:</span></span><br><span class="line">          <span class="comment"># - alertmanager:9093</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load rules once and periodically evaluate them according to the global &#x27;evaluation_interval&#x27;.</span></span><br><span class="line"><span class="attr">rule_files:</span></span><br><span class="line">  <span class="comment"># - &quot;first_rules.yml&quot;</span></span><br><span class="line">  <span class="comment"># - &quot;second_rules.yml&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A scrape configuration containing exactly one endpoint to scrape:</span></span><br><span class="line"><span class="comment"># Here it&#x27;s Prometheus itself.</span></span><br><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="comment"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">&quot;prometheus&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># metrics_path defaults to &#x27;/metrics&#x27;</span></span><br><span class="line">    <span class="comment"># scheme defaults to &#x27;http&#x27;.</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> [<span class="string">&quot;localhost:9090&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>global: 控制prometheus服务行为的安全配置<ul>
+<li>scrape_interval: 指定应用程序或服务抓取数据的时间间隔</li>
+<li>evaluation_interval: 用来指定Prometheus评估规则的频率。目前有两种规则：<ul>
+<li>记录规则：允许预先计算使用频率且开销大的表达式，并将结果保存为一个新的时间序列数据。</li>
+<li>报警规则：允许定义报警条件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>alerting: 用来设置Prometheus的报警</li>
+<li>rule_files: 指定包含记录规则或报警规则的文件列表。</li>
+<li>scrape_configs：用来指定prometheus抓取的所有目标。</li>
+</ul>
+<h3 id="启动程序"><a href="#启动程序" class="headerlink" title="启动程序"></a>启动程序</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /etc/prometheus</span><br><span class="line">cp prometheus.yml /etc/prometheus/</span><br><span class="line">prometheus --help</span><br><span class="line">prometheus --config.file &quot;/etc/prometheus/prometheus.yml&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">代码校验工具</span></span><br><span class="line">promtool check config prometheus.yml</span><br><span class="line">Checking prometheus.yml</span><br><span class="line"> SUCCESS: prometheus.yml is valid prometheus config file syntax</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用Docker运行Prometheus"><a href="#使用Docker运行Prometheus" class="headerlink" title="使用Docker运行Prometheus"></a>使用Docker运行Prometheus</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 9090:9090 -v /tmp/prometheus.yml:/etc/prometheus/</span><br></pre></td></tr></table></figure>
+
+<p>访问：<a target="_blank" rel="noopener" href="http://ip:9090/graph">http://ip:9090/graph</a></p>
+<p><a target="_blank" rel="noopener" href="https://prometheus.io/docs/prometheus/latest/querying/basics/">https://prometheus.io/docs/prometheus/latest/querying/basics/</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span>quantile=<span class="string">&quot;0.5&quot;</span><span class="punctuation">,</span>instance=<span class="string">&quot;localhost:9090&quot;</span><span class="punctuation">,</span>__name__=<span class="string">&quot;go_gc_duration_seconds&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://graphiteapp.org/#gettingStarted">https://graphiteapp.org/#gettingStarted</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.robustperception.io/translating-between-monitoring-languages/">https://www.robustperception.io/translating-between-monitoring-languages/</a></p>
+<h3 id="使用prometheus-grafana-node-exporter搭建机器的监控"><a href="#使用prometheus-grafana-node-exporter搭建机器的监控" class="headerlink" title="使用prometheus + grafana + node_exporter搭建机器的监控"></a>使用prometheus + grafana + node_exporter搭建机器的监控</h3><h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><ul>
+<li><p>prometheus的下载见上面的步骤</p>
+</li>
+<li><p>grafana的下载：<a target="_blank" rel="noopener" href="https://grafana.com/grafana/download?edition=oss">https://grafana.com/grafana/download?edition=oss</a></p>
+<ul>
+<li>分两个版本，一个是企业版，一个是OSS版本，也可以使用docker版本</li>
+<li><code>docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:9.4.7</code></li>
+</ul>
+</li>
+<li><p>node_exporter 下载：<a target="_blank" rel="noopener" href="https://github.com/prometheus/node_exporter">https://github.com/prometheus/node_exporter</a></p>
+</li>
+</ul>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
+<li><p>要实现<code>Node Exporter Full</code>这个功能，请先参考文章，<a target="_blank" rel="noopener" href="https://grafana.com/grafana/dashboards/1860-node-exporter-full/">https://grafana.com/grafana/dashboards/1860-node-exporter-full/</a></p>
+</li>
+<li><p>先配置<code>prometheus</code>，在<code>/etc/prometheus/prometheus.yml</code>中添加如下配置</p>
+</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my global config</span></span><br><span class="line"><span class="attr">global:</span></span><br><span class="line">  <span class="attr">scrape_interval:</span> <span class="string">15s</span> <span class="comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span></span><br><span class="line">  <span class="attr">evaluation_interval:</span> <span class="string">15s</span> <span class="comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span></span><br><span class="line">  <span class="comment"># scrape_timeout is set to the global default (10s).</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Alertmanager configuration</span></span><br><span class="line"><span class="attr">alerting:</span></span><br><span class="line">  <span class="attr">alertmanagers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">static_configs:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">targets:</span></span><br><span class="line">          <span class="comment"># - alertmanager:9093</span></span><br><span class="line"></span><br><span class="line"><span class="attr">rule_files:</span></span><br><span class="line">  <span class="comment"># - &quot;first_rules.yml&quot;</span></span><br><span class="line">  <span class="comment"># - &quot;second_rules.yml&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">&quot;prometheus&quot;</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> [<span class="string">&quot;localhost:9090&quot;</span>]  </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">node</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> [<span class="string">&#x27;localhost:9100&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置完成后启动<code>prometheus</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prometheus --config.file &quot;/etc/prometheus/prometheus.yml&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>把node_exporter命令放入路径<code>/usr/local/bin</code>路径下，并启动node_exporter。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node_exporter --collector.systemd --collector.processes</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压grafana软件包，或者使用grafana docker镜像</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">命令行方式</span></span><br><span class="line">./grafana_server</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker 启动方式</span></span><br><span class="line">docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:9.4.7</span><br></pre></td></tr></table></figure>
+
+<p>到此，都全部都配置完成了。</p>
+<h3 id="配置监控"><a href="#配置监控" class="headerlink" title="配置监控"></a>配置监控</h3><p>验证prometheus是否启动成功，浏览器地址栏中输入 <code>ip:9090/graph</code>，看是否有下面的页面。</p>
+<p><img src="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/4cc08049-13a3-42c2-adad-6918e7e4eba7" alt="1"></p>
+<p>接下来是验证grafana是否启动成功，在浏览器中输入<code>ip:3000</code>,能看到下面页面就成功了。</p>
+<p><img src="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/a6983db4-68f5-4f59-b5b5-a0acd1baea57" alt="2"></p>
+<p>输入用户名和密码，默认的是<code>admin/admin</code>. 用默认密码登录后，请马上更新新的密码。</p>
+<p><img src="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/5e79a6d1-200d-416c-8661-0e6cf65f1846" alt="3"></p>
+<p>接下来创建dashboard，新建一个tab页，输入网址<a target="_blank" rel="noopener" href="https://grafana.com/grafana/dashboards/1860-node-exporter-full/">https://grafana.com/grafana/dashboards/1860-node-exporter-full/</a></p>
+<p><img src="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/f00ffda4-f33e-4dd3-926b-3f6fd961fa15" alt="4"></p>
+<p>具体操作如下面这个gif图片中所示，按照图片下来就已经配置完成了，这里还用到了视频转gif的网站：<a target="_blank" rel="noopener" href="https://www.img2go.com/zh/convert-video-to-gif">https://www.img2go.com/zh/convert-video-to-gif</a></p>
+<p><img src="https://github.com/MarkShen1992/markshen1992.github.io/assets/40328786/e6c63884-c309-4cac-a4db-20312d35bc6e" alt="Video_2024-02-03_214731"></p>
+<p>本文暂时告一段落~</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">监控简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87"><span class="toc-number">1.0.1.</span> <span class="toc-text">指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E6%91%98%E8%A6%81"><span class="toc-number">1.0.2.</span> <span class="toc-text">指标摘要</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E6%96%B9%E6%B3%95%E8%AE%BA"><span class="toc-number">1.1.</span> <span class="toc-text">监控方法论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Brendan-Gregg-%E7%9A%84-USE-Utilization-Saturation%E5%92%8CError"><span class="toc-number">1.1.1.</span> <span class="toc-text">Brendan Gregg 的 USE(Utilization, Saturation和Error)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Google%E7%9A%84%E5%9B%9B%E4%B8%AA%E9%BB%84%E9%87%91%E6%8C%87%E6%A0%87"><span class="toc-number">1.1.2.</span> <span class="toc-text">Google的四个黄金指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Weaveworks%E7%9A%84RED-Rate-Error%E5%92%8CDuration"><span class="toc-number">1.1.3.</span> <span class="toc-text">Weaveworks的RED(Rate, Error和Duration)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E6%8A%A5%E5%92%8C%E9%80%9A%E7%9F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">警报和通知</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%9A%84%E6%A0%87%E5%87%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">通知的标准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E6%9E%84%E5%BB%BA"><span class="toc-number">1.3.1.</span> <span class="toc-text">可视化构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E4%B9%A6%E7%B1%8D"><span class="toc-number">1.3.2.</span> <span class="toc-text">推荐书籍</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Prometheus%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">Prometheus安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E8%BD%AF%E4%BB%B6Prometheus"><span class="toc-number">2.0.1.</span> <span class="toc-text">下载软件Prometheus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.0.2.</span> <span class="toc-text">启动程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Docker%E8%BF%90%E8%A1%8CPrometheus"><span class="toc-number">2.0.3.</span> <span class="toc-text">使用Docker运行Prometheus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8prometheus-grafana-node-exporter%E6%90%AD%E5%BB%BA%E6%9C%BA%E5%99%A8%E7%9A%84%E7%9B%91%E6%8E%A7"><span class="toc-number">2.0.4.</span> <span class="toc-text">使用prometheus + grafana + node_exporter搭建机器的监控</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.0.4.1.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.0.4.2.</span> <span class="toc-text">安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%9B%91%E6%8E%A7"><span class="toc-number">2.0.5.</span> <span class="toc-text">配置监控</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&text=《Prometheus监控实战》读书笔记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&is_video=false&description=《Prometheus监控实战》读书笔记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=《Prometheus监控实战》读书笔记&body=Check out this article: http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&title=《Prometheus监控实战》读书笔记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&name=《Prometheus监控实战》读书笔记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/02/03/0100_%E7%9B%91%E6%8E%A7Prometheus/&t=《Prometheus监控实战》读书笔记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2030 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/MarkShen1992"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'MarkShen1992/markshen1992.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

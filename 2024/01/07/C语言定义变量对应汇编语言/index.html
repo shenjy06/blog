@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="下面的代码对应的汇编是什么呢？ 123int func() &amp;#123;	int a &#x3D;&#x3D; 4;&amp;#125;  接下来，从ubuntu中使用gcc命令编译下的结果如下 1gcc -S -fno-asynchronous-unwind-tables demo.c  生成的汇编代码 12345678910111213141516171819202122232425262728293031">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C中的int a &#x3D; 4;对应的汇编码">
+<meta property="og:url" content="http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="下面的代码对应的汇编是什么呢？ 123int func() &amp;#123;	int a &#x3D;&#x3D; 4;&amp;#125;  接下来，从ubuntu中使用gcc命令编译下的结果如下 1gcc -S -fno-asynchronous-unwind-tables demo.c  生成的汇编代码 12345678910111213141516171819202122232425262728293031">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-07T12:00:30.000Z">
+<meta property="article:modified_time" content="2025-10-14T03:50:36.283Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="汇编语言">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>C中的int a = 4;对应的汇编码</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/01/26/%E8%AF%B7%E5%91%8A%E8%AF%89%E5%AD%A9%E5%AD%90%EF%BC%8C%E5%8E%9F%E6%9D%A5%E8%BF%99%E6%89%8D%E6%98%AF%E6%AD%A3%E7%A1%AE%E7%9A%84%E8%AF%BB%E4%B9%A6%E6%96%B9%E5%BC%8F/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/01/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E8%AF%BE%E7%A8%8B/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&text=C中的int a = 4;对应的汇编码"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&is_video=false&description=C中的int a = 4;对应的汇编码"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C中的int a = 4;对应的汇编码&body=Check out this article: http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&name=C中的int a = 4;对应的汇编码&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&t=C中的int a = 4;对应的汇编码"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        C中的int a = 4;对应的汇编码
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-07T12:00:30.000Z" itemprop="datePublished">2024-01-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="tag">汇编语言</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>下面的代码对应的汇编是什么呢？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">func</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> a == <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，从ubuntu中使用<code>gcc</code>命令编译下的结果如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -S -fno-asynchronous-unwind-tables demo.c</span><br></pre></td></tr></table></figure>
+
+<p>生成的汇编代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">        .file   &quot;demo.c&quot;</span><br><span class="line">        .text</span><br><span class="line">        .globl  func1</span><br><span class="line">        .type   func1, @function</span><br><span class="line">func1:</span><br><span class="line">        endbr64</span><br><span class="line">        pushq   %rbp</span><br><span class="line">        movq    %rsp, %rbp</span><br><span class="line">        movl    $1, -4(%rbp)</span><br><span class="line">        nop</span><br><span class="line">        popq    %rbp</span><br><span class="line">        ret</span><br><span class="line">        .size   func1, .-func1</span><br><span class="line">        .ident  &quot;GCC: (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0&quot;</span><br><span class="line">        .section        .note.GNU-stack,&quot;&quot;,@progbits</span><br><span class="line">        .section        .note.gnu.property,&quot;a&quot;</span><br><span class="line">        .align 8</span><br><span class="line">        .long   1f - 0f</span><br><span class="line">        .long   4f - 1f</span><br><span class="line">        .long   5</span><br><span class="line">0:</span><br><span class="line">        .string &quot;GNU&quot;</span><br><span class="line">1:</span><br><span class="line">        .align 8</span><br><span class="line">        .long   0xc0000002</span><br><span class="line">        .long   3f - 2f</span><br><span class="line">2:</span><br><span class="line">        .long   0x3</span><br><span class="line">3:</span><br><span class="line">        .align 8</span><br><span class="line">4:</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://hjlarry.github.io/sicp/asm/">汇编语言知识</a></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hjlarry/hjlarry.github.io">bak</a></li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://cdrdv2-public.intel.com/782156/325383-sdm-vol-2abcd.pdf">Instruction Set Reference, A-Z</a></p>
+</li>
+</ul>
+<p>以上仅仅是一个简单例子，可以使用上面的方法来看一看c语言中的那些关键字都是怎么实现的。实现方式都是基于CPU中的ISA(Instruction Set Architecture)来实现的。</p>
+<p>使用gcc生成汇编代码除了上面的命令还是如下的方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Og -S xxx.c</span><br></pre></td></tr></table></figure>
+
+<p>生成<code>xxx.o</code>文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Og -c xxx.c</span><br></pre></td></tr></table></figure>
+
+<p>将<code>xxx.o</code>文件反汇编成<code>xxx.s</code>文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d xxx.o</span><br></pre></td></tr></table></figure>
+
+<p>本文会不断完善，c语言关键字对应的汇编码。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/MarkShen1992">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&text=C中的int a = 4;对应的汇编码"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&is_video=false&description=C中的int a = 4;对应的汇编码"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C中的int a = 4;对应的汇编码&body=Check out this article: http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&title=C中的int a = 4;对应的汇编码"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&name=C中的int a = 4;对应的汇编码&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/01/07/C%E8%AF%AD%E8%A8%80%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E5%AF%B9%E5%BA%94%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/&t=C中的int a = 4;对应的汇编码"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2030 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/MarkShen1992"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'MarkShen1992/markshen1992.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
