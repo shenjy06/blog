@@ -5,7 +5,7 @@
 # Link to a page that gives an overview of all your projects.
 # This can be an external link (e.g., to you GitHub profile) or to another
 # page within your website.
-projects_url: https://github.com/MarkShen1992
+projects_url: https://github.com/shenjy06
 
 # Set the page direction to RTL or LTR. default is LTR. (if you set it 'rtl', the 'vazir' font will be loaded.)
 direction: ltr
@@ -19,19 +19,19 @@ nav:
   articles: /archives/
   category: /categories/
   search: /search/
-  projects: https://github.com/MarkShen1992
+  projects: https://github.com/shenjy06
 
 # Links to your social media accounts.
 # The keys should correspond to Fontawesome icon names
 # (see https://fontawesome.com/icons?d=gallery&s=brands);
 # only 'mail' is an exception.
 social_links:
-  github: https://github.com/MarkShen1992
+  github: https://github.com/shenjy06
   # twitter: /
   # facebook: /
   # linkedin: /
   weibo: https://weibo.com/u/6459914869
-  # bilibili: https://space.bilibili.com/426146243
+  bilibili: https://space.bilibili.com/426146243
   mail: mailto:1135782924@qq.com
 
 # Customize the overview with displaying a tagcloud on the index page.
@@ -158,7 +158,7 @@ disqus:
 # Fill in your Utterances data to enable Utterances comments
 utterances:
   enabled: true
-  repo: MarkShen1992/markshen1992.github.io
+  repo: shenjy06/blog
   issue_term: pathname
   label: Comment
   theme: github-light
