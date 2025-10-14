@@ -29,6 +29,25 @@
     
     
     <entry>
+      <title>我的工具箱</title>
+      <link href="/blog/2025/01/03/%E6%88%91%E7%9A%84%E5%B7%A5%E5%85%B7%E7%AE%B1/"/>
+      <url>/blog/2025/01/03/%E6%88%91%E7%9A%84%E5%B7%A5%E5%85%B7%E7%AE%B1/</url>
+      
+        <content type="html"><![CDATA[<h2 id="网络测速"><a href="#网络测速" class="headerlink" title="网络测速"></a>网络测速</h2><ul><li><a href="https://test.ustc.edu.cn/">中国科学技术大学测速网站</a><ul><li><a href="https://github.com/bg6cq/speedtest">网站源代码</a></li></ul></li><li><a href="http://speed.nuaa.edu.cn/">南京航空航天大学 5g 专网测速网站</a></li><li><a href="https://test.nju.edu.cn/">中国科学技术大学测速网站</a></li><li><a href="http://speed5.ntu.edu.tw/speed5/">台大测速</a></li><li><a href="https://fast.com/">fast.com</a></li></ul><h2 id="密码生成"><a href="#密码生成" class="headerlink" title="密码生成"></a>密码生成</h2><ul><li><a href="https://1password.com/password-generator">密码生成</a></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>最大余额法-解决计算占比不等于100的问题</title>
       <link href="/blog/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/"/>
       <url>/blog/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/</url>
