@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>git 常用命令</title>
+      <link href="/blog/2025/10/14/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
+      <url>/blog/2025/10/14/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="下载好-git-后的配置"><a href="#下载好-git-后的配置" class="headerlink" title="下载好 git 后的配置"></a>下载好 git 后的配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置全局用户和邮箱</span></span><br><span class="line">git config --global user.name &quot;shenjy&quot;</span><br><span class="line">git config --global user.email &quot;asjdfasdfj@163.com&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生成公钥</span></span><br><span class="line">ssh-keygen -t rsa -C &#x27;asjdfasdfj@163.com&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">copy公钥</span></span><br><span class="line">cd ~/.ssh</span><br><span class="line">cat id_rsa.pub</span><br></pre></td></tr></table></figure><h2 id="创建新的仓库"><a href="#创建新的仓库" class="headerlink" title="创建新的仓库"></a>创建新的仓库</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;#shenjy.github.io&quot; &gt;&gt; README.md</span><br><span class="line">git init</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m &quot;first commit&quot;</span><br><span class="line">git branch -M main</span><br><span class="line">git remote add origin https://github.com/shenjy/shenjy.github.io.git</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure><h2 id="将已经存在的项目上传到-github"><a href="#将已经存在的项目上传到-github" class="headerlink" title="将已经存在的项目上传到 github"></a>将已经存在的项目上传到 github</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/shenjy/shenjy.github.io.git</span><br><span class="line">git branch -M main</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure><p>完~</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 版本控制 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>最大余额法-解决计算占比不等于100的问题</title>
       <link href="/blog/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/"/>
       <url>/blog/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/</url>
