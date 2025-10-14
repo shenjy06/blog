@@ -33,6 +33,33 @@ date: 2022-12-06 19:12:54
 - http://www.ruanyifeng.com/home.html
 - https://coolshell.org
 - https://www.taohui.pub
+- https://draven.co/
+  - https://draven.co/golang/
+- https://tom.preston-werner.com/
+
+## 国外优秀技术博客
+
+- https://www.geeksforgeeks.org/
+- https://37signals.com/
+  - https://basecamp.com/handbook
+- https://blog.codinghorror.com/
+- https://blog.bytebytego.com/
+  - https://github.com/ByteByteGoHq/system-design-101
+  - https://bytebytego.com/guides/api-web-development
+- https://www.brendangregg.com/
+- https://netflixtechblog.com/
+- https://www.uber.com/zh-US/blog
+- https://blog.cloudflare.com/
+- https://engineering.fb.com/
+- https://www.linkedin.com/blog/engineering
+- https://discord.com/category/engineering
+- https://aws.amazon.com/blogs/architecture/
+- https://slack.engineering/
+- https://stripe.com/blog/engineering
+
+## 国外优秀博客
+
+- https://blog.samaltman.com
 
 [1]: https://weibo.com/u/6459914869
 [2]: https://space.bilibili.com/426146243
