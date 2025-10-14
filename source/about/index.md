@@ -16,8 +16,23 @@ date: 2022-12-06 19:12:54
 ## 好站推荐
 
 - https://justinyan.me/
+- https://fs.blog/
+- https://nav.al/
+- https://www.lennysnewsletter.com/
 
+## 国内技术团队博客
 
+- https://fex-team.github.io/
+- https://tech.meituan.com/
+- https://102.alibaba.com/
+- https://dbaplus.cn/
+- https://segmentfault.com/
+
+## 国内个人优秀博客
+
+- http://www.ruanyifeng.com/home.html
+- https://coolshell.org
+- https://www.taohui.pub
 
 [1]: https://weibo.com/u/6459914869
 [2]: https://space.bilibili.com/426146243
