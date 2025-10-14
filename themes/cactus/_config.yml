@@ -66,7 +66,7 @@ post:
 # Note: if start_year/end_year not provided, will use current year.
 copyright:
   start_year: 2020
-  end_year: 2030
+  end_year:
 
 # Customize the 404 page
 # Options:
