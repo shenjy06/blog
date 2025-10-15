@@ -13,5 +13,10 @@
     "name": "ag",
     "url": "https://github.com/shenjy712/ag",
     "desc": "自己实现的Linux命令行 agent，如果在Linux命令行中遇到不会的问题，即可以使用 ag 这个工具来问问题。ag 中集成了 DeepSeek 大模型，当然你也可以使用自己的模型来替换 DeepSeek 大模型。欢迎大家使用 ag 工具，如果有问题，欢迎提交 issue。或者一起来贡献代码。"
+  },
+  {
+    "name": "blog",
+    "url": "https://github.com/shenjy06/blog",
+    "desc": "这个项目是自己的博客地址，我会把自己的博客文章都放到这个项目中，方便大家阅读。https://shenjy06.github.io/blog/, 欢迎大家访问我的博客。也环境大家基于此项目搭建自己的博客。"
   }
 ]
