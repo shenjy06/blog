@@ -29,6 +29,25 @@
     
     
     <entry>
+      <title>好用的开源项目</title>
+      <link href="/blog/2025/01/01/20250101-%E5%A5%BD%E7%94%A8%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
+      <url>/blog/2025/01/01/20250101-%E5%A5%BD%E7%94%A8%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/</url>
+      
+        <content type="html"><![CDATA[<h2 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h2><ul><li>如果你有一台 Linux 云主机，你可以使用 <code>1panel</code> 来管理你的服务器，<a href="https://github.com/1Panel-dev/1Panel">链接</a>。</li><li>如果你想基于 Github 搭建你自己的 Blog，你可以使用下面的工具，<a href="https://github.com/shenjy06/blog">链接</a>。</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 开源软件 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>最大余额法-解决计算占比不等于100的问题</title>
       <link href="/blog/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/"/>
       <url>/blog/2024/08/18/20240818-%E6%9C%80%E5%A4%A7%E4%BD%99%E9%A2%9D%E6%B3%95-%E8%A7%A3%E5%86%B3%E8%AE%A1%E7%AE%97%E5%8D%A0%E6%AF%94%E4%B8%8D%E7%AD%89%E4%BA%8E100%E7%9A%84%E9%97%AE%E9%A2%98/</url>
@@ -292,7 +311,7 @@
       <link href="/blog/2023/07/30/%E6%88%91%E7%94%B5%E8%84%91%E4%B8%8A%E7%9A%84%E8%BD%AF%E4%BB%B6/"/>
       <url>/blog/2023/07/30/%E6%88%91%E7%94%B5%E8%84%91%E4%B8%8A%E7%9A%84%E8%BD%AF%E4%BB%B6/</url>
       
-        <content type="html"><![CDATA[<ul><li><a href="https://www.sumatrapdfreader.org/free-pdf-reader">PDF 阅读器</a></li><li>命令行工具<ul><li><a href="https://mobaxterm.mobatek.net/">MobaXterm</a></li><li><a href="https://github.com/kingToolbox/WindTerm">WindTerm</a></li><li><a href="https://github.com/Eugeny/tabby">Tabby Terminal</a></li></ul></li><li>通讯软件<ul><li><a href="https://tim.qq.com/">Tim</a></li><li><a href="https://weixin.qq.com/">微信</a></li><li><a href="https://slack.com/">Slack</a></li></ul></li><li>开发工具<ul><li><a href="https://spring.io/tools/">SpringToolSuite</a></li><li><a href="https://code.visualstudio.com/">VsCode</a></li><li><a href="https://www.mysql.com/">MySQL</a></li><li><a href="https://dbeaver.io/">DBeaver</a></li><li><a href="https://github.com/winmerge/winmerge">代码版本比对合并工具-WinMerge</a></li><li><a href="https://www.virtualbox.org/">虚拟机-VirtualBox</a></li><li><a href="https://git-scm.com/">Git</a></li><li><a href="https://tortoisegit.org/">Git Tortoice</a></li></ul></li><li><a href="https://www.capcut.cn/">视频剪辑-剪映</a></li><li><a href="https://github.com/marktext/marktext">MarkDown 工具-marktext</a></li><li>远程工具<ul><li><a href="https://sunlogin.oray.com/">向日葵</a></li><li><a href="https://rustdesk.com/zh/">Rustdesk</a></li></ul></li><li><a href="https://www.voidtools.com/">电脑文件搜索-Everything</a></li><li><a href="https://www.videolan.org/vlc/">视频播放器-VLC media player</a></li><li><a href="https://www.drawio.com/">画图工具-draw.io</a></li><li>协作工具<ul><li><a href="https://meeting.tencent.com/">会议工具-腾讯会议</a></li><li><a href="https://www.notion.so/">notion</a></li><li><a href="https://docs.qq.com/">腾讯文档</a></li><li><a href="https://www.kdocs.cn/welcome">金山文档</a></li></ul></li><li><a href="https://www.cyotek.com/cyotek-webcopy/downloads">网站归档软件-WebCopy</a></li><li>网盘<ul><li><a href="https://www.aliyundrive.com/">阿里云盘</a></li><li><a href="https://pan.baidu.com/">百度云盘</a></li></ul></li><li><a href="https://www.wireshark.org/">网络抓包软件-wireshark</a></li><li>接口调试<ul><li><a href="https://www.postman.com/downloads/">Postman</a></li><li><a href="https://apifox.com/">Apifox</a></li></ul></li><li>Chrome 浏览器中的插件<ul><li>Cookie-Editor</li><li>CSS Peeper</li><li>JSON Formatter</li><li>Talend API Tester</li><li>Vue.js devtools</li><li>沙拉查词</li></ul></li><li><a href="https://obsproject.com/">推流软件-OBS</a></li><li><a href="https://pc.qq.com/detail/7/detail_2447.html">一款小众的思维导图工具-ThinkingExpress</a></li><li><a href="https://www.7-zip.org/">压缩软件-7zip</a></li><li>番茄时钟网页版<ul><li><a href="https://www.tomatolist.com/timer.html">番茄时钟</a></li><li><a href="https://alloyteam.github.io/AlloyTimer/">Alloy Timer</a></li><li><a href="https://pomofocus.io/">pomofocus</a></li><li><a href="https://www.tomatotimers.com/">tomatotimers</a></li></ul></li><li>硬件信息<ul><li><a href="https://www.ludashi.com/">鲁大师</a></li><li><a href="https://www.cpuid.com/softwares/cpu-z.html">CPUZ</a></li></ul></li><li>装机 U 制作<ul><li><a href="https://www.laomaotao.net/">老毛桃</a></li><li><a href="https://rufus.ie/en/">Rufus</a></li><li><a href="https://github.com/ventoy/Ventoy">Ventoy</a></li></ul></li><li>AI 工具<ul><li><a href="https://yiyan.baidu.com/welcome">文心一言</a></li><li><a href="https://qianwen.aliyun.com/">通义千问</a></li><li><a href="https://xinghuo.xfyun.cn/">讯飞星火认知大模型</a></li><li><a href="https://hunyuan.tencent.com/">混元大模型</a></li></ul></li></ul><p>未完，以后会不断更新~</p>]]></content>
+        <content type="html"><![CDATA[<ul><li><a href="https://www.sumatrapdfreader.org/free-pdf-reader">PDF 阅读器</a></li><li>命令行工具<ul><li><a href="https://mobaxterm.mobatek.net/">MobaXterm</a></li><li><a href="https://github.com/kingToolbox/WindTerm">WindTerm</a></li><li><a href="https://github.com/Eugeny/tabby">Tabby Terminal</a></li></ul></li><li>通讯软件<ul><li><a href="https://tim.qq.com/">Tim</a></li><li><a href="https://weixin.qq.com/">微信</a></li><li><a href="https://slack.com/">Slack</a></li></ul></li><li>开发工具<ul><li><a href="https://spring.io/tools/">SpringToolSuite</a></li><li><a href="https://code.visualstudio.com/">VsCode</a></li><li><a href="https://www.mysql.com/">MySQL</a></li><li><a href="https://dbeaver.io/">DBeaver</a></li><li><a href="https://github.com/winmerge/winmerge">代码版本比对合并工具-WinMerge</a></li><li><a href="https://www.virtualbox.org/">虚拟机-VirtualBox</a></li><li><a href="https://git-scm.com/">Git</a></li><li><a href="https://tortoisegit.org/">Git Tortoice</a></li></ul></li><li><a href="https://www.capcut.cn/">视频剪辑-剪映</a></li><li><a href="https://github.com/marktext/marktext">MarkDown 工具-marktext</a></li><li>远程工具<ul><li><a href="https://sunlogin.oray.com/">向日葵</a></li><li><a href="https://rustdesk.com/zh/">Rustdesk</a></li></ul></li><li><a href="https://www.voidtools.com/">电脑文件搜索-Everything</a></li><li><a href="https://www.videolan.org/vlc/">视频播放器-VLC media player</a></li><li><a href="https://www.drawio.com/">画图工具-draw.io</a></li><li>协作工具<ul><li><a href="https://meeting.tencent.com/">会议工具-腾讯会议</a></li><li><a href="https://www.notion.so/">notion</a></li><li><a href="https://docs.qq.com/">腾讯文档</a></li><li><a href="https://www.kdocs.cn/welcome">金山文档</a></li></ul></li><li><a href="https://www.cyotek.com/cyotek-webcopy/downloads">网站归档软件-WebCopy</a></li><li>网盘<ul><li><a href="https://www.aliyundrive.com/">阿里云盘</a></li><li><a href="https://pan.baidu.com/">百度云盘</a></li></ul></li><li><a href="https://www.wireshark.org/">网络抓包软件-wireshark</a></li><li>接口调试<ul><li><a href="https://www.postman.com/downloads/">Postman</a></li><li><a href="https://apifox.com/">Apifox</a></li></ul></li><li>Chrome 浏览器中的插件<ul><li>Cookie-Editor</li><li>CSS Peeper</li><li>JSON Formatter</li><li>Talend API Tester</li><li>Vue.js devtools</li><li>沙拉查词</li></ul></li><li><a href="https://obsproject.com/">推流软件-OBS</a></li><li><a href="https://pc.qq.com/detail/7/detail_2447.html">一款小众的思维导图工具-ThinkingExpress</a></li><li><a href="https://www.7-zip.org/">压缩软件-7zip</a></li><li>番茄时钟网页版<ul><li><a href="https://www.tomatolist.com/timer.html">番茄时钟</a></li><li><a href="https://alloyteam.github.io/AlloyTimer/">Alloy Timer</a></li><li><a href="https://pomofocus.io/">pomofocus</a></li><li><a href="https://www.tomatotimers.com/">tomatotimers</a></li></ul></li><li>硬件信息<ul><li><a href="https://www.ludashi.com/">鲁大师</a></li><li><a href="https://www.cpuid.com/softwares/cpu-z.html">CPUZ</a></li></ul></li><li>装机 U 制作<ul><li><a href="https://www.laomaotao.net/">老毛桃</a></li><li><a href="https://rufus.ie/en/">Rufus</a></li><li><a href="https://github.com/ventoy/Ventoy">Ventoy</a></li></ul></li><li>AI 工具<ul><li><a href="https://yiyan.baidu.com/welcome">文心一言</a></li><li><a href="https://qianwen.aliyun.com/">通义千问</a></li><li><a href="https://xinghuo.xfyun.cn/">讯飞星火认知大模型</a></li><li><a href="https://hunyuan.tencent.com/">混元大模型</a></li><li><a href="https://stackoverflow.ai/">Stackoverflow AI</a></li></ul></li></ul><p>未完，以后会不断更新~</p>]]></content>
       
       
       
@@ -401,9 +420,9 @@
       
         <tags>
             
-            <tag> 网络安全 </tag>
-            
             <tag> 开源软件 </tag>
+            
+            <tag> 网络安全 </tag>
             
         </tags>
       
