@@ -1,5 +1,5 @@
 ---
-title: Linux常用网络命令
+title: Linux常用命令
 date: 2022-12-25 09:04:24
 tags:
   - Linux
@@ -9,9 +9,7 @@ category:
   - 运维
 ---
 
-### Linux 常用网络命令
-
-#### Linux 命令学习方法
+## Linux 命令学习方法
 
 Linux 命令都可以通过 Linux 提供的手册自己学习，一般来讲有三种方式查看命令的用法，如下：
 
@@ -37,7 +35,9 @@ man ls
 
 大家可以使用 `命令 --help`, `info + 命令`, `man + 命令` 三种方式来学习新的命令，大家也可以使用 [The Linux man-pages project](https://www.kernel.org/doc/man-pages/) 来查找对应的命令。说到这里，让我们来学习下 Linux 的常用网路命令吧
 
-#### Linux 常用网络命令
+同时，大家还是可以学习下 [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/) 这门课程，这门课程的讲解非常好，大家可以跟着学习下。中文版本是 [计算机教育中缺失的一课](https://missing-semester-cn.github.io/)，B 站上的视频是 [计算机教育中缺失的一课](https://www.bilibili.com/video/BV1w7411477L/)，大家可以跟着学习下。
+
+### Linux 常用网络命令
 
 今天主要跟大家分享下 Linux 系统常用网络的命令:
 
@@ -52,7 +52,7 @@ man ls
 - netstat
 - nslookup
 
-##### ifconfig
+#### ifconfig
 
 查看所有网卡信息
 
@@ -131,7 +131,7 @@ wifi2: flags=64<RUNNING>  mtu 1500
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ifconfig-command-in-linux-with-examples/) 学习这个命令。
 
-##### ifup
+#### ifup
 
 激活网络接口`eth0`
 
@@ -141,7 +141,7 @@ shenjy@DESKTOP-MCQT724:~$ ifup eth0
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ifup-command-in-linux-with-examples/) 学习这个命令。
 
-##### ifdown
+#### ifdown
 
 禁用网络端口`eth0`
 
@@ -151,7 +151,7 @@ shenjy@DESKTOP-MCQT724:~$ ifdown eth0
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ifdown-command-in-linux-with-examples/) 学习这个命令。
 
-##### ip
+#### ip
 
 查看机器所有网卡的 ip
 
@@ -161,7 +161,7 @@ shenjy@DESKTOP-MCQT724:~$ ip a
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ip-command-in-linux-with-examples/) 学习这个命令。
 
-##### route
+#### route
 
 查看 Linux 内核路由表
 
@@ -171,7 +171,7 @@ shenjy@DESKTOP-MCQT724:~$ route
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/route-command-in-linux-with-examples/) 学习这个命令。
 
-##### ip route
+#### ip route
 
 查看默认路由表（main）路由
 
@@ -181,7 +181,7 @@ shenjy@DESKTOP-MCQT724:~$ ip route
 
 大家也可以参照[这篇 Blog](https://blog.csdn.net/zhongmushu/article/details/108220232) 学习这个命令。
 
-##### ping
+#### ping
 
 查看网络链路是否通
 
@@ -193,7 +193,7 @@ shenjy@DESKTOP-MCQT724:~$ ping 127.0.0.1
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/ping-command-in-linux-with-examples/) 学习这个命令。
 
-##### traceroute
+#### traceroute
 
 追踪网络数据包的路由途径，也可以顺道学习下 `tracert` 这个命令
 
@@ -203,7 +203,7 @@ shenjy@DESKTOP-MCQT724:~$ traceroute www.baidu.com
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/traceroute-command-in-linux-with-examples/) 学习这个命令。
 
-##### netstat
+#### netstat
 
 Print network connections, routing tables, interface statistics, masquerade connections, and multicast member‐
 ships
@@ -220,7 +220,7 @@ lo        1500        0      0      0 0             0      0      0      0 LRU
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/netstat-command-linux/) 学习这个命令。
 
-##### nslookup
+#### nslookup
 
 Nslookup is a program to query Internet domain name servers. Nslookup has two modes: interactive and non-interactive.
 Interactive mode allows the user to query name servers for information about various hosts and domains or to print a list
@@ -238,4 +238,126 @@ Address: 39.156.66.10
 
 大家也可以参照[这篇 Blog](https://www.geeksforgeeks.org/nslookup-command-in-linux-with-examples/) 学习这个命令。
 
-以上就是一些常用的 Linux 网络命令了，但是还没有完，以后如果遇到一些新的命令，我还会继续往这里追加的, 也欢迎大家留言~
+### 防火墙相关
+
+#### firewall-cmd
+
+- 安装 `firewalld` 软件
+
+```sh
+apt install firewalld
+```
+
+- 查看防火墙状态
+
+```sh
+firewall-cmd --state
+```
+
+- 查看开放了哪些端口
+
+```sh
+firewall-cmd --list-ports
+```
+
+- 开放端口
+
+```sh
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+```
+
+- 关闭开放端口
+
+```sh
+firewall-cmd --zone=public --remove-port=80/tcp --permanent
+```
+
+- 重启防火墙
+
+```sh
+firewall-cmd --reload
+```
+
+- 停止防火墙
+
+```sh
+systemctl stop firewalld.service
+```
+
+- 启动/关闭开机启动功能
+
+```sh
+systemctl enable/disable firewalld.service
+```
+
+#### iptables
+
+- 查看防火墙规则
+
+```sh
+iptables -L -n -v
+```
+
+- 查看开放了哪些端口
+
+```sh
+# 查看接受规则
+iptables -L INPUT -n -v
+
+# 查看正在监听的端口
+netstat -tuln
+ss -tuln
+```
+
+- 开放端口
+
+```sh
+# 开放 TCP 端口 80
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+# 开放 UPD 端口
+iptables -A INPUT -p udp --dport 53 -j ACCEPT
+
+# 开放端口并限定源IP
+iptables -A INPUT -p tcp -s 192.168.1.0/24 --dport 22 -j ACCEPT
+```
+
+> 注意：使用 iptables 命令添加的规则默认是临时的，系统重启后会丢失。
+>
+> 要使规则永久生效，需要将规则保存到配置文件中（不同的 Linux 发行版有不同的保存工具和方法，例如 iptables-save > /etc/sysconfig/iptables 或使用 iptables-persistent 包）。
+
+- 关闭开放端口
+
+```sh
+# 查看规则编号
+iptables -L INPUT -n --line-numbers
+
+# 删除指定规则
+iptables -D INPUT <number>
+```
+
+- 重启防火墙
+
+```sh
+systemctl restart iptables
+# 或者
+service iptables restart
+```
+
+- 停止防火墙
+
+```sh
+systemctl stop iptables
+# 或者
+service iptables stop
+```
+
+- 启动/关闭开机启动功能
+
+```sh
+systemctl enable/disable iptables
+# 或者
+chkconfig iptables on/off
+# 或者
+update-rc.d iptables enable/disable
+```
