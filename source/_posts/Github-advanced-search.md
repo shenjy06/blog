@@ -2,23 +2,21 @@
 title: Github advanced search
 date: 2023-05-22 21:30:54
 tags:
-- Github
-- Search
+  - Github
+  - Search
 ---
 
 ## [Github Advanced Search][1]
 
-> 学好Github搜索，可以在Github中找到自己需要的项目，一定要熟练使用Github的站内**搜索**。
+> 学好 Github 搜索，可以在 Github 中找到自己需要的项目，一定要熟练使用 Github 的站内**搜索**。
 >
 > 学习文档如下:
 >
-> - [官网文档][2] 
+> - [官网文档][2]
 > - [官方文档-zh][3]
-> - [关于在GitHub上搜索][4]
+> - [关于在 GitHub 上搜索][4]
 
-
-
-下图于2023年5月22日截取于Github网站。
+下图于 2023 年 5 月 22 日截取于 Github 网站。
 
 ![github_advanced_search](https://user-images.githubusercontent.com/40328786/239930540-11365707-cc8c-4705-9b7f-a583f781e151.png)
 
@@ -33,22 +31,22 @@ tags:
 
 ### 仓库选项
 
-| 具体用法                                               | 例子                  |
-| ------------------------------------------------------ | --------------------- |
-| stars:>1000                                            | 0..100, 200, >1000    |
-| forks:>1000                                            | 50..100, 200, <5      |
-| size:100KB                                             | Repository size in KB |
-| pushed:<2020-01-01                                     | <YYYY-MM-DD           |
-| license:artistic-2.0                                   | license:artistic-2.0  |
-| Return repositories {not\|and\|only}  including forks. | -                     |
+| 具体用法                                              | 例子                  |
+| ----------------------------------------------------- | --------------------- |
+| stars:>1000                                           | 0..100, 200, >1000    |
+| forks:>1000                                           | 50..100, 200, <5      |
+| size:100KB                                            | Repository size in KB |
+| pushed:<2020-01-01                                    | <YYYY-MM-DD           |
+| license:artistic-2.0                                  | license:artistic-2.0  |
+| Return repositories {not\|and\|only} including forks. | -                     |
 
 ### Code 选项
 
 | 具体用法                                      | 例子               |
 | --------------------------------------------- | ------------------ |
-| path:*.rb                                     | rb, py, jpg        |
+| path:\*.rb                                    | rb, py, jpg        |
 | path:/net                                     | /foo/bar/baz/qux   |
-| path:**/README.md                             | app.rb, footer.erb |
+| path:\*\*/README.md                           | app.rb, footer.erb |
 | Return code {not\|and\|only} including forks. | -                  |
 
 ### Issues 选项
@@ -74,7 +72,7 @@ tags:
 | repos:<100            | <100, 100..200        |
 | language:C++          | [programming lang][6] |
 
-### Wiki选项
+### Wiki 选项
 
 | 具体用法            | 例子        |
 | ------------------- | ----------- |
@@ -82,7 +80,7 @@ tags:
 
 ### 平时经常使用的一些例子
 
-- 2020-01-01之前的仓库
+- 2020-01-01 之前的仓库
 
 ```
 created:<2020-01-01
@@ -119,15 +117,13 @@ git 最好 学习 资料 in:readme stars:>1000 forks:>1000 language:Java
 blog easily start in:readme stars:>5000
 ```
 
-
-
 ### [还有一些例子][5]
 
 完~
 
-[1]:https://github.com/search/advanced
-[2]:https://docs.github.com/en/search-github
+[1]: https://github.com/search/advanced
+[2]: https://docs.github.com/en/search-github
 [3]: https://docs.github.com/zh/search-github
-[4]:https://docs.github.com/zh/search-github/getting-started-with-searching-on-github/about-searching-on-github
+[4]: https://docs.github.com/zh/search-github/getting-started-with-searching-on-github/about-searching-on-github
 [5]: https://gist.github.com/bonniss/4f0de4f599708c5268134225dda003e0
-[6]:https://github.com/collections/programming-languages
+[6]: https://github.com/collections/programming-languages
