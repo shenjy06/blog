@@ -5,10 +5,6 @@ tags:
   - Java
   - 运维
   - 云原生
-
-category:
-  - kubernetes
-  - cloud native
 ---
 
 ## Kubernetes 学习资料
