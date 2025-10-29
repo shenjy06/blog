@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="CSS 属性书写顺序最佳实践一、推荐的属性书写顺序大厂（Google、Airbnb、Bootstrap 等）普遍遵循的顺序： 1. 定位属性（Positioning）影响元素在文档流中的位置 12345678910111213.element &amp;#123;  &#x2F;* 定位 *&#x2F;  position: absolute;  top: 0;  right: 0;  bottom: 0;  left: 0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 代码规范">
+<meta property="og:url" content="https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="CSS 属性书写顺序最佳实践一、推荐的属性书写顺序大厂（Google、Airbnb、Bootstrap 等）普遍遵循的顺序： 1. 定位属性（Positioning）影响元素在文档流中的位置 12345678910111213.element &amp;#123;  &#x2F;* 定位 *&#x2F;  position: absolute;  top: 0;  right: 0;  bottom: 0;  left: 0">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-28T18:00:30.000Z">
+<meta property="article:modified_time" content="2025-10-29T02:03:05.613Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/blog/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/blog/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSS 代码规范</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/blog/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/blog/">首页</a></li><!--
+     --><!--
+       --><li><a href="/blog/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/blog/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/blog/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/blog/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/blog/2025/10/29/CSS%20%E5%A4%A7%E5%B0%8F%E5%8D%95%E4%BD%8D/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/blog/2025/10/24/%E9%80%9A%E8%BF%87api%E8%B0%83%E7%94%A8ai%E6%8E%A5%E5%8F%A3/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&text=CSS 代码规范"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&is_video=false&description=CSS 代码规范"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CSS 代码规范&body=Check out this article: https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&name=CSS 代码规范&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&t=CSS 代码规范"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CSS-%E5%B1%9E%E6%80%A7%E4%B9%A6%E5%86%99%E9%A1%BA%E5%BA%8F%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.</span> <span class="toc-text">CSS 属性书写顺序最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%8E%A8%E8%8D%90%E7%9A%84%E5%B1%9E%E6%80%A7%E4%B9%A6%E5%86%99%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.1.</span> <span class="toc-text">一、推荐的属性书写顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%9A%E4%BD%8D%E5%B1%9E%E6%80%A7%EF%BC%88Positioning%EF%BC%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 定位属性（Positioning）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9B%92%E6%A8%A1%E5%9E%8B%E5%B1%9E%E6%80%A7%EF%BC%88Box-Model%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 盒模型属性（Box Model）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8E%92%E7%89%88%E5%B1%9E%E6%80%A7%EF%BC%88Typography%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. 排版属性（Typography）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%A7%86%E8%A7%89%E5%B1%9E%E6%80%A7%EF%BC%88Visual%EF%BC%89"><span class="toc-number">1.1.4.</span> <span class="toc-text">4. 视觉属性（Visual）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%85%B6%E4%BB%96%E5%B1%9E%E6%80%A7%EF%BC%88Misc%EF%BC%89"><span class="toc-number">1.1.5.</span> <span class="toc-text">5. 其他属性（Misc）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">二、完整示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%A4%A7%E5%8E%82%E8%A7%84%E8%8C%83%E5%AF%B9%E6%AF%94"><span class="toc-number">1.3.</span> <span class="toc-text">三、大厂规范对比</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Google-gts"><span class="toc-number">1.3.1.</span> <span class="toc-text">Google (gts)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Airbnb-CSS-Sass-Style-Guide"><span class="toc-number">1.3.2.</span> <span class="toc-text">Airbnb CSS &#x2F; Sass Style Guide</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bootstrap"><span class="toc-number">1.3.3.</span> <span class="toc-text">Bootstrap</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="toc-number">1.4.</span> <span class="toc-text">四、自动化工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Stylelint-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. Stylelint 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Prettier-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. Prettier 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-VS-Code-%E6%8F%92%E4%BB%B6"><span class="toc-number">1.4.3.</span> <span class="toc-text">3. VS Code 插件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%AE%B0%E5%BF%86%E5%8F%A3%E8%AF%80"><span class="toc-number">1.5.</span> <span class="toc-text">五、记忆口诀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AE%9E%E9%99%85%E5%B7%A5%E4%BD%9C%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.6.</span> <span class="toc-text">六、实际工作建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E6%8E%A8%E8%8D%90%E5%81%9A%E6%B3%95"><span class="toc-number">1.6.1.</span> <span class="toc-text">✅ 推荐做法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.6.2.</span> <span class="toc-text">⚠️ 注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%8B-%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="toc-number">1.6.3.</span> <span class="toc-text">📋 团队协作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-number">1.7.</span> <span class="toc-text">CSS 代码规范</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CSS 代码规范
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-10-28T18:00:30.000Z" itemprop="datePublished">2025-10-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/blog/tags/CSS/" rel="tag">CSS</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="CSS-属性书写顺序最佳实践"><a href="#CSS-属性书写顺序最佳实践" class="headerlink" title="CSS 属性书写顺序最佳实践"></a>CSS 属性书写顺序最佳实践</h1><h2 id="一、推荐的属性书写顺序"><a href="#一、推荐的属性书写顺序" class="headerlink" title="一、推荐的属性书写顺序"></a>一、推荐的属性书写顺序</h2><p>大厂（Google、Airbnb、Bootstrap 等）普遍遵循的顺序：</p>
+<h3 id="1-定位属性（Positioning）"><a href="#1-定位属性（Positioning）" class="headerlink" title="1. 定位属性（Positioning）"></a><strong>1. 定位属性（Positioning）</strong></h3><p>影响元素在文档流中的位置</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.element</span> &#123;</span><br><span class="line">  <span class="comment">/* 定位 */</span></span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 浮动 */</span></span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-盒模型属性（Box-Model）"><a href="#2-盒模型属性（Box-Model）" class="headerlink" title="2. 盒模型属性（Box Model）"></a><strong>2. 盒模型属性（Box Model）</strong></h3><p>元素自身的尺寸和空间</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.element</span> &#123;</span><br><span class="line">  <span class="comment">/* 显示类型 */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 盒模型 */</span></span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">min-width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">max-width</span>: <span class="number">200px</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 内外边距 */</span></span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">20px</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 边框 */</span></span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#000</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 溢出 */</span></span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-排版属性（Typography）"><a href="#3-排版属性（Typography）" class="headerlink" title="3. 排版属性（Typography）"></a><strong>3. 排版属性（Typography）</strong></h3><p>文本相关样式</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.element</span> &#123;</span><br><span class="line">  <span class="comment">/* 字体 */</span></span><br><span class="line">  <span class="attribute">font-family</span>: Arial, sans-serif;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">700</span>;</span><br><span class="line">  <span class="attribute">font-style</span>: italic;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">1.5</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 文本 */</span></span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#333</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">text-decoration</span>: none;</span><br><span class="line">  <span class="attribute">text-transform</span>: uppercase;</span><br><span class="line">  <span class="attribute">letter-spacing</span>: <span class="number">0.1em</span>;</span><br><span class="line">  <span class="attribute">word-spacing</span>: <span class="number">0.2em</span>;</span><br><span class="line">  <span class="attribute">white-space</span>: nowrap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-视觉属性（Visual）"><a href="#4-视觉属性（Visual）" class="headerlink" title="4. 视觉属性（Visual）"></a><strong>4. 视觉属性（Visual）</strong></h3><p>背景、颜色等视觉效果</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.element</span> &#123;</span><br><span class="line">  <span class="comment">/* 背景 */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">url</span>(<span class="string">&#x27;image.jpg&#x27;</span>);</span><br><span class="line">  <span class="attribute">background-position</span>: center;</span><br><span class="line">  <span class="attribute">background-size</span>: cover;</span><br><span class="line">  <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 阴影和效果 */</span></span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">4px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0.9</span>;</span><br><span class="line">  <span class="attribute">filter</span>: <span class="built_in">blur</span>(<span class="number">5px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-其他属性（Misc）"><a href="#5-其他属性（Misc）" class="headerlink" title="5. 其他属性（Misc）"></a><strong>5. 其他属性（Misc）</strong></h3><p>动画、过渡等</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.element</span> &#123;</span><br><span class="line">  <span class="comment">/* 变换 */</span></span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 过渡动画 */</span></span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">0.3s</span> ease;</span><br><span class="line">  <span class="attribute">animation</span>: fadeIn <span class="number">1s</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 交互 */</span></span><br><span class="line">  <span class="attribute">cursor</span>: pointer;</span><br><span class="line">  <span class="attribute">user-select</span>: none;</span><br><span class="line">  <span class="attribute">pointer-events</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、完整示例"><a href="#二、完整示例" class="headerlink" title="二、完整示例"></a>二、完整示例</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="comment">/* 1. 定位 */</span></span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 2. 盒模型 */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-direction</span>: column;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e0e0e0</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">8px</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 3. 排版 */</span></span><br><span class="line">  <span class="attribute">font-family</span>: -apple-system, BlinkMacSystemFont, <span class="string">&#x27;Segoe UI&#x27;</span>, sans-serif;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">1.6</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#333</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: left;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 4. 视觉 */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#fff</span>, <span class="number">#f5f5f5</span>);</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">4px</span> <span class="number">6px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 5. 其他 */</span></span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateY</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">0.3s</span> ease-in-out;</span><br><span class="line">  <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">5px</span>);</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">8px</span> <span class="number">12px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.15</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、大厂规范对比"><a href="#三、大厂规范对比" class="headerlink" title="三、大厂规范对比"></a>三、大厂规范对比</h2><h3 id="Google-gts"><a href="#Google-gts" class="headerlink" title="Google (gts)"></a><strong>Google (gts)</strong></h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.selector</span> &#123;</span><br><span class="line">  <span class="comment">/* 1. Positioning */</span></span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 2. Display &amp; Box Model */</span></span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">10px</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 3. Other */</span></span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#000</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Airbnb-CSS-Sass-Style-Guide"><a href="#Airbnb-CSS-Sass-Style-Guide" class="headerlink" title="Airbnb CSS / Sass Style Guide"></a><strong>Airbnb CSS / Sass Style Guide</strong></h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.selector</span> &#123;</span><br><span class="line">  <span class="comment">/* Positioning */</span></span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">10</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Display &amp; Box Model */</span></span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">10px</span> solid <span class="number">#333</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">10px</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Typography */</span></span><br><span class="line">  <span class="attribute">font-family</span>: sans-serif;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">1.4</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: right;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Visual */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#f5f5f5</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Animation */</span></span><br><span class="line">  <span class="attribute">transition</span>: color <span class="number">1s</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Misc */</span></span><br><span class="line">  <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Bootstrap"><a href="#Bootstrap" class="headerlink" title="Bootstrap"></a><strong>Bootstrap</strong></h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.btn</span> &#123;</span><br><span class="line">  <span class="comment">/* Display &amp; Position */</span></span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Box Model */</span></span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0.375rem</span> <span class="number">0.75rem</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Typography */</span></span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">400</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">1rem</span>;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">1.5</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">white-space</span>: nowrap;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Visual */</span></span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#212529</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: transparent;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid transparent;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">0.25rem</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Interaction */</span></span><br><span class="line">  <span class="attribute">cursor</span>: pointer;</span><br><span class="line">  <span class="attribute">user-select</span>: none;</span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">0.15s</span> ease-in-out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、自动化工具"><a href="#四、自动化工具" class="headerlink" title="四、自动化工具"></a>四、自动化工具</h2><h3 id="1-Stylelint-配置"><a href="#1-Stylelint-配置" class="headerlink" title="1. Stylelint 配置"></a><strong>1. Stylelint 配置</strong></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;plugins&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;stylelint-order&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;rules&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;order/properties-order&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;position&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;top&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;right&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;bottom&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;left&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;z-index&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;display&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;flex-direction&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;justify-content&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;align-items&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;width&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;height&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;padding&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;margin&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;border&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;border-radius&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;overflow&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;font-family&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;font-size&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;font-weight&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;line-height&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;color&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;text-align&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;background&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;background-color&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;box-shadow&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;opacity&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;transform&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;transition&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;animation&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Prettier-配置"><a href="#2-Prettier-配置" class="headerlink" title="2. Prettier 配置"></a><strong>2. Prettier 配置</strong></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;plugins&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;prettier-plugin-css-order&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-VS-Code-插件"><a href="#3-VS-Code-插件" class="headerlink" title="3. VS Code 插件"></a><strong>3. VS Code 插件</strong></h3><ul>
+<li><strong>CSS Peek</strong> - 快速查看样式</li>
+<li><strong>Stylelint</strong> - 自动检查和排序</li>
+<li><strong>CSS Navigation</strong> - 样式导航</li>
+</ul>
+<h2 id="五、记忆口诀"><a href="#五、记忆口诀" class="headerlink" title="五、记忆口诀"></a>五、记忆口诀</h2><p><strong>“定盒排视其”</strong></p>
+<ol>
+<li><strong>定</strong>位（Positioning）- position, top, z-index</li>
+<li><strong>盒</strong>模型（Box Model）- display, width, padding, margin, border</li>
+<li><strong>排</strong>版（Typography）- font, color, text-align</li>
+<li><strong>视</strong>觉（Visual）- background, shadow, opacity</li>
+<li><strong>其</strong>他（Others）- transform, transition, animation</li>
+</ol>
+<h2 id="六、实际工作建议"><a href="#六、实际工作建议" class="headerlink" title="六、实际工作建议"></a>六、实际工作建议</h2><h3 id="✅-推荐做法"><a href="#✅-推荐做法" class="headerlink" title="✅ 推荐做法"></a>✅ <strong>推荐做法</strong></h3><ul>
+<li>使用 Stylelint + 自动格式化工具</li>
+<li>团队统一配置文件</li>
+<li>代码审查时检查顺序</li>
+<li>使用 CSS-in-JS 时也遵循顺序</li>
+</ul>
+<h3 id="⚠️-注意事项"><a href="#⚠️-注意事项" class="headerlink" title="⚠️ 注意事项"></a>⚠️ <strong>注意事项</strong></h3><ul>
+<li>不必过度纠结，保持一致性最重要</li>
+<li>简写属性（如 <code>background</code>）放在对应分类中</li>
+<li>浏览器前缀属性紧跟标准属性后面</li>
+<li>同类属性按字母排序（可选）</li>
+</ul>
+<h3 id="📋-团队协作"><a href="#📋-团队协作" class="headerlink" title="📋 团队协作"></a>📋 <strong>团队协作</strong></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .stylelintrc.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">extends</span>: [<span class="string">&#x27;stylelint-config-standard&#x27;</span>],</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="string">&#x27;stylelint-order&#x27;</span>],</span><br><span class="line">  <span class="attr">rules</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;order/properties-alphabetical-order&#x27;</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="string">&#x27;order/properties-order&#x27;</span>: [</span><br><span class="line">      <span class="comment">// 你的团队约定顺序</span></span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong>：大厂通用顺序是 <strong>定位 → 盒模型 → 排版 → 视觉 → 其他</strong>，最重要的是团队统一并使用自动化工具强制执行。</p>
+<h2 id="CSS-代码规范"><a href="#CSS-代码规范" class="headerlink" title="CSS 代码规范"></a>CSS 代码规范</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://google.github.io/styleguide/htmlcssguide.html">https://google.github.io/styleguide/htmlcssguide.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/airbnb/css">https://github.com/airbnb/css</a></li>
+<li><a target="_blank" rel="noopener" href="https://airbnb.io/">https://airbnb.io/</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/blog/">首页</a></li>
+         
+          <li><a href="/blog/about/">关于</a></li>
+         
+          <li><a href="/blog/archives/">归档</a></li>
+         
+          <li><a href="/blog/categories/">分类</a></li>
+         
+          <li><a href="/blog/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CSS-%E5%B1%9E%E6%80%A7%E4%B9%A6%E5%86%99%E9%A1%BA%E5%BA%8F%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.</span> <span class="toc-text">CSS 属性书写顺序最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%8E%A8%E8%8D%90%E7%9A%84%E5%B1%9E%E6%80%A7%E4%B9%A6%E5%86%99%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.1.</span> <span class="toc-text">一、推荐的属性书写顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%9A%E4%BD%8D%E5%B1%9E%E6%80%A7%EF%BC%88Positioning%EF%BC%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 定位属性（Positioning）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9B%92%E6%A8%A1%E5%9E%8B%E5%B1%9E%E6%80%A7%EF%BC%88Box-Model%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 盒模型属性（Box Model）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8E%92%E7%89%88%E5%B1%9E%E6%80%A7%EF%BC%88Typography%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. 排版属性（Typography）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%A7%86%E8%A7%89%E5%B1%9E%E6%80%A7%EF%BC%88Visual%EF%BC%89"><span class="toc-number">1.1.4.</span> <span class="toc-text">4. 视觉属性（Visual）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%85%B6%E4%BB%96%E5%B1%9E%E6%80%A7%EF%BC%88Misc%EF%BC%89"><span class="toc-number">1.1.5.</span> <span class="toc-text">5. 其他属性（Misc）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">二、完整示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%A4%A7%E5%8E%82%E8%A7%84%E8%8C%83%E5%AF%B9%E6%AF%94"><span class="toc-number">1.3.</span> <span class="toc-text">三、大厂规范对比</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Google-gts"><span class="toc-number">1.3.1.</span> <span class="toc-text">Google (gts)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Airbnb-CSS-Sass-Style-Guide"><span class="toc-number">1.3.2.</span> <span class="toc-text">Airbnb CSS &#x2F; Sass Style Guide</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bootstrap"><span class="toc-number">1.3.3.</span> <span class="toc-text">Bootstrap</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="toc-number">1.4.</span> <span class="toc-text">四、自动化工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Stylelint-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. Stylelint 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Prettier-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. Prettier 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-VS-Code-%E6%8F%92%E4%BB%B6"><span class="toc-number">1.4.3.</span> <span class="toc-text">3. VS Code 插件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%AE%B0%E5%BF%86%E5%8F%A3%E8%AF%80"><span class="toc-number">1.5.</span> <span class="toc-text">五、记忆口诀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AE%9E%E9%99%85%E5%B7%A5%E4%BD%9C%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.6.</span> <span class="toc-text">六、实际工作建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E6%8E%A8%E8%8D%90%E5%81%9A%E6%B3%95"><span class="toc-number">1.6.1.</span> <span class="toc-text">✅ 推荐做法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.6.2.</span> <span class="toc-text">⚠️ 注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%8B-%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="toc-number">1.6.3.</span> <span class="toc-text">📋 团队协作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-number">1.7.</span> <span class="toc-text">CSS 代码规范</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&text=CSS 代码规范"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&is_video=false&description=CSS 代码规范"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CSS 代码规范&body=Check out this article: https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&title=CSS 代码规范"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&name=CSS 代码规范&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/10/28/CSS%20%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/&t=CSS 代码规范"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2025 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/blog/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/shenjy06"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/blog/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'shenjy06/blog';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
