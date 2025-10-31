@@ -366,3 +366,9 @@ module.exports = {
 - https://google.github.io/styleguide/htmlcssguide.html
 - https://github.com/airbnb/css
 - https://airbnb.io/
+
+## CSS 学习资源
+
+- https://developer.mozilla.org/en-US/docs/Web/CSS
+- https://css-tricks.com
+- https://caniuse.com
