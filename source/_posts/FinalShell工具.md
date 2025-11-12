@@ -8,7 +8,7 @@ tags:
 
 ## Final Shell 以及禁止更新方法
 
-## 介绍
+### 介绍
 
 FinalShell 是一款免费的国产的集 SSH 工具、服务器管理、远程桌面加速的良心软件,同时支持 Windows,macOS,Linux，它不单单是一个 SSH 工具，完整的说法应该叫一体化的的服务器,网络管理软件，在很大程度上可以免费替代 XShell，是国产中不多见的良心产品，具有免费海外服务器远程桌面加速,ssh 加速,双边 tcp 加速,内网穿透等特色功能。
 
@@ -102,5 +102,7 @@ public class FinalShell {
 禁止方法就是利用防火墙封 IP。如何找到是哪个进程在更新呢？
 
 ![](https://github.com/user-attachments/assets/1f4a927c-4642-4fe5-ba19-4668024c47f9)
+
+本文完~
 
 > **注意：本文绝大部分参照文章 [再见了 Xshell, 你好 FinalShell，含激活及禁止更新方法](https://zhuanlan.zhihu.com/p/691032257)，只是为了保存一份。**
