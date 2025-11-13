@@ -196,3 +196,93 @@ unzip archive.zip
 - `zip/unzip` 更适合跨平台文件传输，兼容性好
 - 对于 Linux 系统内部使用，通常推荐使用 `tar + gzip/bzip2/xz`
 - 需要与 Windows 或其他系统交换文件时，常用 `zip/unzip`
+
+## 解压 7z 文件的正确方法
+
+### 1. 安装 7z 工具
+
+在大多数 Linux 发行版中，你需要先安装 p7zip 工具：
+
+**Debian/Ubuntu:**
+```bash
+sudo apt-get install p7zip-full
+```
+
+**CentOS/RHEL:**
+```bash
+sudo yum install p7zip p7zip-plugins
+```
+
+**Fedora:**
+```bash
+sudo dnf install p7zip p7zip-plugins
+```
+
+**Arch Linux:**
+```bash
+sudo pacman -S p7zip
+```
+
+### 2. 使用 7z 命令解压
+
+安装完成后，使用以下命令解压 7z 文件：
+
+```bash
+7z x archive.7z
+```
+
+常用选项：
+- `x`: 解压缩并保持文件夹结构
+- `e`: 解压缩所有文件到当前目录（不保留目录结构）
+- `-o<目录>`: 指定解压目标目录
+
+示例（解压到指定目录）：
+```bash
+7z x archive.7z -o/target/directory
+```
+
+### 3. 查看 7z 文件内容（不解压）
+
+```bash
+7z l archive.7z
+```
+
+## 为什么不能用 tar 解压 7z
+
+`tar` 和 `7z` 是两种不同的归档/压缩工具和格式：
+
+1. `tar` 主要用于文件归档，可以搭配 gzip、bzip2、xz 等压缩算法
+2. `7z` 使用自己的 LZMA/LZMA2 压缩算法，是完全独立的格式
+
+这两种工具互不兼容，无法互相处理对方的文件格式。
+
+## 其他相关命令
+
+如果你经常处理 7z 文件，以下是一些常用命令：
+
+**创建 7z 归档：**
+```bash
+7z a archive.7z file1 file2 directory1
+```
+
+**测试 7z 文件完整性：**
+```bash
+7z t archive.7z
+```
+
+**添加文件到现有 7z 归档：**
+```bash
+7z u archive.7z newfile
+```
+
+**加密 7z 归档：**
+```bash
+7z a -p archive.7z files
+```
+
+## 总结
+
+- `tar` 命令无法直接处理 7z 格式的文件
+- 要处理 7z 文件，需安装专门的 `p7zip` 工具包
+- 使用 `7z x filename.7z` 命令来解压缩 7z 文件
+- 7z 格式通常提供更高的压缩率，但不如 tar+gzip 在 Linux 系统中普遍
