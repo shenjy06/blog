@@ -208,6 +208,25 @@
     
     
     <entry>
+      <title>软件开发常用的网站</title>
+      <link href="/blog/2025/06/07/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%AB%99/"/>
+      <url>/blog/2025/06/07/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%AB%99/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>训练自己使用英文关键词去查询相关的技术资料。比如， … best practice 等。不断积累自己的英文关键词【用于搜索】。建立自己的搜索关键词库。</p></blockquote><h2 id="软件开发常用的网站"><a href="#软件开发常用的网站" class="headerlink" title="软件开发常用的网站"></a>软件开发常用的网站</h2><ul><li><a href="https://datatracker.ietf.org/">Datatracker</a> 查看技术标准。</li><li><a href="https://www.ietf.org/">IETF</a></li><li><a href="https://apache.org/">Apache 基金会-开源软件</a></li><li><a href="https://www.iana.org/">iana</a> DNS 根目录、IP 地址的全球协调 以及其他互联网协议资源的执行方式是： 互联网号码分配机构 (IANA) 的功能。<ul><li><a href="https://www.iana.org/assignments/media-types/media-types.xhtml">Mime 类型</a></li></ul></li></ul><h2 id="开发中出现问题"><a href="#开发中出现问题" class="headerlink" title="开发中出现问题"></a>开发中出现问题</h2><ul><li><a href="https://stackoverflow.com/">stackoverflow</a></li></ul><h2 id="南京大学"><a href="#南京大学" class="headerlink" title="南京大学"></a>南京大学</h2><ul><li><a href="https://github.com/NJU-ProjectN/ics-pa-gitbook">pa</a> <a href="https://nju-projectn.github.io/ics-pa-gitbook/">链接</a></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 软件开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Docker 常用命令完整列表</title>
       <link href="/blog/2025/05/29/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
       <url>/blog/2025/05/29/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
