@@ -240,3 +240,4 @@ kubectl auth can-i create pods          # 检查权限
 - [云原生基础架构](https://lib.jimmysong.io/cloud-native-infra/)
 - [awesome-cloud-native](https://github.com/rootsongjc/awesome-cloud-native)
 - [CNCF](https://www.cncf.io/)
+- [online programs](https://www.cncf.io/online-programs/)
