@@ -23,6 +23,25 @@
     
     
     <entry>
+      <title>常用的部署脚本</title>
+      <link href="/blog/2025/12/01/%E5%B8%B8%E7%94%A8%E7%9A%84%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/"/>
+      <url>/blog/2025/12/01/%E5%B8%B8%E7%94%A8%E7%9A%84%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Java-部署脚本"><a href="#Java-部署脚本" class="headerlink" title="Java 部署脚本"></a>Java 部署脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置项</span></span><br><span class="line">JAR_NAME=<span class="string">&quot;your-app.jar&quot;</span></span><br><span class="line">APP_NAME=<span class="string">&quot;your-app&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找并杀掉旧进程</span></span><br><span class="line">PID=$(ps -ef | grep <span class="string">&quot;<span class="variable">$JAR_NAME</span>&quot;</span> | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$PID</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;发现运行中的进程 PID: <span class="variable">$PID</span>，正在停止...&quot;</span></span><br><span class="line">    <span class="built_in">kill</span> -9 <span class="variable">$PID</span></span><br><span class="line">    <span class="built_in">sleep</span> 2</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;进程已停止&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;未发现运行中的进程&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动新的 Java 程序</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;正在启动 <span class="variable">$JAR_NAME</span>...&quot;</span></span><br><span class="line"><span class="built_in">nohup</span> java -jar <span class="variable">$JAR_NAME</span> &gt; <span class="variable">$APP_NAME</span>.<span class="built_in">log</span> 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line"><span class="built_in">sleep</span> 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证启动</span></span><br><span class="line">NEW_PID=$(ps -ef | grep <span class="string">&quot;<span class="variable">$JAR_NAME</span>&quot;</span> | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$NEW_PID</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;启动成功，PID: <span class="variable">$NEW_PID</span>&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;启动失败，请检查日志&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure><p>未完待续…</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>开源图书</title>
       <link href="/blog/2025/11/20/%E5%BC%80%E6%BA%90%E5%9B%BE%E4%B9%A6/"/>
       <url>/blog/2025/11/20/%E5%BC%80%E6%BA%90%E5%9B%BE%E4%B9%A6/</url>
