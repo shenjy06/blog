@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Linux logrotate 命令详解logrotate 是 Linux 系统中用于自动管理日志文件轮转、压缩、删除和归档的工具，防止日志文件无限增长占满磁盘空间。  一、核心概念1. 工作原理 定期执行：通过 cron 定时任务（通常每天执行一次） 配置驱动：读取配置文件决定如何处理日志 状态记录：记录上次轮转时间到状态文件  2. 典型应用场景 Web 服务器日志（Nginx&#x2F;Apache）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logrotate 命令使用">
+<meta property="og:url" content="https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="Linux logrotate 命令详解logrotate 是 Linux 系统中用于自动管理日志文件轮转、压缩、删除和归档的工具，防止日志文件无限增长占满磁盘空间。  一、核心概念1. 工作原理 定期执行：通过 cron 定时任务（通常每天执行一次） 配置驱动：读取配置文件决定如何处理日志 状态记录：记录上次轮转时间到状态文件  2. 典型应用场景 Web 服务器日志（Nginx&#x2F;Apache）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-12-03T19:54:30.000Z">
+<meta property="article:modified_time" content="2025-12-03T03:43:12.559Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/blog/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/blog/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>logrotate 命令使用</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/blog/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/blog/">首页</a></li><!--
+     --><!--
+       --><li><a href="/blog/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/blog/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/blog/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/blog/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/blog/2025/11/20/%E5%BC%80%E6%BA%90%E5%9B%BE%E4%B9%A6/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&text=logrotate 命令使用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&is_video=false&description=logrotate 命令使用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=logrotate 命令使用&body=Check out this article: https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&name=logrotate 命令使用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&t=logrotate 命令使用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-logrotate-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">Linux logrotate 命令详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">一、核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 典型应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">二、配置文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 主配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 配置文件示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.3.</span> <span class="toc-text">三、核心配置参数详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BD%AE%E8%BD%AC%E9%A2%91%E7%8E%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 轮转频率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 保留策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%8E%8B%E7%BC%A9%E9%80%89%E9%A1%B9"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 压缩选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 文件命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.5.</span> <span class="toc-text">5. 权限控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">1.3.6.</span> <span class="toc-text">6. 错误处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.7.</span> <span class="toc-text">7. 执行脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B"><span class="toc-number">1.4.</span> <span class="toc-text">四、实战案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-1%EF%BC%9ANginx-%E8%AE%BF%E9%97%AE%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">案例 1：Nginx 访问日志配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-2%EF%BC%9A%E5%BA%94%E7%94%A8%E6%97%A5%E5%BF%97%E6%8C%89%E5%A4%A7%E5%B0%8F%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.4.2.</span> <span class="toc-text">案例 2：应用日志按大小轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-3%EF%BC%9AMySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="toc-number">1.4.3.</span> <span class="toc-text">案例 3：MySQL 慢查询日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-4%EF%BC%9A%E5%A4%9A%E8%B7%AF%E5%BE%84%E6%97%A5%E5%BF%97%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.4.</span> <span class="toc-text">案例 4：多路径日志统一管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="toc-number">1.5.</span> <span class="toc-text">五、命令行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%89%8B%E5%8A%A8%E6%89%A7%E8%A1%8C%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 手动执行轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%AA%8C%E8%AF%81%E9%85%8D%E7%BD%AE%E8%AF%AD%E6%B3%95"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 验证配置语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="toc-number">1.6.</span> <span class="toc-text">六、常见问题排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98-1%EF%BC%9A%E6%97%A5%E5%BF%97%E6%9C%AA%E8%87%AA%E5%8A%A8%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.6.1.</span> <span class="toc-text">问题 1：日志未自动轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98-2%EF%BC%9A%E8%BD%AE%E8%BD%AC%E5%90%8E%E5%BA%94%E7%94%A8%E6%97%A0%E6%B3%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97"><span class="toc-number">1.6.2.</span> <span class="toc-text">问题 2：轮转后应用无法写入日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98-3%EF%BC%9A%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6%E5%8D%A0%E7%94%A8%E5%A4%A7%E9%87%8F-CPU"><span class="toc-number">1.6.3.</span> <span class="toc-text">问题 3：压缩文件占用大量 CPU</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7"><span class="toc-number">1.7.</span> <span class="toc-text">七、高级技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8C%89%E5%B0%8F%E6%97%B6%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.7.1.</span> <span class="toc-text">1. 按小时轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5"><span class="toc-number">1.7.2.</span> <span class="toc-text">2. 邮件通知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%9C%E7%A8%8B%E5%A4%87%E4%BB%BD"><span class="toc-number">1.7.3.</span> <span class="toc-text">3. 远程备份</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.8.</span> <span class="toc-text">八、性能优化建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E5%AE%89%E5%85%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.9.</span> <span class="toc-text">九、安全注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.10.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        logrotate 命令使用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-12-03T19:54:30.000Z" itemprop="datePublished">2025-12-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/blog/tags/Linux/" rel="tag">Linux</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Linux-logrotate-命令详解"><a href="#Linux-logrotate-命令详解" class="headerlink" title="Linux logrotate 命令详解"></a>Linux logrotate 命令详解</h1><p>logrotate 是 Linux 系统中用于<strong>自动管理日志文件轮转、压缩、删除和归档</strong>的工具，防止日志文件无限增长占满磁盘空间。</p>
+<hr>
+<h2 id="一、核心概念"><a href="#一、核心概念" class="headerlink" title="一、核心概念"></a><strong>一、核心概念</strong></h2><h3 id="1-工作原理"><a href="#1-工作原理" class="headerlink" title="1. 工作原理"></a>1. <strong>工作原理</strong></h3><ul>
+<li><strong>定期执行</strong>：通过 cron 定时任务（通常每天执行一次）</li>
+<li><strong>配置驱动</strong>：读取配置文件决定如何处理日志</li>
+<li><strong>状态记录</strong>：记录上次轮转时间到状态文件</li>
+</ul>
+<h3 id="2-典型应用场景"><a href="#2-典型应用场景" class="headerlink" title="2. 典型应用场景"></a>2. <strong>典型应用场景</strong></h3><ul>
+<li>Web 服务器日志（Nginx/Apache）</li>
+<li>应用日志（Java/Python 应用）</li>
+<li>系统日志（syslog/rsyslog）</li>
+<li>数据库日志（MySQL/PostgreSQL）</li>
+</ul>
+<hr>
+<h2 id="二、配置文件结构"><a href="#二、配置文件结构" class="headerlink" title="二、配置文件结构"></a><strong>二、配置文件结构</strong></h2><h3 id="1-主配置文件"><a href="#1-主配置文件" class="headerlink" title="1. 主配置文件"></a>1. <strong>主配置文件</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/logrotate.conf          <span class="comment"># 全局配置</span></span><br><span class="line">/etc/logrotate.d/            <span class="comment"># 各应用独立配置目录</span></span><br><span class="line">/var/lib/logrotate/status    <span class="comment"># 状态文件（记录轮转历史）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-配置文件示例"><a href="#2-配置文件示例" class="headerlink" title="2. 配置文件示例"></a>2. <strong>配置文件示例</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/logrotate.d/nginx</span></span><br><span class="line">/var/log/nginx/*.<span class="built_in">log</span> &#123;</span><br><span class="line">    daily                    <span class="comment"># 每天轮转</span></span><br><span class="line">    rotate 7                 <span class="comment"># 保留7个历史文件</span></span><br><span class="line">    missingok               <span class="comment"># 日志文件缺失不报错</span></span><br><span class="line">    notifempty              <span class="comment"># 空文件不轮转</span></span><br><span class="line">    compress                <span class="comment"># 压缩旧日志</span></span><br><span class="line">    delaycompress           <span class="comment"># 延迟一个周期压缩</span></span><br><span class="line">    sharedscripts           <span class="comment"># 多个日志共享脚本</span></span><br><span class="line">    postrotate              <span class="comment"># 轮转后执行脚本</span></span><br><span class="line">        [ -f /var/run/nginx.pid ] &amp;&amp; <span class="built_in">kill</span> -USR1 `<span class="built_in">cat</span> /var/run/nginx.pid`</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、核心配置参数详解"><a href="#三、核心配置参数详解" class="headerlink" title="三、核心配置参数详解"></a><strong>三、核心配置参数详解</strong></h2><h3 id="1-轮转频率"><a href="#1-轮转频率" class="headerlink" title="1. 轮转频率"></a>1. <strong>轮转频率</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">daily       <span class="comment"># 每天轮转</span></span><br><span class="line">weekly      <span class="comment"># 每周轮转（默认周日）</span></span><br><span class="line">monthly     <span class="comment"># 每月轮转</span></span><br><span class="line">yearly      <span class="comment"># 每年轮转</span></span><br><span class="line">size 100M   <span class="comment"># 文件达到100MB时轮转（优先级高于时间）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-保留策略"><a href="#2-保留策略" class="headerlink" title="2. 保留策略"></a>2. <strong>保留策略</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rotate 7              <span class="comment"># 保留7个历史文件</span></span><br><span class="line">maxage 30             <span class="comment"># 删除30天前的日志</span></span><br><span class="line">minsize 100k          <span class="comment"># 文件小于100KB不轮转</span></span><br><span class="line">maxsize 500M          <span class="comment"># 超过500MB强制轮转（即使未到时间）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-压缩选项"><a href="#3-压缩选项" class="headerlink" title="3. 压缩选项"></a>3. <strong>压缩选项</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">compress              <span class="comment"># 使用gzip压缩</span></span><br><span class="line">nocompress            <span class="comment"># 不压缩</span></span><br><span class="line">delaycompress         <span class="comment"># 延迟到下次轮转时压缩（保留最近一次未压缩）</span></span><br><span class="line">compresscmd /usr/bin/bzip2   <span class="comment"># 指定压缩命令</span></span><br><span class="line">compressext .bz2      <span class="comment"># 压缩文件扩展名</span></span><br><span class="line">compressoptions <span class="string">&quot;-9&quot;</span>  <span class="comment"># 压缩参数（最高压缩率）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-文件命名"><a href="#4-文件命名" class="headerlink" title="4. 文件命名"></a>4. <strong>文件命名</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dateext               <span class="comment"># 使用日期作为后缀（access.log-20240115）</span></span><br><span class="line">dateformat -%Y%m%d    <span class="comment"># 自定义日期格式</span></span><br><span class="line">extension .<span class="built_in">log</span>        <span class="comment"># 保留原始扩展名</span></span><br><span class="line">olddir /var/log/old   <span class="comment"># 旧日志移动到指定目录</span></span><br><span class="line">noolddir              <span class="comment"># 旧日志保留在原目录</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-权限控制"><a href="#5-权限控制" class="headerlink" title="5. 权限控制"></a>5. <strong>权限控制</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create 0644 nginx nginx   <span class="comment"># 创建新日志文件的权限和所有者</span></span><br><span class="line">nocreate                  <span class="comment"># 不创建新文件</span></span><br><span class="line">copytruncate              <span class="comment"># 复制后清空原文件（适用于持续写入的进程）</span></span><br><span class="line">nocopytruncate            <span class="comment"># 移动文件（默认）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-错误处理"><a href="#6-错误处理" class="headerlink" title="6. 错误处理"></a>6. <strong>错误处理</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">missingok       <span class="comment"># 日志文件不存在不报错</span></span><br><span class="line">nomissingok     <span class="comment"># 日志文件不存在报错（默认）</span></span><br><span class="line">notifempty      <span class="comment"># 空文件不轮转</span></span><br><span class="line">ifempty         <span class="comment"># 空文件也轮转</span></span><br><span class="line">sharedscripts   <span class="comment"># 多个日志文件只执行一次脚本</span></span><br><span class="line">nosharedscripts <span class="comment"># 每个日志文件都执行脚本</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7-执行脚本"><a href="#7-执行脚本" class="headerlink" title="7. 执行脚本"></a>7. <strong>执行脚本</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">prerotate</span><br><span class="line">    <span class="comment"># 轮转前执行的命令</span></span><br><span class="line">    /usr/bin/chattr -a /var/log/messages</span><br><span class="line">endscript</span><br><span class="line"></span><br><span class="line">postrotate</span><br><span class="line">    <span class="comment"># 轮转后执行的命令</span></span><br><span class="line">    /usr/bin/killall -HUP syslogd</span><br><span class="line">endscript</span><br><span class="line"></span><br><span class="line">firstaction</span><br><span class="line">    <span class="comment"># 第一个日志轮转前执行（配合sharedscripts）</span></span><br><span class="line">endscript</span><br><span class="line"></span><br><span class="line">lastaction</span><br><span class="line">    <span class="comment"># 最后一个日志轮转后执行</span></span><br><span class="line">endscript</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、实战案例"><a href="#四、实战案例" class="headerlink" title="四、实战案例"></a><strong>四、实战案例</strong></h2><h3 id="案例-1：Nginx-访问日志配置"><a href="#案例-1：Nginx-访问日志配置" class="headerlink" title="案例 1：Nginx 访问日志配置"></a>案例 1：Nginx 访问日志配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/logrotate.d/nginx</span></span><br><span class="line">/var/log/nginx/access.log &#123;</span><br><span class="line">    daily</span><br><span class="line">    rotate 14</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    compress</span><br><span class="line">    delaycompress</span><br><span class="line">    dateext</span><br><span class="line">    dateformat -%Y%m%d</span><br><span class="line">    create 0640 nginx adm</span><br><span class="line">    sharedscripts</span><br><span class="line">    postrotate</span><br><span class="line">        <span class="comment"># 重新打开日志文件（发送 USR1 信号）</span></span><br><span class="line">        <span class="keyword">if</span> [ -f /var/run/nginx.pid ]; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">kill</span> -USR1 `<span class="built_in">cat</span> /var/run/nginx.pid`</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果</strong>：</p>
+<ul>
+<li>每天轮转，保留 14 天</li>
+<li>旧日志命名如：<code>access.log-20240115</code></li>
+<li>压缩后变成：<code>access.log-20240114.gz</code></li>
+</ul>
+<hr>
+<h3 id="案例-2：应用日志按大小轮转"><a href="#案例-2：应用日志按大小轮转" class="headerlink" title="案例 2：应用日志按大小轮转"></a>案例 2：应用日志按大小轮转</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/logrotate.d/myapp</span></span><br><span class="line">/opt/myapp/logs/*.<span class="built_in">log</span> &#123;</span><br><span class="line">    size 500M</span><br><span class="line">    rotate 5</span><br><span class="line">    copytruncate</span><br><span class="line">    compress</span><br><span class="line">    notifempty</span><br><span class="line">    missingok</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>适用场景</strong>：应用持续写入日志文件，无法优雅重启</p>
+<hr>
+<h3 id="案例-3：MySQL-慢查询日志"><a href="#案例-3：MySQL-慢查询日志" class="headerlink" title="案例 3：MySQL 慢查询日志"></a>案例 3：MySQL 慢查询日志</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/logrotate.d/mysql</span></span><br><span class="line">/var/log/mysql/slow.log &#123;</span><br><span class="line">    weekly</span><br><span class="line">    rotate 52</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    compress</span><br><span class="line">    delaycompress</span><br><span class="line">    create 0640 mysql mysql</span><br><span class="line">    postrotate</span><br><span class="line">        <span class="comment"># 刷新 MySQL 日志</span></span><br><span class="line">        /usr/bin/mysqladmin -u root -p<span class="string">&#x27;password&#x27;</span> flush-logs</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="案例-4：多路径日志统一管理"><a href="#案例-4：多路径日志统一管理" class="headerlink" title="案例 4：多路径日志统一管理"></a>案例 4：多路径日志统一管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/logrotate.d/app-cluster</span></span><br><span class="line">/var/log/app1/*.<span class="built_in">log</span> /var/log/app2/*.<span class="built_in">log</span> &#123;</span><br><span class="line">    daily</span><br><span class="line">    rotate 30</span><br><span class="line">    compress</span><br><span class="line">    sharedscripts</span><br><span class="line">    postrotate</span><br><span class="line">        systemctl reload app-cluster</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、命令行操作"><a href="#五、命令行操作" class="headerlink" title="五、命令行操作"></a><strong>五、命令行操作</strong></h2><h3 id="1-手动执行轮转"><a href="#1-手动执行轮转" class="headerlink" title="1. 手动执行轮转"></a>1. <strong>手动执行轮转</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试配置但不实际执行（调试模式）</span></span><br><span class="line">logrotate -d /etc/logrotate.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制执行轮转（忽略时间限制）</span></span><br><span class="line">logrotate -f /etc/logrotate.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 详细输出执行过程</span></span><br><span class="line">logrotate -v /etc/logrotate.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定状态文件</span></span><br><span class="line">logrotate -s /var/lib/logrotate/custom.status /etc/logrotate.d/nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-验证配置语法"><a href="#2-验证配置语法" class="headerlink" title="2. 验证配置语法"></a>2. <strong>验证配置语法</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logrotate -d /etc/logrotate.d/nginx</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、常见问题排查"><a href="#六、常见问题排查" class="headerlink" title="六、常见问题排查"></a><strong>六、常见问题排查</strong></h2><h3 id="问题-1：日志未自动轮转"><a href="#问题-1：日志未自动轮转" class="headerlink" title="问题 1：日志未自动轮转"></a>问题 1：日志未自动轮转</h3><p><strong>排查步骤</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 检查 cron 任务</span></span><br><span class="line"><span class="built_in">cat</span> /etc/cron.daily/logrotate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 查看状态文件</span></span><br><span class="line"><span class="built_in">cat</span> /var/lib/logrotate/status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 手动调试</span></span><br><span class="line">logrotate -d -f /etc/logrotate.d/nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 检查文件权限</span></span><br><span class="line"><span class="built_in">ls</span> -la /var/log/nginx/</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见原因</strong>：</p>
+<ul>
+<li>状态文件权限问题</li>
+<li>日志文件被其他进程占用</li>
+<li>配置语法错误</li>
+</ul>
+<hr>
+<h3 id="问题-2：轮转后应用无法写入日志"><a href="#问题-2：轮转后应用无法写入日志" class="headerlink" title="问题 2：轮转后应用无法写入日志"></a>问题 2：轮转后应用无法写入日志</h3><p><strong>原因</strong>：应用仍持有旧文件句柄</p>
+<p><strong>解决方案</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方案1：使用 copytruncate</span></span><br><span class="line">copytruncate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案2：轮转后重启/重载应用</span></span><br><span class="line">postrotate</span><br><span class="line">    systemctl reload nginx</span><br><span class="line">endscript</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案3：应用自己管理日志轮转（如 Java Logback）</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="问题-3：压缩文件占用大量-CPU"><a href="#问题-3：压缩文件占用大量-CPU" class="headerlink" title="问题 3：压缩文件占用大量 CPU"></a>问题 3：压缩文件占用大量 CPU</h3><p><strong>优化策略</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 使用较低压缩率</span></span><br><span class="line">compressoptions <span class="string">&quot;-1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 延迟压缩</span></span><br><span class="line">delaycompress</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 限制并发压缩数量（修改 cron 执行时间）</span></span><br><span class="line"><span class="built_in">nice</span> -n 19 logrotate /etc/logrotate.conf</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、高级技巧"><a href="#七、高级技巧" class="headerlink" title="七、高级技巧"></a><strong>七、高级技巧</strong></h2><h3 id="1-按小时轮转"><a href="#1-按小时轮转" class="headerlink" title="1. 按小时轮转"></a>1. <strong>按小时轮转</strong></h3><p>需结合 cron 实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/cron.hourly/logrotate-hourly</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">/usr/sbin/logrotate /etc/logrotate.d/hourly-app</span><br></pre></td></tr></table></figure>
+
+<p>配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/var/log/app/access.log &#123;</span><br><span class="line">    hourly        <span class="comment"># 需自定义实现</span></span><br><span class="line">    rotate 24</span><br><span class="line">    dateformat -%Y%m%d-%H</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-邮件通知"><a href="#2-邮件通知" class="headerlink" title="2. 邮件通知"></a>2. <strong>邮件通知</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/var/log/critical.log &#123;</span><br><span class="line">    daily</span><br><span class="line">    rotate 7</span><br><span class="line">    mail admin@example.com</span><br><span class="line">    mailfirst      <span class="comment"># 发送轮转前的旧日志</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-远程备份"><a href="#3-远程备份" class="headerlink" title="3. 远程备份"></a>3. <strong>远程备份</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">postrotate</span><br><span class="line">    rsync -az /var/log/nginx/*.gz backup@remote:/backup/</span><br><span class="line">endscript</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、性能优化建议"><a href="#八、性能优化建议" class="headerlink" title="八、性能优化建议"></a><strong>八、性能优化建议</strong></h2><ol>
+<li><strong>避免在高峰期执行</strong>：调整 cron 时间到凌晨 3-4 点</li>
+<li><strong>分散轮转时间</strong>：不同应用配置在不同时间段</li>
+<li>**使用 <code>delaycompress</code>**：减少 I/O 压力</li>
+<li><strong>定期清理旧日志</strong>：结合 <code>maxage</code> 或独立脚本</li>
+</ol>
+<hr>
+<h2 id="九、安全注意事项"><a href="#九、安全注意事项" class="headerlink" title="九、安全注意事项"></a><strong>九、安全注意事项</strong></h2><ol>
+<li><strong>配置文件权限</strong>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 644 /etc/logrotate.d/*</span><br><span class="line"><span class="built_in">chown</span> root:root /etc/logrotate.d/*</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>避免脚本注入</strong>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 危险示例（不要这样做）</span></span><br><span class="line">postrotate</span><br><span class="line">    <span class="built_in">eval</span> <span class="variable">$CUSTOM_COMMAND</span>  <span class="comment"># 可能被注入恶意命令</span></span><br><span class="line">endscript</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>日志敏感信息处理</strong>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">postrotate</span><br><span class="line">    <span class="comment"># 删除旧日志中的敏感信息</span></span><br><span class="line">    sed -i <span class="string">&#x27;s/password=[^&amp;]*/password=***/g&#x27;</span> /var/log/app/*.log.1</span><br><span class="line">endscript</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>关键点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>核心功能</strong></td>
+<td>自动轮转、压缩、删除、归档</td>
+</tr>
+<tr>
+<td><strong>执行方式</strong></td>
+<td>Cron 定时任务 + 配置文件驱动</td>
+</tr>
+<tr>
+<td><strong>重点参数</strong></td>
+<td>rotate、compress、postrotate、copytruncate</td>
+</tr>
+<tr>
+<td><strong>调试命令</strong></td>
+<td><code>logrotate -d -v</code></td>
+</tr>
+<tr>
+<td><strong>常见陷阱</strong></td>
+<td>文件句柄未释放、权限错误、时间判断失效</td>
+</tr>
+</tbody></table>
+<p><strong>最佳实践</strong>：</p>
+<ul>
+<li>优先使用应用自带日志轮转（如 Nginx 的 <code>reopen</code> 信号）</li>
+<li>测试环境验证配置后再上线</li>
+<li>监控磁盘空间和轮转执行状态</li>
+<li>定期审查日志保留策略是否符合合规要求</li>
+</ul>
+<p>完~</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/blog/">首页</a></li>
+         
+          <li><a href="/blog/about/">关于</a></li>
+         
+          <li><a href="/blog/archives/">归档</a></li>
+         
+          <li><a href="/blog/categories/">分类</a></li>
+         
+          <li><a href="/blog/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-logrotate-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">Linux logrotate 命令详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">一、核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 典型应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">二、配置文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 主配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 配置文件示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.3.</span> <span class="toc-text">三、核心配置参数详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BD%AE%E8%BD%AC%E9%A2%91%E7%8E%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 轮转频率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 保留策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%8E%8B%E7%BC%A9%E9%80%89%E9%A1%B9"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 压缩选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 文件命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.5.</span> <span class="toc-text">5. 权限控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">1.3.6.</span> <span class="toc-text">6. 错误处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.7.</span> <span class="toc-text">7. 执行脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B"><span class="toc-number">1.4.</span> <span class="toc-text">四、实战案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-1%EF%BC%9ANginx-%E8%AE%BF%E9%97%AE%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">案例 1：Nginx 访问日志配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-2%EF%BC%9A%E5%BA%94%E7%94%A8%E6%97%A5%E5%BF%97%E6%8C%89%E5%A4%A7%E5%B0%8F%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.4.2.</span> <span class="toc-text">案例 2：应用日志按大小轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-3%EF%BC%9AMySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="toc-number">1.4.3.</span> <span class="toc-text">案例 3：MySQL 慢查询日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-4%EF%BC%9A%E5%A4%9A%E8%B7%AF%E5%BE%84%E6%97%A5%E5%BF%97%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.4.</span> <span class="toc-text">案例 4：多路径日志统一管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="toc-number">1.5.</span> <span class="toc-text">五、命令行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%89%8B%E5%8A%A8%E6%89%A7%E8%A1%8C%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 手动执行轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%AA%8C%E8%AF%81%E9%85%8D%E7%BD%AE%E8%AF%AD%E6%B3%95"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 验证配置语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="toc-number">1.6.</span> <span class="toc-text">六、常见问题排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98-1%EF%BC%9A%E6%97%A5%E5%BF%97%E6%9C%AA%E8%87%AA%E5%8A%A8%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.6.1.</span> <span class="toc-text">问题 1：日志未自动轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98-2%EF%BC%9A%E8%BD%AE%E8%BD%AC%E5%90%8E%E5%BA%94%E7%94%A8%E6%97%A0%E6%B3%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97"><span class="toc-number">1.6.2.</span> <span class="toc-text">问题 2：轮转后应用无法写入日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98-3%EF%BC%9A%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6%E5%8D%A0%E7%94%A8%E5%A4%A7%E9%87%8F-CPU"><span class="toc-number">1.6.3.</span> <span class="toc-text">问题 3：压缩文件占用大量 CPU</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7"><span class="toc-number">1.7.</span> <span class="toc-text">七、高级技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8C%89%E5%B0%8F%E6%97%B6%E8%BD%AE%E8%BD%AC"><span class="toc-number">1.7.1.</span> <span class="toc-text">1. 按小时轮转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5"><span class="toc-number">1.7.2.</span> <span class="toc-text">2. 邮件通知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%9C%E7%A8%8B%E5%A4%87%E4%BB%BD"><span class="toc-number">1.7.3.</span> <span class="toc-text">3. 远程备份</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.8.</span> <span class="toc-text">八、性能优化建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E5%AE%89%E5%85%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.9.</span> <span class="toc-text">九、安全注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.10.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&text=logrotate 命令使用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&is_video=false&description=logrotate 命令使用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=logrotate 命令使用&body=Check out this article: https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&title=logrotate 命令使用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&name=logrotate 命令使用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/12/03/logrotate%E4%BD%BF%E7%94%A8/&t=logrotate 命令使用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2025 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/blog/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/shenjy06"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/blog/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'shenjy06/blog';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
