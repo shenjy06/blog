@@ -24,6 +24,7 @@ tags:
 - [The Missing Semester of Your CS Education](https://www.bilibili.com/video/BV1x7411H7wa/?spm_id_from=333.337.search-card.all.click)
   - https://missing.csail.mit.edu/
   - https://missing-semester-cn.github.io/
+- [hacker tools](https://missing.csail.mit.edu/2019/)
 - [riscv-unified-db](https://riscv-software-src.github.io/riscv-unified-db/)
 - [riscv-doc](https://docs.riscv.org/reference/isa/_attachments/riscv-unprivileged.pdf)
   - https://docs.riscv.org/reference/isa/unpriv/unpriv-index.html
