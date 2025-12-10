@@ -1,5 +1,5 @@
 ---
-title: Missing Semester of Your CS Education
+title: Missing Semester of Your CS Education Note
 date: 2025-12-10 19:54:30
 tags:
   - Linux
@@ -9,7 +9,7 @@ tags:
 
 ## Lecture 1 Course Overview + the Shell
 
-how to use useful shell to do userful.
+how to use useful shell to do userful tools.
 
 ```shell
 # 命令 date
@@ -373,6 +373,7 @@ ctrl + l # 快捷键
 ```
 
 ### 在命令行中，快速到命令行头、尾的案件
+
 | 操作       | Linux/macOS（Bash） | Windows CMD | Windows PowerShell |
 | ---------- | ------------------- | ----------- | ------------------ |
 | **到行首** | `Ctrl + A`          | `Home`      | `Home`             |
@@ -464,40 +465,50 @@ devfreq      graphics         iscsi_session     pci_bus          sas_device    s
 ---
 
 ### **主要子目录分类**
+
 `/sys/class/` 下的子目录通常是按设备类型（功能）分类的，例如：
 
 1. **块设备**
+
    - `block/`：系统的所有块设备（如硬盘、分区），例如 `sda`, `sda1`, `nvme0n1` 等。
      - 子目录包含设备属性（如 `size`、`stat`）、所属的物理设备链接（如 `../devices/pci0000:00/...`）。
 
 2. **输入设备**
+
    - `input/`：输入设备（如键盘、鼠标、触摸板），子目录通常以 `inputX`（如 `input0`）命名。
      - 包含设备信息（如 `name`, `id`）和事件接口链接（如 `eventX`）。
 
 3. **网络接口**
+
    - `net/`：网络接口（如 `eth0`, `wlan0`）。
      - 包含接口配置（如 `mtu`、`statistics`）、所属驱动信息等。
 
 4. **图形设备**
+
    - `drm/`：DRM（Direct Rendering Manager）设备，如显卡（`card0`）。
    - `graphics/`：其他图形相关设备（如 `fbcon`）。
 
 5. **声卡和音频设备**
+
    - `sound/`：声卡设备（如 `card0`），包含编解码器和控制接口。
 
 6. **串口和终端**
+
    - `tty/`：串口和虚拟终端设备（如 `ttyS0`, `ttyUSB0`）。
    - `vtconsole/`：虚拟终端控制台。
 
 7. **电源和电池**
+
    - `power_supply/`：电源信息（如 `BAT0` 电池或 `AC` 适配器）。
    - 包含电池状态（`status`）、容量（`capacity`）等。
 
-8. **LED和背光**
+8. **LED 和背光**
+
    - `leds/`：硬件 LED 控制（如键盘背光 `phy0-led`）。
    - `backlight/`：屏幕背光控制（如 `intel_backlight`）。
 
 9. **内存管理**
+
    - `mem/`：内存设备（如 `mem`, `kmem`）。
    - `memory/`：物理内存信息（如 `memory0`）。
 
@@ -510,6 +521,7 @@ devfreq      graphics         iscsi_session     pci_bus          sas_device    s
 ---
 
 ### **目录结构特点**
+
 - **符号链接**：每个子目录通常是符号链接，指向 `/sys/devices/` 下的具体设备路径。
   - 例如：`/sys/class/net/eth0` 可能链接到 `/sys/devices/pci0000:00/.../net/eth0`。
 - **统一接口**：每个设备的子目录包含标准文件（如 `uevent`、`dev`）和设备的特定属性，用户可通过读写这些文件与内核交互。
@@ -517,13 +529,16 @@ devfreq      graphics         iscsi_session     pci_bus          sas_device    s
 ---
 
 ### **实际示例**
+
 查看 `/sys/class/net/` 下的网络接口：
+
 ```bash
 ls /sys/class/net/
 # 输出可能包含: eth0  lo  wlan0
 ```
 
 查看键盘输入设备信息：
+
 ```bash
 ls /sys/class/input/input0/
 # 可能包含: name  id  capabilities
@@ -532,6 +547,7 @@ ls /sys/class/input/input0/
 ---
 
 ### **注意事项**
+
 - `sysfs` 是内核的实时视图，文件内容动态生成，不可直接修改（除非明确允许）。
 - 不同系统（或硬件配置）下，`/sys/class` 的内容会有所不同。
 
@@ -539,12 +555,10 @@ ls /sys/class/input/input0/
 
 ```shell
 $ echo 500 > brightness
-$ sudo su 
+$ sudo su
 # echo 500 > brightness
 $ echo 1060 > sudo tee brightness
 ```
-
-
 
 ## Lecture 2: Shell Tools and Scripting
 
@@ -581,9 +595,9 @@ mcd test
 # $0-$9
 ```
 
-- **`$0`**：当前脚本或shell的名称。
-- **`$1` ~ `$9`**：脚本或函数的前9个参数，按顺序对应。
-- 超过9个的参数需要用 `${10}`、`${11}` 的形式引用。
+- **`$0`**：当前脚本或 shell 的名称。
+- **`$1` ~ `$9`**：脚本或函数的前 9 个参数，按顺序对应。
+- 超过 9 个的参数需要用 `${10}`、`${11}` 的形式引用。
 
 - **`$?`**: 获取上一个命令的错误代码
 - **`$_`**: 获取最后一个参数
@@ -600,46 +614,51 @@ shenjy@shenjy:~/sh/ms/test$ echo $?
 ```
 
 ### **1. `$?` 的作用**
+
 - **含义**：`$?` 保存上一个命令/脚本/函数的退出状态。
 - **返回值范围**：
   - **0**：表示成功（没有错误）。
-  - **非0**：表示失败（具体数值通常由程序定义，不同值代表不同的错误原因）。
+  - **非 0**：表示失败（具体数值通常由程序定义，不同值代表不同的错误原因）。
 
 ---
 
 ### **2. `$?` 的常见返回值及含义**
-| 返回值 | 含义                             | 示例命令              |
-| ------ | -------------------------------- | --------------------- |
-| `0`    | 成功                             | `true; echo $?` → 0   |
-| `1`    | 一般错误（未指定具体原因）       | `false; echo $?` → 1  |
-| `2`    | 命令语法错误                     | `ls --invalid-option` |
-| `126`  | 命令不可执行（权限不足）         | `./no-permission.sh`  |
-| `127`  | 命令未找到                       | `nonexistent-command` |
-| `130`  | 命令被终止（如Ctrl+C）           | 按下`Ctrl+C`中断      |
-| `137`  | 进程被强制终止（`kill -9`）      | `kill -9 <PID>`       |
-| `255`  | 退出状态超出范围（>255会被取模） | 某些程序自定义错误    |
 
-> **注意**：非0值的具体含义取决于程序，可通过 `man` 手册或程序文档查询（如 `grep` 返回 `1` 表示未匹配到内容，不是错误）。
+| 返回值 | 含义                              | 示例命令              |
+| ------ | --------------------------------- | --------------------- |
+| `0`    | 成功                              | `true; echo $?` → 0   |
+| `1`    | 一般错误（未指定具体原因）        | `false; echo $?` → 1  |
+| `2`    | 命令语法错误                      | `ls --invalid-option` |
+| `126`  | 命令不可执行（权限不足）          | `./no-permission.sh`  |
+| `127`  | 命令未找到                        | `nonexistent-command` |
+| `130`  | 命令被终止（如 Ctrl+C）           | 按下`Ctrl+C`中断      |
+| `137`  | 进程被强制终止（`kill -9`）       | `kill -9 <PID>`       |
+| `255`  | 退出状态超出范围（>255 会被取模） | 某些程序自定义错误    |
+
+> **注意**：非 0 值的具体含义取决于程序，可通过 `man` 手册或程序文档查询（如 `grep` 返回 `1` 表示未匹配到内容，不是错误）。
 
 ---
 
-### **3. 类似的Shell特殊变量**
-| 变量      | 描述                                            |
-| --------- | ----------------------------------------------- |
-| `$0`      | 当前脚本或Shell的名称。                         |
-| `$1`-`$9` | 脚本或函数的第1-9个参数。                       |
-| `$#`      | 传递给脚本/函数的参数个数。                     |
-| `$@`      | 所有参数的列表（每个参数作为独立字符串）。      |
-| `$*`      | 所有参数的列表（合并为单个字符串）。            |
-| `$$`      | 当前Shell的进程ID（PID）。                      |
-| `$!`      | 最后一个后台运行的进程的PID。                   |
-| `$_`      | 上一个命令的最后一个参数。                      |
-| `$-`      | 当前Shell的选项标志（如 `set -x` 会包含 `x`）。 |
+### **3. 类似的 Shell 特殊变量**
+
+| 变量      | 描述                                              |
+| --------- | ------------------------------------------------- |
+| `$0`      | 当前脚本或 Shell 的名称。                         |
+| `$1`-`$9` | 脚本或函数的第 1-9 个参数。                       |
+| `$#`      | 传递给脚本/函数的参数个数。                       |
+| `$@`      | 所有参数的列表（每个参数作为独立字符串）。        |
+| `$*`      | 所有参数的列表（合并为单个字符串）。              |
+| `$$`      | 当前 Shell 的进程 ID（PID）。                     |
+| `$!`      | 最后一个后台运行的进程的 PID。                    |
+| `$_`      | 上一个命令的最后一个参数。                        |
+| `$-`      | 当前 Shell 的选项标志（如 `set -x` 会包含 `x`）。 |
 
 ---
 
 ### **4. 使用示例**
+
 #### 检查命令是否成功：
+
 ```bash
 ls /valid/path
 if [ $? -eq 0 ]; then
@@ -648,7 +667,9 @@ else
     echo "失败"
 fi
 ```
+
 #### 简化为直接判断：
+
 ```bash
 if ls /valid/path; then
     echo "成功"
@@ -658,7 +679,8 @@ fi
 ---
 
 ### **5. 注意事项**
-- 某些命令（如 `grep`）会 intentionally 返回非0值表示逻辑失败（如未找到匹配），而非运行时错误。
+
+- 某些命令（如 `grep`）会 intentionally 返回非 0 值表示逻辑失败（如未找到匹配），而非运行时错误。
 - 自定义脚本中，应通过 `exit <数值>` 返回明确的退出状态。
 
 ```shell
@@ -754,10 +776,12 @@ fi
 ### Important Notes:
 
 1. Spaces are required around brackets and operators:
+
    - Correct: `[ $var -eq 10 ]`
    - Incorrect: `[$var-eq10]`
 
 2. Common comparison operators:
+
    - Numeric:
      - `-eq` (equal)
      - `-ne` (not equal)
