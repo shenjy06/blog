@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Linux command line tldr: https:&#x2F;&#x2F;tldr.sh  Lecture 1 Course Overview + the Shellhow to use useful shell to do userful. 123456789101112131415161718192021222324252627# 命令 dateshenjy@shenjy:~$ dateWed De">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Missing Semester of Your CS Education">
+<meta property="og:url" content="https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="Linux command line tldr: https:&#x2F;&#x2F;tldr.sh  Lecture 1 Course Overview + the Shellhow to use useful shell to do userful. 123456789101112131415161718192021222324252627# 命令 dateshenjy@shenjy:~$ dateWed De">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-12-10T19:54:30.000Z">
+<meta property="article:modified_time" content="2025-12-10T05:03:41.164Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/blog/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/blog/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Missing Semester of Your CS Education</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/blog/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/blog/">首页</a></li><!--
+     --><!--
+       --><li><a href="/blog/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/blog/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/blog/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/blog/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/blog/2025/12/08/Prompt%20%E9%9B%86%E5%90%88/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&text=Missing Semester of Your CS Education"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&is_video=false&description=Missing Semester of Your CS Education"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Missing Semester of Your CS Education&body=Check out this article: https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&name=Missing Semester of Your CS Education&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&t=Missing Semester of Your CS Education"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-1-Course-Overview-the-Shell"><span class="toc-number">1.</span> <span class="toc-text">Lecture 1 Course Overview + the Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E7%90%86%E8%A7%A3%E5%91%BD%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">初始理解命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%96%9C%E6%9D%A0-%E7%9A%84%E5%87%BA%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">反斜杠 \ 的出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%9C%A8-shell-%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">反斜杠在 shell 中的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%88%B0-echo-hello-world"><span class="toc-number">1.4.</span> <span class="toc-text">应用到 echo hello\ world</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E9%AA%8C%E8%AF%81"><span class="toc-number">1.5.</span> <span class="toc-text">实验验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%96%9C%E6%9D%A0%E7%9A%84%E5%85%B6%E4%BB%96%E7%94%A8%E9%80%94"><span class="toc-number">1.6.</span> <span class="toc-text">反斜杠的其他用途</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5"><span class="toc-number">1.7.</span> <span class="toc-text">特殊情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">1.8.</span> <span class="toc-text">结论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E7%AD%94%E6%A1%88"><span class="toc-number">1.9.</span> <span class="toc-text">最终答案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A7%A3%E5%86%85%E5%AE%B9%EF%BC%9A"><span class="toc-number">1.10.</span> <span class="toc-text">分解内容：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.11.</span> <span class="toc-text">总结：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A%E6%9D%83%E9%99%90%E7%9A%84%E6%95%B0%E5%AD%97%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.12.</span> <span class="toc-text">补充：权限的数字表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%EF%BC%8C%E5%BF%AB%E9%80%9F%E5%88%B0%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%A4%B4%E3%80%81%E5%B0%BE%E7%9A%84%E6%A1%88%E4%BB%B6"><span class="toc-number">1.13.</span> <span class="toc-text">在命令行中，快速到命令行头、尾的案件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E3%80%81%E8%BE%93%E5%87%BA"><span class="toc-number">1.14.</span> <span class="toc-text">输入、输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%AD%90%E7%9B%AE%E5%BD%95%E5%88%86%E7%B1%BB"><span class="toc-number">1.15.</span> <span class="toc-text">主要子目录分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.16.</span> <span class="toc-text">目录结构特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.17.</span> <span class="toc-text">实际示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.18.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-2-Shell-Tools-and-Scripting"><span class="toc-number">2.</span> <span class="toc-text">Lecture 2: Shell Tools and Scripting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text">1. $? 的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9A%84%E5%B8%B8%E8%A7%81%E8%BF%94%E5%9B%9E%E5%80%BC%E5%8F%8A%E5%90%AB%E4%B9%89"><span class="toc-number">2.2.</span> <span class="toc-text">2. $? 的常见返回值及含义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%B1%BB%E4%BC%BC%E7%9A%84Shell%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F"><span class="toc-number">2.3.</span> <span class="toc-text">3. 类似的Shell特殊变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.4.</span> <span class="toc-text">4. 使用示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E5%91%BD%E4%BB%A4%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F%EF%BC%9A"><span class="toc-number">2.4.1.</span> <span class="toc-text">检查命令是否成功：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%8C%96%E4%B8%BA%E7%9B%B4%E6%8E%A5%E5%88%A4%E6%96%AD%EF%BC%9A"><span class="toc-number">2.4.2.</span> <span class="toc-text">简化为直接判断：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.5.</span> <span class="toc-text">5. 注意事项</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Missing Semester of Your CS Education
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-12-10T19:54:30.000Z" itemprop="datePublished">2025-12-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/blog/tags/Linux/" rel="tag">Linux</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>Linux command line tldr: <a target="_blank" rel="noopener" href="https://tldr.sh/">https://tldr.sh</a></p>
+</blockquote>
+<h2 id="Lecture-1-Course-Overview-the-Shell"><a href="#Lecture-1-Course-Overview-the-Shell" class="headerlink" title="Lecture 1 Course Overview + the Shell"></a>Lecture 1 Course Overview + the Shell</h2><p>how to use useful shell to do userful.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">命令 <span class="built_in">date</span></span></span><br><span class="line">shenjy@shenjy:~$ date</span><br><span class="line">Wed Dec 10 09:07:47 CST 2025</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">命令 cal</span></span><br><span class="line">shenjy@shenjy:~$ cal</span><br><span class="line">  December 2025</span><br><span class="line">Su Mo Tu We Th Fr Sa</span><br><span class="line">    1  2  3  4  5  6</span><br><span class="line"> 7  8  9 10 11 12 13</span><br><span class="line">14 15 16 17 18 19 20</span><br><span class="line">21 22 23 24 25 26 27</span><br><span class="line">28 29 30 31</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">命令 <span class="keyword">time</span> <span class="built_in">ls</span> 查看命令 <span class="built_in">ls</span> 的执行时间</span></span><br><span class="line">shenjy@shenjy:~$ time ls</span><br><span class="line">anytls     c       ds             es      javademo  lua       nacos  pa         redis        skywalking  tldr   xxl-job</span><br><span class="line">arthas     docker  easy-dataset   images  jyy_site  minikube  neo4j  python     sh           snap        video</span><br><span class="line">bookstore  docs    elasticsearch  java    logs      mysql     os     qwen-code  simple-blog  soft        vue</span><br><span class="line"></span><br><span class="line">real    0m0.010s # 实际执行时间</span><br><span class="line">user    0m0.004s # 用户态执行时间</span><br><span class="line">sys     0m0.006s # 内核态执行时间</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">\ 的含义</span></span><br><span class="line">shenjy@shenjy:~$ echo hello\ world</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始理解命令"><a href="#初始理解命令" class="headerlink" title="初始理解命令"></a>初始理解命令</h3><p>首先，我看到这个命令是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello\ world</span><br></pre></td></tr></table></figure>
+
+<p>我知道 <code>echo</code> 是一个在终端中常用的命令，用于输出后面的参数。通常的用法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello world</span><br></pre></td></tr></table></figure>
+
+<p>这会输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+<h3 id="反斜杠-的出现"><a href="#反斜杠-的出现" class="headerlink" title="反斜杠 \ 的出现"></a>反斜杠 <code>\</code> 的出现</h3><p>在给定的命令中，<code>hello</code> 和 <code>world</code> 之间有一个反斜杠 <code>\</code>，即 <code>hello\ world</code>。这与我平时看到的 <code>echo hello world</code> 有所不同。我开始思考这个反斜杠的作用。</p>
+<h3 id="反斜杠在-shell-中的作用"><a href="#反斜杠在-shell-中的作用" class="headerlink" title="反斜杠在 shell 中的作用"></a>反斜杠在 shell 中的作用</h3><p>在 shell（如 bash）中，反斜杠 <code>\</code> 是一个<strong>转义字符</strong>。它的主要作用是：</p>
+<ol>
+<li><p><strong>转义下一个字符</strong>：反斜杠告诉 shell，紧接在它后面的字符应该被视为字面意义上的字符，而不是作为 shell 的特殊字符（如空格、制表符、换行符、美元符号 <code>$</code>、星号 <code>*</code> 等）。</p>
+<p>例如：</p>
+<ul>
+<li><code>\ </code>：表示一个实际的空间字符，而不是参数的分隔符。</li>
+<li><code>\$</code>：表示一个实际的美元符号 <code>$</code>，而不是变量的开始。</li>
+</ul>
+</li>
+<li><p><strong>换行续接</strong>：如果反斜杠出现在行尾，表示命令延续到下一行（这在多行命令中很有用），但这不是我们这里讨论的情况。</p>
+</li>
+</ol>
+<h3 id="应用到-echo-hello-world"><a href="#应用到-echo-hello-world" class="headerlink" title="应用到 echo hello\ world"></a>应用到 <code>echo hello\ world</code></h3><p>在 <code>echo hello\ world</code> 中：</p>
+<ul>
+<li><p><code>hello\ world</code>：这里的反斜杠转义了后面的空格。也就是说，<code>\ </code> 表示一个实际的空间字符，而不是参数的分隔符。</p>
+<p>通常，shell 会将空格作为参数的分隔符。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello world</span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>hello</code> 和 <code>world</code> 是两个分开的参数传递给 <code>echo</code>，<code>echo</code> 会将它们用空格连接输出。</p>
+<p>但在 <code>hello\ world</code> 中，<code>\ </code> 使得空格被当作字面字符，因此 <code>hello\ world</code> 被视为一个整体的参数。</p>
+</li>
+</ul>
+<h3 id="实验验证"><a href="#实验验证" class="headerlink" title="实验验证"></a>实验验证</h3><p>为了验证我的理解，我可以在终端中尝试：</p>
+<ol>
+<li><p>直接运行 <code>echo hello\ world</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello\ world</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+<p>看起来和 <code>echo hello world</code> 的输出一样。</p>
+</li>
+<li><p>但是如果我尝试用引号来比较：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+<p>也是相同的。那区别在哪？</p>
+<p>区别在于参数的数量：</p>
+<ul>
+<li><code>echo hello world</code>：两个参数 <code>hello</code> 和 <code>world</code>，<code>echo</code> 会将它们用空格连接。</li>
+<li><code>echo hello\ world</code>：一个参数 <code>hello world</code>（因为空格被转义）。</li>
+<li><code>echo &quot;hello world&quot;</code>：一个参数 <code>hello world</code>。</li>
+</ul>
+<p>在 <code>echo</code> 的情况下，输出看起来是一样的，因为 <code>echo</code> 会将所有参数用空格连接输出。但如果是其他命令，参数的数量可能会影响行为。</p>
+</li>
+<li><p>用 <code>printf</code> 或 <code>set</code> 来观察：</p>
+<p>例如，使用 <code>set</code> 可以查看位置参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -- hello\ world</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$#</span></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>表示有一个参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -- hello world</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$#</span></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>表示有两个参数。</p>
+<p>这说明 <code>hello\ world</code> 确实被视为一个单一参数。</p>
+</li>
+</ol>
+<h3 id="反斜杠的其他用途"><a href="#反斜杠的其他用途" class="headerlink" title="反斜杠的其他用途"></a>反斜杠的其他用途</h3><p>反斜杠不仅可以转义空格，还可以转义其他特殊字符：</p>
+<ul>
+<li><code>echo \$PATH</code>：输出 <code>$PATH</code>，而不是展开变量 <code>PATH</code>。</li>
+<li><code>echo \*</code>：输出 <code>*</code>，而不是进行文件名通配。</li>
+<li><code>echo \&quot;</code>：输出 <code>&quot;</code>，而不是作为字符串的开始或结束。</li>
+</ul>
+<h3 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h3><p>如果反斜杠后面跟的不是特殊字符，反斜杠通常会被忽略：</p>
+<ul>
+<li><code>echo hello\world</code>：<code>\w</code> 不是特殊字符，所以反斜杠无效，输出 <code>helloworld</code>。</li>
+</ul>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>在 <code>echo hello\ world</code> 这个命令中：</p>
+<ul>
+<li><code>\ </code>（反斜杠加空格）中的反斜杠是一个转义字符，它使得空格被当作字面意义上的空格，而不是参数分隔符。</li>
+<li>因此，<code>hello\ world</code> 被视为一个单一的参数 <code>hello world</code>。</li>
+<li><code>echo</code> 接收一个参数 <code>hello world</code> 并输出 <code>hello world</code>。</li>
+<li>虽然在这种情况下输出和 <code>echo hello world</code> 相同，但背后的参数传递机制不同。</li>
+</ul>
+<h3 id="最终答案"><a href="#最终答案" class="headerlink" title="最终答案"></a>最终答案</h3><p>在命令 <code>echo hello\ world</code> 中：</p>
+<ul>
+<li><p><strong><code>\</code>（反斜杠）</strong> 是一个 <strong>转义字符</strong>，它的作用是告诉 shell 将紧接在它后面的字符（这里是空格）视为字面意义上的字符，而不是 shell 的特殊字符（如参数分隔符）。</p>
+</li>
+<li><p>因此：</p>
+<ul>
+<li><code>hello\ world</code> 中的 <code>\ </code> 表示一个实际的空间字符，使得整个 <code>hello\ world</code> 被当作一个单一的参数传递给 <code>echo</code>。</li>
+<li><code>echo</code> 输出这个参数，结果为 <code>hello world</code>。</li>
+</ul>
+</li>
+</ul>
+<p>虽然在这个例子中 <code>echo hello\ world</code> 和 <code>echo hello world</code> 的输出看起来相同，但前者是将 <code>hello world</code> 作为一个参数传递，而后者是将 <code>hello</code> 和 <code>world</code> 作为两个参数传递。对于 <code>echo</code> 来说，这两种情况的结果是相同的，但对于其他命令可能会有区别。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看环境变量</span></span><br><span class="line">shenjy@shenjy:~$ echo $PATH</span><br><span class="line">/home/shenjy/java/jdk1.8.0_202/bin:/home/shenjy/.cargo/bin:/home/shenjy/.local/bin:/home/shenjy/.nvm/versions/node/v22.17.0/bin:/home/shenjy/java/amazon-corretto-11.0.25.9.1-linux-x64/bin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看命令位置</span></span><br><span class="line">shenjy@shenjy:~$ which echo</span><br><span class="line">/usr/bin/echo</span><br><span class="line"></span><br><span class="line">shenjy@shenjy:~$ whereis echo</span><br><span class="line">echo: /usr/bin/echo /usr/share/man/man1/echo.1.gz</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">打印当前所在路径：绝对路径、相对路径</span></span><br><span class="line">shenjy@shenjy:~$ pwd # print working directory, print current path</span><br><span class="line">/home/shenjy</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cd</span>： change directory, 切换路径</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">. 当前路径，.. 上一级路径</span></span><br><span class="line">shenjy@shenjy:~$ cd /home</span><br><span class="line">shenjy@shenjy:/home$ cd ..</span><br><span class="line">shenjy@shenjy:/$ pwd</span><br><span class="line">/</span><br><span class="line">shenjy@shenjy:/$ cd ./home</span><br><span class="line">shenjy@shenjy:/home$</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解释下 drwxr-xr-x 25 root   root   4096 Dec 10 08:45 ../</span></span><br></pre></td></tr></table></figure>
+
+<p>这是一个 Linux/Unix 文件系统下的目录权限和属性信息，属于 <code>ls -l</code> 命令的输出格式。以下是逐项解释：</p>
+<hr>
+<h3 id="分解内容："><a href="#分解内容：" class="headerlink" title="分解内容："></a>分解内容：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x 25 root root 4096 Dec 10 08:45 ../</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p><strong>文件类型与权限 (<code>drwxr-xr-x</code>)</strong></p>
+<ul>
+<li>第一个字符 <code>d</code> 表示这是一个 <strong>目录</strong>（<code>directory</code>）。<ul>
+<li><code>-</code> 表示普通文件，<code>l</code> 表示符号链接，<code>c</code>/<code>b</code> 表示设备文件等。</li>
+</ul>
+</li>
+<li>后续 9 个字符分为三组，每 3 个一组表示不同用户的权限：<ul>
+<li><strong><code>rwx</code><strong>（前三位）：</strong>所有者（owner）</strong>权限为读（<code>r</code>）、写（<code>w</code>）、执行（<code>x</code>）。</li>
+<li><strong><code>r-x</code><strong>（中三位）：</strong>所属组（group）</strong>权限为读（<code>r</code>）、执行（<code>x</code>），无写权限（<code>-</code>）。</li>
+<li><strong><code>r-x</code><strong>（后三位）：</strong>其他用户（others）</strong>权限与组相同，读和执行，无写权限。</li>
+<li>执行权限 <code>x</code> 对目录表示可进入（<code>cd</code>）或遍历。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>硬链接数 (<code>25</code>)</strong></p>
+<ul>
+<li>表示该目录下有 <strong>25 个子目录</strong>（包括 <code>.</code> 和 <code>..</code> 的引用）。</li>
+<li>注：每个子目录会通过 <code>..</code> 指向父目录，因此父目录的硬链接数等于其直接子目录数 + 2（自身 <code>.</code> 和父目录的链接）。</li>
+</ul>
+</li>
+<li><p><strong>所有者 (<code>root</code>)</strong></p>
+<ul>
+<li>该目录的所有者是 <code>root</code> 用户。</li>
+</ul>
+</li>
+<li><p><strong>所属组 (<code>root</code>)</strong></p>
+<ul>
+<li>该目录的所属组是 <code>root</code> 组。</li>
+</ul>
+</li>
+<li><p><strong>大小 (<code>4096</code>)</strong></p>
+<ul>
+<li>目录本身占用 <strong>4096 字节</strong>（这是文件系统块的最小分配单元，实际内容可能更少）。</li>
+<li>注：目录大小不包含其下文件的总大小，仅表示目录元数据占用的空间。</li>
+</ul>
+</li>
+<li><p><strong>修改时间 (<code>Dec 10 08:45</code>)</strong></p>
+<ul>
+<li>该目录的最后修改时间是 12 月 10 日 08:45。</li>
+</ul>
+</li>
+<li><p><strong>目录名 (<code>../</code>)</strong></p>
+<ul>
+<li>表示这是<strong>父目录</strong>的条目（即当前目录的上层目录）。</li>
+<li>在 <code>ls -l</code> 中显示 <code>..</code> 时表示列出父目录的信息。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>这是一个由 <code>root</code> 用户和 <code>root</code> 组所有的目录，权限为：所有者可读/写/进入，组和其他用户可读/进入但不可写。</li>
+<li>其下有 25 个子目录链接，最后修改时间为 12 月 10 日。</li>
+</ul>
+<h3 id="补充：权限的数字表示"><a href="#补充：权限的数字表示" class="headerlink" title="补充：权限的数字表示"></a>补充：权限的数字表示</h3><p><code>rwxr-xr-x</code> 对应数字权限 <code>755</code>：</p>
+<ul>
+<li><code>rwx</code> = 4 (r) + 2 (w) + 1 (x) = <strong>7</strong></li>
+<li><code>r-x</code> = 4 + 0 + 1 = <strong>5</strong></li>
+<li><code>r-x</code> = 4 + 0 + 1 = <strong>5</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用绝对路径运行 <span class="built_in">echo</span> 命令</span></span><br><span class="line">shenjy@shenjy:~$ cd /home/shenjy/c/demo/</span><br><span class="line">shenjy@shenjy:~/c/demo$ ../../../../bin/echo hello world</span><br><span class="line">hello world</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列出当前路径多有的文件</span></span><br><span class="line">ls</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列出上一级路径的我呢见</span></span><br><span class="line">ls ..</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">直接到指定的路径 /</span></span><br><span class="line">cd /</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">回家</span></span><br><span class="line">cd</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">回到从哪里来</span></span><br><span class="line">cd -</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看命令帮助</span></span><br><span class="line">ls --help</span><br><span class="line">man ls</span><br><span class="line">info ls</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看更加详细的信息</span></span><br><span class="line">ls -l</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看命令的原始命令是啥</span></span><br><span class="line">type ll</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建文件</span></span><br><span class="line">shenjy@shenjy:~$ touch a.txt</span><br><span class="line">shenjy@shenjy:~$ ls</span><br><span class="line">a.txt</span><br><span class="line">shenjy@shenjy:~$ mkdir file</span><br><span class="line">shenjy@shenjy:~$ ls</span><br><span class="line">a.txt  file</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改文件名</span></span><br><span class="line">shenjy@shenjy:~$ mv a.txt b.txt</span><br><span class="line">shenjy@shenjy:~$ ls</span><br><span class="line">b.txt  file</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">把文件移动到 file 目录下</span></span><br><span class="line">shenjy@shenjy:~$ mv b.txt file/</span><br><span class="line">shenjy@shenjy:~$ cd file</span><br><span class="line">shenjy@shenjy:~/file$ ls</span><br><span class="line">b.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除文件夹以及问价夹中的内容</span></span><br><span class="line">shenjy@shenjy:~$ rm -rf file/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cp</span> 命令</span></span><br><span class="line">shenjy@shenjy:~/cp$ mkdir d</span><br><span class="line">shenjy@shenjy:~/cp$ echo &quot;hello world&quot; &gt; file.txt</span><br><span class="line">shenjy@shenjy:~/cp$ ls</span><br><span class="line">d  file.txt</span><br><span class="line">shenjy@shenjy:~/cp$ cat file.txt</span><br><span class="line">hello world</span><br><span class="line">shenjy@shenjy:~/cp$ ls</span><br><span class="line">d  file.txt</span><br><span class="line">shenjy@shenjy:~/cp$</span><br><span class="line">shenjy@shenjy:~/cp$ ls</span><br><span class="line">d  file.txt</span><br><span class="line">shenjy@shenjy:~/cp$ cp file.txt d/</span><br><span class="line">shenjy@shenjy:~/cp$ ls</span><br><span class="line">d  file.txt</span><br><span class="line">shenjy@shenjy:~/cp$ cd d</span><br><span class="line">shenjy@shenjy:~/cp/d$ ls</span><br><span class="line">file.txt</span><br><span class="line">shenjy@shenjy:~/cp/d$ cat file.txt</span><br><span class="line">hello world</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除空目录</span></span><br><span class="line">rmdir d</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">清屏</span></span><br><span class="line">clear</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">或者</span></span><br><span class="line">ctrl + l # 快捷键</span><br></pre></td></tr></table></figure>
+
+<h3 id="在命令行中，快速到命令行头、尾的案件"><a href="#在命令行中，快速到命令行头、尾的案件" class="headerlink" title="在命令行中，快速到命令行头、尾的案件"></a>在命令行中，快速到命令行头、尾的案件</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>Linux/macOS（Bash）</th>
+<th>Windows CMD</th>
+<th>Windows PowerShell</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>到行首</strong></td>
+<td><code>Ctrl + A</code></td>
+<td><code>Home</code></td>
+<td><code>Home</code></td>
+</tr>
+<tr>
+<td><strong>到行尾</strong></td>
+<td><code>Ctrl + E</code></td>
+<td><code>End</code></td>
+<td><code>End</code></td>
+</tr>
+</tbody></table>
+<h3 id="输入、输出"><a href="#输入、输出" class="headerlink" title="输入、输出"></a>输入、输出</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">shenjy@shenjy:~$ echo hello &gt; hello.txt</span><br><span class="line">shenjy@shenjy:~$ cat hello.txt</span><br><span class="line">hello</span><br><span class="line">shenjy@shenjy:~$ cat &lt; hello.txt</span><br><span class="line">hello</span><br><span class="line">shenjy@shenjy:~$ cat &lt; hello.txt &gt; hello2.txt</span><br><span class="line">shenjy@shenjy:~$ cat hello2.txt</span><br><span class="line">hello</span><br><span class="line">shenjy@shenjy:~$ cat &lt; hello.txt &gt;&gt; hello2.txt</span><br><span class="line">shenjy@shenjy:~$ cat hello2.txt</span><br><span class="line">hello</span><br><span class="line">hello</span><br><span class="line"></span><br><span class="line">shenjy@shenjy:~$ ls -l /</span><br><span class="line">total 2816</span><br><span class="line">lrwxrwxrwx   1 root root       7 May  2  2023 bin -&gt; usr/bin</span><br><span class="line">drwxr-xr-x   2 root root    4096 Apr 18  2022 boot</span><br><span class="line">drwxr-xr-x   3 root root    4096 Mar  3  2025 data</span><br><span class="line">drwxr-xr-x  15 root root    3840 Dec 10 08:45 dev</span><br><span class="line">drwxr-xr-x 108 root root    4096 Dec 10 08:45 etc</span><br><span class="line">drwxr-xr-x   5 root root    4096 Nov 11  2024 home</span><br><span class="line">-rwxr-xr-x   1 root root 2781552 Oct 10 08:22 init</span><br><span class="line">lrwxrwxrwx   1 root root       7 May  2  2023 lib -&gt; usr/lib</span><br><span class="line">lrwxrwxrwx   1 root root       9 May  2  2023 lib32 -&gt; usr/lib32</span><br><span class="line">lrwxrwxrwx   1 root root       9 May  2  2023 lib64 -&gt; usr/lib64</span><br><span class="line">lrwxrwxrwx   1 root root      10 May  2  2023 libx32 -&gt; usr/libx32</span><br><span class="line">drwx------   2 root root   16384 Apr 11  2019 lost+found</span><br><span class="line">drwxr-xr-x   2 root root    4096 May  2  2023 media</span><br><span class="line">drwxr-xr-x  10 root root    4096 Jul 24 10:32 mnt</span><br><span class="line">drwxr-xr-x   4 root root    4096 Feb 12  2025 opt</span><br><span class="line">dr-xr-xr-x 263 root root       0 Dec 10 08:45 proc</span><br><span class="line">drwx------  15 root root    4096 Oct 10 09:51 root</span><br><span class="line">drwxr-xr-x  23 root root     760 Dec 10 09:10 run</span><br><span class="line">lrwxrwxrwx   1 root root       8 May  2  2023 sbin -&gt; usr/sbin</span><br><span class="line">drwxr-xr-x  10 root root    4096 Nov 11  2024 snap</span><br><span class="line">drwxr-xr-x   2 root root    4096 May  2  2023 srv</span><br><span class="line">dr-xr-xr-x  13 root root       0 Dec 10 08:43 sys</span><br><span class="line">drwxrwxrwt   8 root root   12288 Dec 10 10:27 tmp</span><br><span class="line">drwxr-xr-x  14 root root    4096 May  2  2023 usr</span><br><span class="line">drwxr-xr-x  13 root root    4096 May  2  2023 var</span><br><span class="line">drwx------   2 root root    4096 Mar 28  2025 wslGBhABF</span><br><span class="line">drwx------   2 root root    4096 Mar 28  2025 wslJfeeFE</span><br><span class="line">drwx------   2 root root    4096 Mar 28  2025 wslMPeIAF</span><br><span class="line">drwx------   2 root root    4096 Mar 28  2025 wslPfcNpE</span><br><span class="line">drwx------   2 root root    4096 Mar 28  2025 wsleHIMmE</span><br><span class="line">shenjy@shenjy:~$ ls -l / | tail -n1</span><br><span class="line">drwx------   2 root root    4096 Mar 28  2025 wsleHIMmE</span><br><span class="line"></span><br><span class="line">shenjy@shenjy:~$ curl --head --silent qq.com</span><br><span class="line">HTTP/1.1 302 Moved Temporarily</span><br><span class="line">Server: stgw</span><br><span class="line">Date: Wed, 10 Dec 2025 02:39:49 GMT</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Content-Length: 137</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Location: https://www.qq.com/</span><br><span class="line"></span><br><span class="line">shenjy@shenjy:~$ curl --head --silent qq.com |  grep -i content-length</span><br><span class="line">Content-Length: 137</span><br><span class="line">shenjy@shenjy:~$ curl --head --silent qq.com |  grep -i content-length | cut --delimiter=&#x27; &#x27; -f2</span><br><span class="line">137</span><br><span class="line"></span><br><span class="line">shenjy@shenjy:/sys$ ls</span><br><span class="line">block  bus  class  dev  devices  firmware  fs  hypervisor  kernel  module  power</span><br><span class="line">shenjy@shenjy:/sys$ cd class/</span><br><span class="line">shenjy@shenjy:/sys/class$ ls</span><br><span class="line">ata_device   devlink          hwmon             iscsi_transport  phy           sas_end_device  spi_transport</span><br><span class="line">ata_link     dma              ieee80211         mdio_bus         power_supply  sas_expander    thermal</span><br><span class="line">ata_port     drm              input             mem              powercap      sas_host        tpm</span><br><span class="line">backlight    fc_host          intel_scu_ipc     misc             ppp           sas_phy         tpmrm</span><br><span class="line">bdi          fc_remote_ports  iommu             nd               pps           sas_port        tty</span><br><span class="line">block        fc_transport     iscsi_connection  net              ptp           scsi_device     vc</span><br><span class="line">bsg          fc_vports        iscsi_endpoint    nvme             pwm           scsi_disk       virtio-ports</span><br><span class="line">dca          firmware         iscsi_host        nvme-generic     raid_devices  scsi_generic    vtconsole</span><br><span class="line">devcoredump  gpio             iscsi_iface       nvme-subsystem   rtc           scsi_host       wakeup</span><br><span class="line">devfreq      graphics         iscsi_session     pci_bus          sas_device    spi_host        watchdog</span><br></pre></td></tr></table></figure>
+
+<p>在 Linux 系统中，<code>/sys/class</code> 是一个虚拟文件系统（sysfs）的目录，它按设备功能分类显示了内核注册的设备、驱动和子系统信息。以下是该路径下常见内容的概述：</p>
+<hr>
+<h3 id="主要子目录分类"><a href="#主要子目录分类" class="headerlink" title="主要子目录分类"></a><strong>主要子目录分类</strong></h3><p><code>/sys/class/</code> 下的子目录通常是按设备类型（功能）分类的，例如：</p>
+<ol>
+<li><p><strong>块设备</strong></p>
+<ul>
+<li><code>block/</code>：系统的所有块设备（如硬盘、分区），例如 <code>sda</code>, <code>sda1</code>, <code>nvme0n1</code> 等。<ul>
+<li>子目录包含设备属性（如 <code>size</code>、<code>stat</code>）、所属的物理设备链接（如 <code>../devices/pci0000:00/...</code>）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>输入设备</strong></p>
+<ul>
+<li><code>input/</code>：输入设备（如键盘、鼠标、触摸板），子目录通常以 <code>inputX</code>（如 <code>input0</code>）命名。<ul>
+<li>包含设备信息（如 <code>name</code>, <code>id</code>）和事件接口链接（如 <code>eventX</code>）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>网络接口</strong></p>
+<ul>
+<li><code>net/</code>：网络接口（如 <code>eth0</code>, <code>wlan0</code>）。<ul>
+<li>包含接口配置（如 <code>mtu</code>、<code>statistics</code>）、所属驱动信息等。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>图形设备</strong></p>
+<ul>
+<li><code>drm/</code>：DRM（Direct Rendering Manager）设备，如显卡（<code>card0</code>）。</li>
+<li><code>graphics/</code>：其他图形相关设备（如 <code>fbcon</code>）。</li>
+</ul>
+</li>
+<li><p><strong>声卡和音频设备</strong></p>
+<ul>
+<li><code>sound/</code>：声卡设备（如 <code>card0</code>），包含编解码器和控制接口。</li>
+</ul>
+</li>
+<li><p><strong>串口和终端</strong></p>
+<ul>
+<li><code>tty/</code>：串口和虚拟终端设备（如 <code>ttyS0</code>, <code>ttyUSB0</code>）。</li>
+<li><code>vtconsole/</code>：虚拟终端控制台。</li>
+</ul>
+</li>
+<li><p><strong>电源和电池</strong></p>
+<ul>
+<li><code>power_supply/</code>：电源信息（如 <code>BAT0</code> 电池或 <code>AC</code> 适配器）。</li>
+<li>包含电池状态（<code>status</code>）、容量（<code>capacity</code>）等。</li>
+</ul>
+</li>
+<li><p><strong>LED和背光</strong></p>
+<ul>
+<li><code>leds/</code>：硬件 LED 控制（如键盘背光 <code>phy0-led</code>）。</li>
+<li><code>backlight/</code>：屏幕背光控制（如 <code>intel_backlight</code>）。</li>
+</ul>
+</li>
+<li><p><strong>内存管理</strong></p>
+<ul>
+<li><code>mem/</code>：内存设备（如 <code>mem</code>, <code>kmem</code>）。</li>
+<li><code>memory/</code>：物理内存信息（如 <code>memory0</code>）。</li>
+</ul>
+</li>
+<li><p><strong>其他常见设备</strong></p>
+<ul>
+<li><code>thermal/</code>：温度传感器和冷却设备。</li>
+<li><code>watchdog/</code>：硬件看门狗定时器。</li>
+<li><code>scsi_device/</code> 和 <code>scsi_generic/</code>：SCSI 设备。</li>
+<li><code>rtc/</code>：实时时钟（如 <code>rtc0</code>）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="目录结构特点"><a href="#目录结构特点" class="headerlink" title="目录结构特点"></a><strong>目录结构特点</strong></h3><ul>
+<li><strong>符号链接</strong>：每个子目录通常是符号链接，指向 <code>/sys/devices/</code> 下的具体设备路径。<ul>
+<li>例如：<code>/sys/class/net/eth0</code> 可能链接到 <code>/sys/devices/pci0000:00/.../net/eth0</code>。</li>
+</ul>
+</li>
+<li><strong>统一接口</strong>：每个设备的子目录包含标准文件（如 <code>uevent</code>、<code>dev</code>）和设备的特定属性，用户可通过读写这些文件与内核交互。</li>
+</ul>
+<hr>
+<h3 id="实际示例"><a href="#实际示例" class="headerlink" title="实际示例"></a><strong>实际示例</strong></h3><p>查看 <code>/sys/class/net/</code> 下的网络接口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /sys/class/net/</span><br><span class="line"><span class="comment"># 输出可能包含: eth0  lo  wlan0</span></span><br></pre></td></tr></table></figure>
+
+<p>查看键盘输入设备信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /sys/class/input/input0/</span><br><span class="line"><span class="comment"># 可能包含: name  id  capabilities</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h3><ul>
+<li><code>sysfs</code> 是内核的实时视图，文件内容动态生成，不可直接修改（除非明确允许）。</li>
+<li>不同系统（或硬件配置）下，<code>/sys/class</code> 的内容会有所不同。</li>
+</ul>
+<p>如果需要具体设备的信息，可以进一步探索对应子目录中的文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> 500 &gt; brightness</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> su</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">echo</span> 500 &gt; brightness</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> 1060 &gt; <span class="built_in">sudo</span> <span class="built_in">tee</span> brightness</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Lecture-2-Shell-Tools-and-Scripting"><a href="#Lecture-2-Shell-Tools-and-Scripting" class="headerlink" title="Lecture 2: Shell Tools and Scripting"></a>Lecture 2: Shell Tools and Scripting</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">shenjy@shenjy:~$ foo=bar</span><br><span class="line">shenjy@shenjy:~$ echo $foo</span><br><span class="line">bar</span><br><span class="line">shenjy@shenjy:~$ echo &quot;hello&quot;</span><br><span class="line">hello</span><br><span class="line">shenjy@shenjy:~$ echo &#x27;world&#x27;</span><br><span class="line">world</span><br><span class="line">shenjy@shenjy:~$ echo &quot;hello, $foo&quot;</span><br><span class="line">hello, bar</span><br><span class="line">shenjy@shenjy:~$ echo &#x27;hello, $foo&#x27;</span><br><span class="line">hello, $foo</span><br></pre></td></tr></table></figure>
+
+<p><code>mcd.sh</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">mcd() &#123;</span><br><span class="line">   mkdir -p &quot;$1&quot;</span><br><span class="line">   cd &quot;$1&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来执行下面的命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">source mcd.sh</span><br><span class="line">mcd test</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="variable">$0</span>-<span class="variable">$9</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>**<code>$0</code>**：当前脚本或shell的名称。</p>
+</li>
+<li><p>**<code>$1</code> ~ <code>$9</code>**：脚本或函数的前9个参数，按顺序对应。</p>
+</li>
+<li><p>超过9个的参数需要用 <code>$&#123;10&#125;</code>、<code>$&#123;11&#125;</code> 的形式引用。</p>
+</li>
+<li><p><strong><code>$?</code></strong>: 获取上一个命令的错误代码</p>
+</li>
+<li><p><strong><code>$_</code></strong>: 获取最后一个参数</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shenjy@shenjy:~/sh/ms$ ls</span><br><span class="line">mcd.sh  puma</span><br><span class="line">shenjy@shenjy:~/sh/ms$ mkdir test</span><br><span class="line">shenjy@shenjy:~/sh/ms$ cd $_</span><br><span class="line">shenjy@shenjy:~/sh/ms/test$ echo &quot;Hello&quot;</span><br><span class="line">Hello</span><br><span class="line">shenjy@shenjy:~/sh/ms/test$ echo $?</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-的作用"><a href="#1-的作用" class="headerlink" title="1. $? 的作用"></a><strong>1. <code>$?</code> 的作用</strong></h3><ul>
+<li><strong>含义</strong>：<code>$?</code> 保存上一个命令/脚本/函数的退出状态。</li>
+<li><strong>返回值范围</strong>：<ul>
+<li><strong>0</strong>：表示成功（没有错误）。</li>
+<li><strong>非0</strong>：表示失败（具体数值通常由程序定义，不同值代表不同的错误原因）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-的常见返回值及含义"><a href="#2-的常见返回值及含义" class="headerlink" title="2. $? 的常见返回值及含义"></a><strong>2. <code>$?</code> 的常见返回值及含义</strong></h3><table>
+<thead>
+<tr>
+<th>返回值</th>
+<th>含义</th>
+<th>示例命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0</code></td>
+<td>成功</td>
+<td><code>true; echo $?</code> → 0</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>一般错误（未指定具体原因）</td>
+<td><code>false; echo $?</code> → 1</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>命令语法错误</td>
+<td><code>ls --invalid-option</code></td>
+</tr>
+<tr>
+<td><code>126</code></td>
+<td>命令不可执行（权限不足）</td>
+<td><code>./no-permission.sh</code></td>
+</tr>
+<tr>
+<td><code>127</code></td>
+<td>命令未找到</td>
+<td><code>nonexistent-command</code></td>
+</tr>
+<tr>
+<td><code>130</code></td>
+<td>命令被终止（如Ctrl+C）</td>
+<td>按下<code>Ctrl+C</code>中断</td>
+</tr>
+<tr>
+<td><code>137</code></td>
+<td>进程被强制终止（<code>kill -9</code>）</td>
+<td><code>kill -9 &lt;PID&gt;</code></td>
+</tr>
+<tr>
+<td><code>255</code></td>
+<td>退出状态超出范围（&gt;255会被取模）</td>
+<td>某些程序自定义错误</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>注意</strong>：非0值的具体含义取决于程序，可通过 <code>man</code> 手册或程序文档查询（如 <code>grep</code> 返回 <code>1</code> 表示未匹配到内容，不是错误）。</p>
+</blockquote>
+<hr>
+<h3 id="3-类似的Shell特殊变量"><a href="#3-类似的Shell特殊变量" class="headerlink" title="3. 类似的Shell特殊变量"></a><strong>3. 类似的Shell特殊变量</strong></h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>$0</code></td>
+<td>当前脚本或Shell的名称。</td>
+</tr>
+<tr>
+<td><code>$1</code>-<code>$9</code></td>
+<td>脚本或函数的第1-9个参数。</td>
+</tr>
+<tr>
+<td><code>$#</code></td>
+<td>传递给脚本/函数的参数个数。</td>
+</tr>
+<tr>
+<td><code>$@</code></td>
+<td>所有参数的列表（每个参数作为独立字符串）。</td>
+</tr>
+<tr>
+<td><code>$*</code></td>
+<td>所有参数的列表（合并为单个字符串）。</td>
+</tr>
+<tr>
+<td><code>$$</code></td>
+<td>当前Shell的进程ID（PID）。</td>
+</tr>
+<tr>
+<td><code>$!</code></td>
+<td>最后一个后台运行的进程的PID。</td>
+</tr>
+<tr>
+<td><code>$_</code></td>
+<td>上一个命令的最后一个参数。</td>
+</tr>
+<tr>
+<td><code>$-</code></td>
+<td>当前Shell的选项标志（如 <code>set -x</code> 会包含 <code>x</code>）。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="4-使用示例"><a href="#4-使用示例" class="headerlink" title="4. 使用示例"></a><strong>4. 使用示例</strong></h3><h4 id="检查命令是否成功："><a href="#检查命令是否成功：" class="headerlink" title="检查命令是否成功："></a>检查命令是否成功：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /valid/path</span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;成功&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;失败&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h4 id="简化为直接判断："><a href="#简化为直接判断：" class="headerlink" title="简化为直接判断："></a>简化为直接判断：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">ls</span> /valid/path; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;成功&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-注意事项"><a href="#5-注意事项" class="headerlink" title="5. 注意事项"></a><strong>5. 注意事项</strong></h3><ul>
+<li>某些命令（如 <code>grep</code>）会 intentionally 返回非0值表示逻辑失败（如未找到匹配），而非运行时错误。</li>
+<li>自定义脚本中，应通过 <code>exit &lt;数值&gt;</code> 返回明确的退出状态。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">shenjy@shenjy:~/sh/ms$ grep foobar mcd.sh</span><br><span class="line">shenjy@shenjy:~/sh/ms$ echo $?</span><br><span class="line">1</span><br><span class="line">shenjy@shenjy:~/sh/ms$ true</span><br><span class="line">shenjy@shenjy:~/sh/ms$ echo $?</span><br><span class="line">0</span><br><span class="line">shenjy@shenjy:~/sh/ms$ false</span><br><span class="line">shenjy@shenjy:~/sh/ms$ echo $?</span><br><span class="line">1</span><br><span class="line">shenjy@shenjy:~/sh/ms$ false || echo &quot;Oops fail&quot;</span><br><span class="line">Oops fail</span><br><span class="line">shenjy@shenjy:~/sh/ms$ echo $?</span><br><span class="line">0</span><br><span class="line">shenjy@shenjy:~/sh/ms$ true || echo &quot;Will be not be printed.&quot;</span><br><span class="line">shenjy@shenjy:~/sh/ms$</span><br><span class="line">shenjy@shenjy:~/sh/ms$ true &amp;&amp; echo &quot;Things went well&quot;</span><br><span class="line">Things went well</span><br><span class="line">shenjy@shenjy:~/sh/ms$ false &amp;&amp; echo &quot;This will not print&quot;</span><br><span class="line">shenjy@shenjy:~/sh/ms$ false; echo &quot;This will always print&quot;</span><br><span class="line">This will always print</span><br><span class="line"></span><br><span class="line">shenjy@shenjy:~/sh/ms$ foo=$(pwd)</span><br><span class="line">shenjy@shenjy:~/sh/ms$ echo $foo</span><br><span class="line">/home/shenjy/sh/ms</span><br><span class="line">shenjy@shenjy:~/sh/ms$ echo &quot;we are in $(pwd)&quot;</span><br><span class="line">we are in /home/shenjy/sh/ms</span><br><span class="line">shenjy@shenjy:~/sh/ms$ cat &lt;(ls) &lt;(ls ..)</span><br><span class="line">mcd.sh</span><br><span class="line">puma</span><br><span class="line">test</span><br><span class="line">demo2.sh</span><br><span class="line">install.sh</span><br><span class="line">ms</span><br><span class="line">print_all_process_opened_all_obj.sh</span><br><span class="line">sys.sh</span><br><span class="line">sysinfo.sh</span><br><span class="line">warp.sh</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/blog/">首页</a></li>
+         
+          <li><a href="/blog/about/">关于</a></li>
+         
+          <li><a href="/blog/archives/">归档</a></li>
+         
+          <li><a href="/blog/categories/">分类</a></li>
+         
+          <li><a href="/blog/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-1-Course-Overview-the-Shell"><span class="toc-number">1.</span> <span class="toc-text">Lecture 1 Course Overview + the Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E7%90%86%E8%A7%A3%E5%91%BD%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">初始理解命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%96%9C%E6%9D%A0-%E7%9A%84%E5%87%BA%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">反斜杠 \ 的出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%9C%A8-shell-%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">反斜杠在 shell 中的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%88%B0-echo-hello-world"><span class="toc-number">1.4.</span> <span class="toc-text">应用到 echo hello\ world</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E9%AA%8C%E8%AF%81"><span class="toc-number">1.5.</span> <span class="toc-text">实验验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%96%9C%E6%9D%A0%E7%9A%84%E5%85%B6%E4%BB%96%E7%94%A8%E9%80%94"><span class="toc-number">1.6.</span> <span class="toc-text">反斜杠的其他用途</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5"><span class="toc-number">1.7.</span> <span class="toc-text">特殊情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">1.8.</span> <span class="toc-text">结论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E7%AD%94%E6%A1%88"><span class="toc-number">1.9.</span> <span class="toc-text">最终答案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A7%A3%E5%86%85%E5%AE%B9%EF%BC%9A"><span class="toc-number">1.10.</span> <span class="toc-text">分解内容：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.11.</span> <span class="toc-text">总结：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A%E6%9D%83%E9%99%90%E7%9A%84%E6%95%B0%E5%AD%97%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.12.</span> <span class="toc-text">补充：权限的数字表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%EF%BC%8C%E5%BF%AB%E9%80%9F%E5%88%B0%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%A4%B4%E3%80%81%E5%B0%BE%E7%9A%84%E6%A1%88%E4%BB%B6"><span class="toc-number">1.13.</span> <span class="toc-text">在命令行中，快速到命令行头、尾的案件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E3%80%81%E8%BE%93%E5%87%BA"><span class="toc-number">1.14.</span> <span class="toc-text">输入、输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%AD%90%E7%9B%AE%E5%BD%95%E5%88%86%E7%B1%BB"><span class="toc-number">1.15.</span> <span class="toc-text">主要子目录分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.16.</span> <span class="toc-text">目录结构特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.17.</span> <span class="toc-text">实际示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.18.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-2-Shell-Tools-and-Scripting"><span class="toc-number">2.</span> <span class="toc-text">Lecture 2: Shell Tools and Scripting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text">1. $? 的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9A%84%E5%B8%B8%E8%A7%81%E8%BF%94%E5%9B%9E%E5%80%BC%E5%8F%8A%E5%90%AB%E4%B9%89"><span class="toc-number">2.2.</span> <span class="toc-text">2. $? 的常见返回值及含义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%B1%BB%E4%BC%BC%E7%9A%84Shell%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F"><span class="toc-number">2.3.</span> <span class="toc-text">3. 类似的Shell特殊变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.4.</span> <span class="toc-text">4. 使用示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E5%91%BD%E4%BB%A4%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F%EF%BC%9A"><span class="toc-number">2.4.1.</span> <span class="toc-text">检查命令是否成功：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%8C%96%E4%B8%BA%E7%9B%B4%E6%8E%A5%E5%88%A4%E6%96%AD%EF%BC%9A"><span class="toc-number">2.4.2.</span> <span class="toc-text">简化为直接判断：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.5.</span> <span class="toc-text">5. 注意事项</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&text=Missing Semester of Your CS Education"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&is_video=false&description=Missing Semester of Your CS Education"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Missing Semester of Your CS Education&body=Check out this article: https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&title=Missing Semester of Your CS Education"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&name=Missing Semester of Your CS Education&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/12/10/MissingSemesterNote/&t=Missing Semester of Your CS Education"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2025 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/blog/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/shenjy06"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/blog/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'shenjy06/blog';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
