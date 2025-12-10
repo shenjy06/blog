@@ -701,3 +701,97 @@ sysinfo.sh
 warp.sh
 ```
 
+`example.sh` 脚本
+
+```shell
+#!/bin/bash
+echo "Starting program at $(date)" # Date will be substitutes
+echo "Running program $0 with $# arguments with pid $$"
+
+for file in "$@"; do
+    grep foobar "$file" > /dev/null 2> /dev/null
+    # when pattern is not found, grep has exit status
+    # We redirect STDOUT and STDERR to a null register
+    if [ "$?" -ne 0 ]; then
+        echo "File $file does not have any foobar, adding one"
+        echo "# foobar" >> "$file"
+    fi
+done
+```
+
+shell 脚本中 `if` 的语法
+
+In Linux shell scripting, you can use conditional logic with `if`, `elif` (else if), and `else` statements. Here's how to structure them:
+
+### Basic Syntax
+
+```bash
+if [ condition ]; then
+    # commands to execute if condition is true
+elif [ another_condition ]; then
+    # commands to execute if another_condition is true
+else
+    # commands to execute if none of the above conditions are true
+fi
+```
+
+### Example
+
+```bash
+#!/bin/bash
+
+read -p "Enter a number: " num
+
+if [ $num -gt 0 ]; then
+    echo "The number is positive."
+elif [ $num -lt 0 ]; then
+    echo "The number is negative."
+else
+    echo "The number is zero."
+fi
+```
+
+### Important Notes:
+
+1. Spaces are required around brackets and operators:
+   - Correct: `[ $var -eq 10 ]`
+   - Incorrect: `[$var-eq10]`
+
+2. Common comparison operators:
+   - Numeric:
+     - `-eq` (equal)
+     - `-ne` (not equal)
+     - `-gt` (greater than)
+     - `-lt` (less than)
+     - `-ge` (greater than or equal)
+     - `-le` (less than or equal)
+   - String:
+     - `=` (equal)
+     - `!=` (not equal)
+     - `-z` (string is empty)
+     - `-n` (string is not empty)
+
+3. For file tests:
+   - `-f` (file exists)
+   - `-d` (directory exists)
+   - `-r` (readable)
+   - `-w` (writable)
+   - `-x` (executable)
+
+### Advanced Example with Multiple Conditions
+
+```bash
+#!/bin/bash
+
+file="/path/to/file"
+
+if [ -f "$file" ] && [ -r "$file" ]; then
+    echo "File exists and is readable."
+elif [ -d "$file" ]; then
+    echo "This is a directory, not a file."
+elif [ ! -e "$file" ]; then
+    echo "File does not exist."
+else
+    echo "File exists but is not readable."
+fi
+```
