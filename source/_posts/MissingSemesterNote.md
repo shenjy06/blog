@@ -819,3 +819,571 @@ else
     echo "File exists but is not readable."
 fi
 ```
+
+命令行
+
+~~~shell
+shenjy@shenjy:~/images/grandfather$ ls
+IMG_0684.JPG  IMG_0685.JPG
+shenjy@shenjy:~/images/grandfather$ convert IMG_0684.JPG image.png
+shenjy@shenjy:~/images/grandfather$ ls
+IMG_0684.JPG  IMG_0685.JPG  image.png
+shenjy@shenjy:~/images/grandfather$ mkdir foo bar
+shenjy@shenjy:~/images/grandfather$ touch {foo,bar}/{a..j}
+shenjy@shenjy:~/images/grandfather$ ls
+IMG_0684.JPG  IMG_0685.JPG  bar  foo  image.png
+shenjy@shenjy:~/images/grandfather$ cd bar/
+shenjy@shenjy:~/images/grandfather/bar$ ls
+a  b  c  d  e  f  g  h  i  j
+shenjy@shenjy:~/images/grandfather/bar$ cd ..
+shenjy@shenjy:~/images/grandfather$ ls
+IMG_0684.JPG  IMG_0685.JPG  bar  foo  image.png
+shenjy@shenjy:~/images/grandfather$ cd foo/
+shenjy@shenjy:~/images/grandfather/foo$ ls
+a  b  c  d  e  f  g  h  i  j
+shenjy@shenjy:~/images/grandfather$ touch foo/x bar/y
+shenjy@shenjy:~/images/grandfather$ diff <(ls foo) <(ls bar)
+11c11
+< x
+---
+> y
+
+# script.py
+#!/usr/bin/python3 # shebang
+#!/usr/bin/env python3 # 推荐使用
+import sys
+for arg in reversed(sys.argv[1:]):
+    print(arg)
+    
+shenjy@shenjy:~/sh/ms$ vim script.py
+shenjy@shenjy:~/sh/ms$ ls
+example.sh  mcd.sh  script.py
+shenjy@shenjy:~/sh/ms$ chmod +x script.py
+shenjy@shenjy:~/sh/ms$ ls
+example.sh  mcd.sh  script.py
+shenjy@shenjy:~/sh/ms$ ./script.py 1 2 3 4
+-bash: ./script.py: /usr/local/bin/python3: bad interpreter: No such file or directory
+shenjy@shenjy:~/sh/ms$ which python
+shenjy@shenjy:~/sh/ms$ which python3
+/usr/bin/python3
+shenjy@shenjy:~/sh/ms$ vim script.py
+shenjy@shenjy:~/sh/ms$ ./script.py 1 2 3 4
+4
+3
+2
+1
+
+shenjy@shenjy:~/sh/ms$ shellcheck mcd.sh
+
+In mcd.sh line 4:
+   cd "$1"
+   ^-----^ SC2164 (warning): Use 'cd ... || exit' or 'cd ... || return' in case cd fails.
+
+Did you mean:
+   cd "$1" || exit
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2164 -- Use 'cd ... || exit' or 'cd ... |...
+shenjy@shenjy:~/sh/ms$ man rg
+No manual entry for rg
+shenjy@shenjy:~/sh/ms$ rg
+Command 'rg' not found, but can be installed with:
+sudo snap install ripgrep  # version 12.1.0, or
+sudo apt  install ripgrep  # version 13.0.0-2ubuntu0.1
+See 'snap info ripgrep' for additional versions.
+shenjy@shenjy:~/sh/ms$ sudo apt install ripgrep
+shenjy@shenjy:~/sh/ms$ man rg
+shenjy@shenjy:~/sh/ms$ tldr convert
+
+  convert
+
+  This command is an alias of `magick convert`.
+  Note: This alias is deprecated since ImageMagick 7. It has been replaced by `magick`.
+  Use `magick convert` if you need to use the old tool in versions 7+.
+
+  - View documentation for the original command:
+    tldr magick convert
+
+shenjy@shenjy:~/sh/ms$ ag
+Entering AI mode. Type your prompt (or 'exit' to quit):
+prompt> 请使用 tldr 的方式介绍下 convert 命令。
+
+DeepSeek-v3:
+`convert` 是 ImageMagick 工具集的一部分，用于图像格式转换和处理。
+
+**主要功能：**
+- 格式转换（如 JPEG → PNG）
+- 调整大小、旋转、裁剪图片
+- 添加滤镜、水印、文本等效果
+
+**基本用法：**
+```bash
+convert 输入文件 [选项] 输出文件
+```
+
+**常用示例：**
+- `convert image.jpg image.png` - 转换格式
+- `convert image.jpg -resize 50% small.jpg` - 缩放图片
+- `convert image.jpg -rotate 90 rotated.jpg` - 旋转图片
+- `convert image.jpg -quality 85 compressed.jpg` - 调整质量
+- `convert *.jpg merged.pdf` - 合并多张图片为 PDF
+~~~
+
+> 这里要强烈推荐这个开源项目，希望你可以使用它来提高你的学习效率，同时也可以一起来共同开发它，为其添加更加丰富的 feature。项目源码：https://github.com/shenjy712/ag
+
+~~~shell
+shenjy@shenjy:~/sh/ms$ tldr ffmpeg
+
+  ffmpeg
+
+  Video conversion tool.
+  See also: `gst-launch-1.0`.
+  More information: https://ffmpeg.org/ffmpeg.html#Options.
+
+  - Extract the sound from a video and save it as MP3:
+    ffmpeg -i path/to/video.mp4 -vn path/to/sound.mp3
+
+  - Transcode a FLAC file to Red Book CD format (44100kHz, 16bit):
+    ffmpeg -i path/to/input_audio.flac -ar 44100 -sample_fmt s16 path/to/output_audio.wav
+
+  - Save a video as GIF, scaling the height to 1000px and setting framerate to 15:
+    ffmpeg -i path/to/video.mp4 -filter:v 'scale=-1:1000' -r 15 path/to/output.gif
+
+  - Combine numbered images (frame_1.jpg, frame_2.jpg, etc) into a video or GIF:
+    ffmpeg -i path/to/frame_%d.jpg -f image2 video.mpg|video.gif
+
+  - Trim a video from a given start time mm:ss to an end time mm2:ss2 (omit the -to flag to trim till the end):
+    ffmpeg -i path/to/input_video.mp4 -ss mm:ss -to mm2:ss2 -codec copy path/to/output_video.mp4
+
+  - Convert AVI video to MP4. AAC Audio @ 128kbit, h264 Video @ CRF 23:
+    ffmpeg -i path/to/input_video.avi -codec:a aac -b:a 128k -codec:v libx264 -crf 23 path/to/output_video.mp4
+
+  - Remux MKV video to MP4 without re-encoding audio or video streams:
+    ffmpeg -i path/to/input_video.mkv -codec copy path/to/output_video.mp4
+
+  - Convert MP4 video to VP9 codec. For the best quality, use a CRF value (recommended range 15-35) and -b:v MUST be 0:
+    ffmpeg -i path/to/input_video.mp4 -codec:v libvpx-vp9 -crf 30 -b:v 0 -codec:a libopus -vbr on -threads number_of_threads path/to/output_video.webm
+
+shenjy@shenjy:~/sh/ms$ tldr tar
+
+  tar
+
+  Archiving utility.
+  Often combined with a compression method, such as `gzip` or `bzip2`.
+  More information: https://www.gnu.org/software/tar/manual/tar.html.
+
+  - [c]reate an archive and write it to a [f]ile:
+    tar cf path/to/target.tar path/to/file1 path/to/file2 ...
+
+  - [c]reate a g[z]ipped archive and write it to a [f]ile:
+    tar czf path/to/target.tar.gz path/to/file1 path/to/file2 ...
+
+  - [c]reate a g[z]ipped (compressed) archive from a directory using relative paths:
+    tar czf path/to/target.tar.gz --directory path/to/directory .
+
+  - E[x]tract a (compressed) archive [f]ile into the current directory [v]erbosely:
+    tar xvf path/to/source.tar[.gz|.bz2|.xz]
+
+  - E[x]tract a (compressed) archive [f]ile into the target directory:
+    tar xf path/to/source.tar[.gz|.bz2|.xz] --directory path/to/directory
+
+  - [c]reate a compressed archive and write it to a [f]ile, using the file extension to [a]utomatically determine the compression program:
+    tar caf path/to/target.tar.xz path/to/file1 path/to/file2 ...
+
+  - Lis[t] the contents of a tar [f]ile [v]erbosely:
+    tar tvf path/to/source.tar
+
+  - E[x]tract files matching a pattern from an archive [f]ile:
+    tar xf path/to/source.tar --wildcards "*.html"
+shenjy@shenjy:~/sh/ms$ ag
+Entering AI mode. Type your prompt (or 'exit' to quit):
+prompt> please introduce find command with tldr pattern.
+
+DeepSeek-v3:
+Here's a `tldr`-style introduction to the `find` command:
+
+```bash
+# find
+# Search for files and directories in a directory hierarchy.
+
+# Find files by name (case-sensitive):
+find /path/to/dir -name "*.txt"
+
+# Find files by name (case-insensitive):
+find /path/to/dir -iname "*.txt"
+
+# Find directories:
+find /path/to/dir -type d
+
+# Find regular files:
+find /path/to/dir -type f
+
+# Find files modified in the last 7 days:
+find /path/to/dir -mtime -7
+
+# Find files larger than 10MB:
+find /path/to/dir -size +10M
+
+# Find and delete files (use with caution!):
+find /path/to/dir -name "*.tmp" -delete
+
+# Find and execute a command on each file ({} represents the filename):
+find /path/to/dir -name "*.jpg" -exec chmod 644 {} \;
+
+# Find files owned by a specific user:
+find /path/to/dir -user username
+```
+
+Key options:
+- `-name`: Search by filename (case-sensitive)
+- `-iname`: Search by filename (case-insensitive)
+- `-type`: Filter by type (f=file, d=directory, l=symlink)
+- `-mtime`: Filter by modification time
+- `-size`: Filter by size
+- `-exec`: Execute command on found files
+- `-delete`: Delete matching files
+
+The `find` command is incredibly powerful for searching and operating on files. For more details, check `man find`.
+
+shenjy@shenjy:~$ find . -name bar -type d
+find: ‘./docker/vectordb/volumes/milvus/etcd’: Permission denied
+./.nvm/test/fast/Unit tests/mocks/project_dirs/inside-n_m-nested-pkg/node_modules/foo/bar
+./.nvm/test/fast/Unit tests/mocks/project_dirs/inside-n_m-nested/node_modules/foo/bar
+find: ‘./neo4j/import’: Permission denied
+./qwen-code/node_modules/requireindex/test/lib/bar
+./images/grandfather/bar
+
+shenjy@shenjy:~$ find . -path '**/*.sh' -type f
+# 找到匹配的文件并删除
+shenjy@shenjy:~$ find . -name "*.tmp" -exec rm {} \;
+find: ‘./docker/vectordb/volumes/milvus/etcd’: Permission denied
+find: ‘./neo4j/import’: Permission denied
+
+Entering AI mode. Type your prompt (or 'exit' to quit):
+prompt> introduce fd command in linux.
+
+DeepSeek-v3:
+# The `fd` Command in Linux
+
+`fd` is a modern, user-friendly alternative to the traditional `find` command in Linux/Unix systems. It's designed to be faster and easier to use while offering sensible defaults.
+
+## Key Features of `fd`
+
+1. **Colorized output**: Results are displayed with syntax highlighting
+2. **Fast search**: Uses parallelism for quicker results
+3. **Smart case**: Case-insensitive by default, switches to case-sensitive if uppercase is used
+4. **Ignores hidden files and `.gitignore` by default**: More focused results
+5. **Simpler syntax**: Easier to remember commands
+
+## Basic Usage
+
+```bash
+fd PATTERN [PATH]
+```
+
+## Common Options
+
+| Option | Description |
+|--------|-------------|
+| `-H`/`--hidden` | Include hidden files/directories |
+| `-I`/`--no-ignore` | Don't respect `.gitignore` files |
+| `-t`/`--type` | Filter by type (`f`=file, `d`=directory, `l`=symlink) |
+| `-e`/`--extension` | Filter by file extension |
+| `-E`/`--exclude` | Exclude files/directories matching pattern |
+| `-L`/`--follow` | Follow symbolic links |
+| `-p`/`--full-path` | Search the full path (not just filename) |
+
+## Examples
+
+1. Find all Markdown files:
+   ```bash
+   fd '.md$'
+   ```
+
+2. Find Python files ignoring `.gitignore`:
+   ```bash
+   fd -I '.py$'
+   ```
+
+3. Find directories named 'config':
+   ```bash
+   fd -t d '^config$'
+   ```
+
+4. Find JPEG images:
+   ```bash
+   fd -e jpg -e jpeg
+   ```
+
+5. Case-sensitive search for 'README':
+   ```bash
+   fd 'README'
+   ```
+
+## Installation
+
+Most Linux distributions don't include `fd` by default (it's often packaged as `fd-find`). Installation options:
+
+- Ubuntu/Debian: `sudo apt install fd-find`
+- Arch Linux: `sudo pacman -S fd`
+- Fedora: `sudo dnf install fd-find`
+- Via cargo (Rust): `cargo install fd-find`
+
+Note: The command is typically `fdfind` on Debian/Ubuntu systems to avoid conflict with another package. You can alias it with `alias fd=fdfind`.
+
+prompt> introduce fd command with tldr pattern.
+
+DeepSeek-v3:
+Here's the `fd` command introduced in the `tldr` pattern:
+
+```markdown
+# fd
+
+A simple, fast, and user-friendly alternative to `find`.
+More information: <https://github.com/sharkdp/fd>.
+
+- Find files matching a specific pattern in the current directory:
+  `fd "{{pattern}}"`
+
+- Find files with a specific extension (e.g., `.txt`):
+  `fd --extension "{{txt}}"`
+
+- Find files in a specific directory (e.g., `/tmp`):
+  `fd "{{pattern}}" {{/tmp}}`
+
+- Include hidden and ignored files in the search:
+  `fd --hidden --no-ignore "{{pattern}}"`
+
+- Execute a command on each search result (e.g., `ls -l`):
+  ` fd "{{pattern}}" --exec {{ls -l}}`
+
+- Search for files matching a case-insensitive pattern (e.g., `PATTERN`):
+  `fd --ignore-case "{{pattern}}"`
+
+- Exclude specific files or directories from the search:
+  `fd "{{pattern}}" --exclude "{{*.o}}" --exclude "{{/path/to/dir}}"`
+
+- Show version information:
+  `fd --version`
+```
+
+Key features highlighted:
+- Simpler syntax than traditional `find`
+- Colorized output by default
+- Fast due to parallel directory traversal
+- Sensible defaults (ignores hidden files and gitignored files by default)
+
+~~~
+
+`locate` 是一个基于数据库的快速文件查找工具，它通过预先建立的索引来搜索文件，速度比 `find` 快很多。以下是详细使用方法：
+
+---
+
+### **一、locate 基本用法**
+
+**1. 安装 locate**
+
+```bash
+# Debian/Ubuntu
+sudo apt install mlocate
+
+# CentOS/RHEL
+sudo yum install mlocate
+
+# Arch Linux
+sudo pacman -S mlocate
+```
+
+### **2. 基本搜索语法**
+
+```bash
+locate [选项] <文件名或模式>
+```
+
+### **3. 常用示例**
+```bash
+# 搜索包含 "passwd" 的文件
+locate passwd
+
+# 搜索以 ".conf" 结尾的配置文件
+locate "*.conf"
+
+# 搜索特定路径下的文件
+locate /etc/*.conf
+
+# 精确搜索（使用 -b 只匹配文件名中的 basename）
+locate -b "nginx.conf"
+```
+
+---
+
+### **二、常用选项**
+
+| **选项** | **作用**         | **示例**               |
+| -------- | ---------------- | ---------------------- |
+| `-i`     | 忽略大小写       | `locate -i README`     |
+| `-c`     | 只显示匹配数量   | `locate -c "*.log"`    |
+| `-l N`   | 限制输出数量     | `locate -l 10 "*.txt"` |
+| `-r`     | 使用正则表达式   | `locate -r "\.conf$"`  |
+| `-e`     | 只显示存在的文件 | `locate -e "tempfile"` |
+| `-S`     | 显示数据库统计   | `locate -S`            |
+
+### **示例组合**
+```bash
+# 忽略大小写，限制显示5个结果
+locate -i -l 5 "readme"
+
+# 统计系统中PDF文件的数量
+locate -c "*.pdf"
+```
+
+---
+
+### **三、更新 locate 数据库**
+
+### **1. 手动更新数据库**
+```bash
+# 更新数据库（需要 root 权限）
+sudo updatedb
+```
+**更新过程可能需要几秒到几分钟**，取决于文件系统大小。
+
+### **2. 自动更新机制**
+- 大多数 Linux 发行版会**每天自动更新一次** locate 数据库
+- 通过 `cron` 任务定时执行，通常位于：
+  ```bash
+  # 查看自动更新任务
+  cat /etc/cron.daily/mlocate  # 或 /etc/cron.daily/updatedb
+  ```
+
+### **3. 更新选项**
+```bash
+# 查看更新过程的详细信息
+sudo updatedb -v
+
+# 排除特定目录（如不索引临时文件）
+sudo updatedb --prunepaths="/tmp /var/tmp"
+
+# 只索引特定文件系统
+sudo updatedb --localpaths="/home /etc"
+```
+
+---
+
+### **四、数据库位置和信息**
+```bash
+# locate 数据库默认位置
+ls -lh /var/lib/mlocate/mlocate.db
+
+# 查看数据库统计信息
+sudo updatedb --stats
+# 或
+locate -S
+```
+**输出示例**：
+```
+数据库 /var/lib/mlocate/mlocate.db：
+  2,457 个目录
+  248,921 个文件
+  18.7 MB 实际文件大小
+```
+
+---
+
+### **五、常见问题解决**
+
+### **1. 文件已存在但 locate 找不到**
+```bash
+# 1. 先更新数据库
+sudo updatedb
+
+# 2. 再搜索
+locate filename
+```
+
+### **2. 权限不足错误**
+```bash
+# 使用 sudo 更新数据库
+sudo updatedb
+```
+
+### **3. 排除网络/虚拟文件系统**
+编辑 `/etc/updatedb.conf`：
+```bash
+# 查看当前配置
+cat /etc/updatedb.conf
+
+# 典型配置示例
+PRUNE_BIND_MOUNTS="yes"
+PRUNEPATHS="/tmp /var/spool /media"
+PRUNEFS="NFS afs autofs"
+```
+
+---
+
+### **六、locate 与 find 对比**
+
+| **特性**   | **locate**               | **find**                           |
+| ---------- | ------------------------ | ---------------------------------- |
+| **速度**   | 极快（基于数据库）       | 较慢（实时搜索）                   |
+| **时效性** | 非实时（依赖数据库更新） | 实时                               |
+| **功能**   | 简单文件名搜索           | 复杂条件搜索（时间、权限、大小等） |
+| **资源**   | 占用内存（数据库）       | 占用 CPU/I/O                       |
+
+### **使用场景建议**
+- **用 locate**：快速查找已知名称的文件
+- **用 find**：需要按时间、大小、权限等条件搜索时
+
+---
+
+### **七、实用技巧**
+
+### **1. 创建别名快速更新并搜索**
+```bash
+# 添加到 ~/.bashrc
+alias findup='sudo updatedb && locate'
+```
+
+### **2. 查找并统计某类文件**
+```bash
+# 查找所有 JPEG 图片并统计
+locate "*.jpg" | wc -l
+
+# 查找最近更改的文件（需要结合其他命令）
+locate "*.log" | xargs ls -lh 2>/dev/null | head -20
+```
+
+### **3. 限制搜索范围**
+```bash
+# 只在 /home 目录中搜索
+locate "*.pdf" | grep "^/home"
+```
+
+---
+
+### **八、注意事项**
+1. **隐私问题**：locate 数据库包含所有可访问文件路径，确保数据库文件权限为 `600`
+2. **自动更新**：生产环境中可调整自动更新时间以避免高峰时段
+3. **网络存储**：默认可能不索引 NFS 等网络文件系统，需在配置中调整
+
+通过合理使用 `locate` 和定期更新数据库，可以极大提高文件搜索效率。对于新创建的文件，记得先运行 `sudo updatedb` 再搜索。
+
+```shell
+# 在指定文件重查找字符
+grep foobar mcd.sh
+# 在指定路径下查找有 foobar 字符的文件
+grep -R foobar .
+rg "import requests" -t py ~/scratch
+rg -u --file-without-match "^#\!" -t sh
+history
+ctrl + R: 进行反向搜索
+fzf
+ls -R
+tree
+broot
+nnn
+```
+
+## Lecture 3 Vim Editor
+
+todo。。
