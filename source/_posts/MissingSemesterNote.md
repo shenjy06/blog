@@ -7,9 +7,9 @@ tags:
 
 > Linux command line tldr: https://tldr.sh
 
-## Lecture 1 Course Overview + the Shell
+## [Lecture 1 Course Overview + the Shell](https://missing.csail.mit.edu/2020/course-shell/)
 
-how to use useful shell to do userful tools.
+> 中文版本：https://missing-semester-cn.github.io/2020/course-shell/
 
 ```shell
 # 命令 date
@@ -560,7 +560,9 @@ $ sudo su
 $ echo 1060 > sudo tee brightness
 ```
 
-## Lecture 2: Shell Tools and Scripting
+## [Lecture 2: Shell Tools and Scripting](https://missing.csail.mit.edu/2020/shell-tools/)
+
+> 中文版：https://missing-semester-cn.github.io/2020/shell-tools/
 
 ```shell
 shenjy@shenjy:~$ foo=bar
@@ -596,7 +598,7 @@ mcd test
 ```
 
 - **`$0`**：当前脚本或 shell 的名称。
-- **`$1` ~ `$9`**：脚本或函数的前 9 个参数，按顺序对应。
+- **`$1`** ~ **`$9`**：脚本或函数的前 9 个参数，按顺序对应。
 - 超过 9 个的参数需要用 `${10}`、`${11}` 的形式引用。
 
 - **`$?`**: 获取上一个命令的错误代码
@@ -822,7 +824,7 @@ fi
 
 命令行
 
-~~~shell
+````shell
 shenjy@shenjy:~/images/grandfather$ ls
 IMG_0684.JPG  IMG_0685.JPG
 shenjy@shenjy:~/images/grandfather$ convert IMG_0684.JPG image.png
@@ -854,7 +856,7 @@ shenjy@shenjy:~/images/grandfather$ diff <(ls foo) <(ls bar)
 import sys
 for arg in reversed(sys.argv[1:]):
     print(arg)
-    
+
 shenjy@shenjy:~/sh/ms$ vim script.py
 shenjy@shenjy:~/sh/ms$ ls
 example.sh  mcd.sh  script.py
@@ -919,19 +921,21 @@ DeepSeek-v3:
 **基本用法：**
 ```bash
 convert 输入文件 [选项] 输出文件
-```
+````
 
 **常用示例：**
+
 - `convert image.jpg image.png` - 转换格式
 - `convert image.jpg -resize 50% small.jpg` - 缩放图片
 - `convert image.jpg -rotate 90 rotated.jpg` - 旋转图片
 - `convert image.jpg -quality 85 compressed.jpg` - 调整质量
 - `convert *.jpg merged.pdf` - 合并多张图片为 PDF
-~~~
+
+`````
 
 > 这里要强烈推荐这个开源项目，希望你可以使用它来提高你的学习效率，同时也可以一起来共同开发它，为其添加更加丰富的 feature。项目源码：https://github.com/shenjy712/ag
 
-~~~shell
+````shell
 shenjy@shenjy:~/sh/ms$ tldr ffmpeg
 
   ffmpeg
@@ -1173,7 +1177,7 @@ Key features highlighted:
 - Fast due to parallel directory traversal
 - Sensible defaults (ignores hidden files and gitignored files by default)
 
-~~~
+`````
 
 `locate` 是一个基于数据库的快速文件查找工具，它通过预先建立的索引来搜索文件，速度比 `find` 快很多。以下是详细使用方法：
 
@@ -1201,6 +1205,7 @@ locate [选项] <文件名或模式>
 ```
 
 ### **3. 常用示例**
+
 ```bash
 # 搜索包含 "passwd" 的文件
 locate passwd
@@ -1229,6 +1234,7 @@ locate -b "nginx.conf"
 | `-S`     | 显示数据库统计   | `locate -S`            |
 
 ### **示例组合**
+
 ```bash
 # 忽略大小写，限制显示5个结果
 locate -i -l 5 "readme"
@@ -1242,13 +1248,16 @@ locate -c "*.pdf"
 ### **三、更新 locate 数据库**
 
 ### **1. 手动更新数据库**
+
 ```bash
 # 更新数据库（需要 root 权限）
 sudo updatedb
 ```
+
 **更新过程可能需要几秒到几分钟**，取决于文件系统大小。
 
 ### **2. 自动更新机制**
+
 - 大多数 Linux 发行版会**每天自动更新一次** locate 数据库
 - 通过 `cron` 任务定时执行，通常位于：
   ```bash
@@ -1257,6 +1266,7 @@ sudo updatedb
   ```
 
 ### **3. 更新选项**
+
 ```bash
 # 查看更新过程的详细信息
 sudo updatedb -v
@@ -1271,6 +1281,7 @@ sudo updatedb --localpaths="/home /etc"
 ---
 
 ### **四、数据库位置和信息**
+
 ```bash
 # locate 数据库默认位置
 ls -lh /var/lib/mlocate/mlocate.db
@@ -1280,7 +1291,9 @@ sudo updatedb --stats
 # 或
 locate -S
 ```
+
 **输出示例**：
+
 ```
 数据库 /var/lib/mlocate/mlocate.db：
   2,457 个目录
@@ -1293,6 +1306,7 @@ locate -S
 ### **五、常见问题解决**
 
 ### **1. 文件已存在但 locate 找不到**
+
 ```bash
 # 1. 先更新数据库
 sudo updatedb
@@ -1302,13 +1316,16 @@ locate filename
 ```
 
 ### **2. 权限不足错误**
+
 ```bash
 # 使用 sudo 更新数据库
 sudo updatedb
 ```
 
 ### **3. 排除网络/虚拟文件系统**
+
 编辑 `/etc/updatedb.conf`：
+
 ```bash
 # 查看当前配置
 cat /etc/updatedb.conf
@@ -1331,6 +1348,7 @@ PRUNEFS="NFS afs autofs"
 | **资源**   | 占用内存（数据库）       | 占用 CPU/I/O                       |
 
 ### **使用场景建议**
+
 - **用 locate**：快速查找已知名称的文件
 - **用 find**：需要按时间、大小、权限等条件搜索时
 
@@ -1339,12 +1357,14 @@ PRUNEFS="NFS afs autofs"
 ### **七、实用技巧**
 
 ### **1. 创建别名快速更新并搜索**
+
 ```bash
 # 添加到 ~/.bashrc
 alias findup='sudo updatedb && locate'
 ```
 
 ### **2. 查找并统计某类文件**
+
 ```bash
 # 查找所有 JPEG 图片并统计
 locate "*.jpg" | wc -l
@@ -1354,6 +1374,7 @@ locate "*.log" | xargs ls -lh 2>/dev/null | head -20
 ```
 
 ### **3. 限制搜索范围**
+
 ```bash
 # 只在 /home 目录中搜索
 locate "*.pdf" | grep "^/home"
@@ -1362,6 +1383,7 @@ locate "*.pdf" | grep "^/home"
 ---
 
 ### **八、注意事项**
+
 1. **隐私问题**：locate 数据库包含所有可访问文件路径，确保数据库文件权限为 `600`
 2. **自动更新**：生产环境中可调整自动更新时间以避免高峰时段
 3. **网络存储**：默认可能不索引 NFS 等网络文件系统，需在配置中调整
@@ -1384,6 +1406,18 @@ broot
 nnn
 ```
 
-## Lecture 3 Vim Editor
+## [Lecture 3 Vim Editor](https://missing.csail.mit.edu/2020/editors/)
+
+> 中文版：https://missing-semester-cn.github.io/2020/editors/
+
+![Vim 命令](https://coolshell.org/wp-content/uploads/2011/09/vim_cheat_sheet_for_programmers_print.png)
+
+#### 相关文章
+
+- [游戏：VIM大冒险](https://coolshell.org/articles/7166.html/)
+  - https://vim-adventures.com/
+- [无插件Vim编程技巧](https://coolshell.org/articles/11312.html/)
+- [给程序员的VIM速查卡](https://coolshell.org/articles/5479.html/)
+- [简明 Vim 练级攻略](https://coolshell.org/articles/5426.html/)
 
 todo。。
