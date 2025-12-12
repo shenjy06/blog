@@ -1420,4 +1420,8 @@ nnn
 - [给程序员的VIM速查卡](https://coolshell.org/articles/5479.html/)
 - [简明 Vim 练级攻略](https://coolshell.org/articles/5426.html/)
 
+### Vim 编辑器模式
+
+![](https://github.com/user-attachments/assets/70bfc79c-1b76-45ef-a9b1-45ab732f0958)
+
 todo。。
