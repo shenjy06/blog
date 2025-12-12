@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="在金融领域，使用 BigDecimal 进行四舍五入是必须的，因为 double 和 float 存在精度损失。以下是金融场景下 BigDecimal 四舍五入的完整指南。 📊 核心要点：RoundingMode 枚举Java 提供了 8 种舍入模式，金融业务主要使用以下 4 种：    舍入模式 行为描述 金融应用场景 示例 (保留2位小数)    HALF_UP 四舍五入 (最常用) 利息计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用BigDecimal处理金融领域问题">
+<meta property="og:url" content="https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="在金融领域，使用 BigDecimal 进行四舍五入是必须的，因为 double 和 float 存在精度损失。以下是金融场景下 BigDecimal 四舍五入的完整指南。 📊 核心要点：RoundingMode 枚举Java 提供了 8 种舍入模式，金融业务主要使用以下 4 种：    舍入模式 行为描述 金融应用场景 示例 (保留2位小数)    HALF_UP 四舍五入 (最常用) 利息计">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-12-12T18:07:59.000Z">
+<meta property="article:modified_time" content="2025-12-12T08:02:51.015Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/blog/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/blog/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>如何使用BigDecimal处理金融领域问题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/blog/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/blog/">首页</a></li><!--
+     --><!--
+       --><li><a href="/blog/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/blog/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/blog/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/blog/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/blog/2025/12/10/MissingSemesterNote/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&text=如何使用BigDecimal处理金融领域问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&is_video=false&description=如何使用BigDecimal处理金融领域问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=如何使用BigDecimal处理金融领域问题&body=Check out this article: https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&name=如何使用BigDecimal处理金融领域问题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&t=如何使用BigDecimal处理金融领域问题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8A-%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9%EF%BC%9ARoundingMode-%E6%9E%9A%E4%B8%BE"><span class="toc-number">1.</span> <span class="toc-text">📊 核心要点：RoundingMode 枚举</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%B0-%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">💰 金融业务代码示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5-%E9%87%91%E9%A2%9D%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">1. 基础四舍五入 (金额格式化)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%8D%E5%90%8C%E9%87%91%E8%9E%8D%E5%9C%BA%E6%99%AF%E7%9A%84%E8%88%8D%E5%85%A5%E7%AD%96%E7%95%A5"><span class="toc-number">2.2.</span> <span class="toc-text">2. 不同金融场景的舍入策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%99%A4%E6%B3%95%E8%BF%90%E7%AE%97%E7%9A%84%E7%B2%BE%E5%BA%A6%E6%8E%A7%E5%88%B6-%E5%85%B3%E9%94%AE"><span class="toc-number">2.3.</span> <span class="toc-text">3. 除法运算的精度控制 (关键!)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E9%87%91%E8%9E%8D%E8%AE%A1%E7%AE%97%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99"><span class="toc-number">3.</span> <span class="toc-text">⚠️ 金融计算黄金法则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%A7-%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-number">4.</span> <span class="toc-text">🔧 实用工具类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9C-%E4%B9%9D%E5%A4%A7%E6%A0%B8%E5%BF%83%E9%93%81%E5%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">📜 九大核心铁律</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B1%EF%BC%9A%E7%BB%9D%E5%AF%B9%E7%A6%81%E7%94%A8%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">铁律1：绝对禁用浮点型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B2%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9E%84%E9%80%A0BigDecimal"><span class="toc-number">5.2.</span> <span class="toc-text">铁律2：字符串构造BigDecimal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B3%EF%BC%9A%E9%99%A4%E6%B3%95%E5%BF%85%E9%A1%BB%E6%8C%87%E5%AE%9A%E7%B2%BE%E5%BA%A6"><span class="toc-number">5.3.</span> <span class="toc-text">铁律3：除法必须指定精度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B4%EF%BC%9A%E8%88%8D%E5%85%A5%E6%A8%A1%E5%BC%8F%E5%BF%85%E9%A1%BB%E6%98%8E%E7%A1%AE"><span class="toc-number">5.4.</span> <span class="toc-text">铁律4：舍入模式必须明确</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B5%EF%BC%9A%E7%BB%9F%E4%B8%80%E7%B2%BE%E5%BA%A6%E7%AE%A1%E7%90%86"><span class="toc-number">5.5.</span> <span class="toc-text">铁律5：统一精度管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B6%EF%BC%9A%E6%AF%94%E8%BE%83%E5%BF%85%E9%A1%BB%E7%94%A8compareTo"><span class="toc-number">5.6.</span> <span class="toc-text">铁律6：比较必须用compareTo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B7%EF%BC%9A%E9%9B%B6%E5%80%BC%E5%BF%85%E9%A1%BB%E7%94%A8BigDecimal-ZERO"><span class="toc-number">5.7.</span> <span class="toc-text">铁律7：零值必须用BigDecimal.ZERO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B8%EF%BC%9A%E5%BA%8F%E5%88%97%E5%8C%96%E5%BF%85%E9%A1%BB%E4%BF%9D%E6%8C%81%E7%B2%BE%E5%BA%A6"><span class="toc-number">5.8.</span> <span class="toc-text">铁律8：序列化必须保持精度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B9%EF%BC%9A%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6%E5%BF%85%E9%A1%BB%E5%A4%84%E7%90%86"><span class="toc-number">5.9.</span> <span class="toc-text">铁律9：边界条件必须处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%A6-%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1%E4%B8%93%E7%94%A8%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">🏦 金融业务专用计算模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E4%B8%80%EF%BC%9A%E5%88%A9%E6%81%AF%E8%AE%A1%E7%AE%97%E5%A5%97%E4%BB%B6"><span class="toc-number">6.1.</span> <span class="toc-text">模式一：利息计算套件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E4%BA%8C%EF%BC%9A%E7%A8%8E%E5%8A%A1%E8%AE%A1%E7%AE%97%E5%BC%95%E6%93%8E"><span class="toc-number">6.2.</span> <span class="toc-text">模式二：税务计算引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E4%B8%89%EF%BC%9A%E9%87%91%E9%A2%9D%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%A0%87%E5%87%86"><span class="toc-number">6.3.</span> <span class="toc-text">模式三：金额格式化标准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%8D-%E5%AE%A1%E8%AE%A1%E4%B8%8E%E7%9B%91%E6%8E%A7"><span class="toc-number">7.</span> <span class="toc-text">🔍 审计与监控</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%AE%A1%E8%AE%A1%E6%97%A5%E5%BF%97"><span class="toc-number">7.1.</span> <span class="toc-text">计算审计日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E5%BA%A6%E7%9B%91%E6%8E%A7%E5%91%8A%E8%AD%A6"><span class="toc-number">7.2.</span> <span class="toc-text">精度监控告警</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8A-%E9%93%81%E5%BE%8B%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">8.</span> <span class="toc-text">📊 铁律检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%8E-%E7%BB%88%E6%9E%81%E5%8E%9F%E5%88%99"><span class="toc-number">9.</span> <span class="toc-text">💎 终极原则</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        如何使用BigDecimal处理金融领域问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-12-12T18:07:59.000Z" itemprop="datePublished">2025-12-12</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/blog/tags/Java/" rel="tag">Java</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>在金融领域，使用 <code>BigDecimal</code> 进行四舍五入是<strong>必须</strong>的，因为 <code>double</code> 和 <code>float</code> 存在精度损失。以下是金融场景下 <code>BigDecimal</code> 四舍五入的完整指南。</p>
+<h2 id="📊-核心要点：RoundingMode-枚举"><a href="#📊-核心要点：RoundingMode-枚举" class="headerlink" title="📊 核心要点：RoundingMode 枚举"></a>📊 核心要点：<code>RoundingMode</code> 枚举</h2><p>Java 提供了 8 种舍入模式，金融业务主要使用以下 4 种：</p>
+<table>
+<thead>
+<tr>
+<th align="left">舍入模式</th>
+<th align="left">行为描述</th>
+<th align="left">金融应用场景</th>
+<th align="left">示例 (保留2位小数)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>HALF_UP</code></strong></td>
+<td align="left"><strong>四舍五入</strong> (最常用)</td>
+<td align="left">利息计算、金额格式化、通用计算</td>
+<td align="left">2.235 → 2.24</td>
+</tr>
+<tr>
+<td align="left"><strong><code>HALF_EVEN</code></strong></td>
+<td align="left"><strong>银行家舍入法</strong></td>
+<td align="left">统计、降低累计误差</td>
+<td align="left">2.235 → 2.24 (下位偶)</td>
+</tr>
+<tr>
+<td align="left"><strong><code>UP</code></strong></td>
+<td align="left"><strong>远离零方向舍入</strong></td>
+<td align="left">罚金、手续费计算 (对客户不利)</td>
+<td align="left">2.231 → 2.24</td>
+</tr>
+<tr>
+<td align="left"><strong><code>DOWN</code></strong></td>
+<td align="left"><strong>向零方向舍入</strong></td>
+<td align="left">优惠金额、让利计算 (对客户有利)</td>
+<td align="left">2.239 → 2.23</td>
+</tr>
+<tr>
+<td align="left"><strong><code>CEILING</code></strong></td>
+<td align="left"><strong>向正无穷大舍入</strong></td>
+<td align="left">保证金、风险准备金</td>
+<td align="left">2.231 → 2.24</td>
+</tr>
+<tr>
+<td align="left"><strong><code>FLOOR</code></strong></td>
+<td align="left"><strong>向负无穷大舍入</strong></td>
+<td align="left">资产折旧计算</td>
+<td align="left">2.239 → 2.23</td>
+</tr>
+</tbody></table>
+<h2 id="💰-金融业务代码示例"><a href="#💰-金融业务代码示例" class="headerlink" title="💰 金融业务代码示例"></a>💰 金融业务代码示例</h2><h3 id="1-基础四舍五入-金额格式化"><a href="#1-基础四舍五入-金额格式化" class="headerlink" title="1. 基础四舍五入 (金额格式化)"></a>1. 基础四舍五入 (金额格式化)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.math.RoundingMode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FinancialRounding</span> &#123;</span><br><span class="line">    <span class="comment">// 通用金额四舍五入 (保留2位小数，HALF_UP)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">roundAmount</span><span class="params">(BigDecimal amount)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (amount == <span class="literal">null</span>) <span class="keyword">return</span> BigDecimal.ZERO;</span><br><span class="line">        <span class="keyword">return</span> amount.setScale(<span class="number">2</span>, RoundingMode.HALF_UP);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 利息计算示例</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">calculateInterest</span><span class="params">(BigDecimal principal, </span></span><br><span class="line"><span class="params">                                               BigDecimal annualRate, </span></span><br><span class="line"><span class="params">                                               <span class="type">int</span> days)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">dailyRate</span> <span class="operator">=</span> annualRate.divide(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;365&quot;</span>), <span class="number">10</span>, RoundingMode.HALF_UP);</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">interest</span> <span class="operator">=</span> principal.multiply(dailyRate)</span><br><span class="line">                                      .multiply(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(days));</span><br><span class="line">        <span class="keyword">return</span> roundAmount(interest); <span class="comment">// 最终结果四舍五入</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 利息计算</span></span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">interest</span> <span class="operator">=</span> calculateInterest(</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;10000.00&quot;</span>), </span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.035&quot;</span>), <span class="comment">// 年利率3.5%</span></span><br><span class="line">            <span class="number">30</span></span><br><span class="line">        );</span><br><span class="line">        System.out.println(<span class="string">&quot;利息: ¥&quot;</span> + interest); <span class="comment">// 输出: 利息: ¥28.77</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 金额格式化</span></span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">rawAmount</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;123.4567&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;原始: &quot;</span> + rawAmount + <span class="string">&quot; → 格式化: ¥&quot;</span> + roundAmount(rawAmount));</span><br><span class="line">        <span class="comment">// 输出: 原始: 123.4567 → 格式化: ¥123.46</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-不同金融场景的舍入策略"><a href="#2-不同金融场景的舍入策略" class="headerlink" title="2. 不同金融场景的舍入策略"></a>2. 不同金融场景的舍入策略</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FinancialScenarios</span> &#123;</span><br><span class="line">    <span class="comment">// 场景1: 银行家舍入法 (用于高精度计算，减少偏差)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">bankersRound</span><span class="params">(BigDecimal value)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value.setScale(<span class="number">2</span>, RoundingMode.HALF_EVEN);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 场景2: 手续费计算 (永远向上舍入，保证银行收益)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">calculateFee</span><span class="params">(BigDecimal amount, BigDecimal rate)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">fee</span> <span class="operator">=</span> amount.multiply(rate);</span><br><span class="line">        <span class="comment">// 手续费最少0.01元，向上舍入</span></span><br><span class="line">        <span class="keyword">return</span> fee.setScale(<span class="number">2</span>, RoundingMode.UP).max(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.01&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 场景3: 客户让利计算 (向下舍入，让利给客户)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">calculateDiscount</span><span class="params">(BigDecimal amount, BigDecimal discountRate)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">discount</span> <span class="operator">=</span> amount.multiply(discountRate);</span><br><span class="line">        <span class="keyword">return</span> discount.setScale(<span class="number">2</span>, RoundingMode.DOWN);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 场景4: 税务计算 (严格的四舍五入)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">calculateTax</span><span class="params">(BigDecimal amount, BigDecimal taxRate)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">tax</span> <span class="operator">=</span> amount.multiply(taxRate);</span><br><span class="line">        <span class="keyword">return</span> tax.setScale(<span class="number">2</span>, RoundingMode.HALF_UP);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">amount</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;100.125&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">&quot;银行家舍入: &quot;</span> + bankersRound(amount));          <span class="comment">// 100.12 (尾数5前是2，偶数)</span></span><br><span class="line">        System.out.println(<span class="string">&quot;手续费(1%): &quot;</span> + calculateFee(amount, <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.01&quot;</span>)));     <span class="comment">// 1.01 (向上)</span></span><br><span class="line">        System.out.println(<span class="string">&quot;折扣(10%): &quot;</span> + calculateDiscount(amount, <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>))); <span class="comment">// 10.01 (向下)</span></span><br><span class="line">        System.out.println(<span class="string">&quot;税费(13%): &quot;</span> + calculateTax(amount, <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.13&quot;</span>)));     <span class="comment">// 13.02 (四舍五入)</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-除法运算的精度控制-关键"><a href="#3-除法运算的精度控制-关键" class="headerlink" title="3. 除法运算的精度控制 (关键!)"></a>3. 除法运算的精度控制 (关键!)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DivisionPrecision</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 安全的除法运算 (金融场景必须指定精度和舍入模式)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dividend 被除数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> divisor 除数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> scale 小数位数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">safeDivide</span><span class="params">(BigDecimal dividend, BigDecimal divisor, <span class="type">int</span> scale)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (divisor.compareTo(BigDecimal.ZERO) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ArithmeticException</span>(<span class="string">&quot;除数不能为零&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dividend.divide(divisor, scale, RoundingMode.HALF_UP);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 计算年化收益率</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> profit 收益</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> principal 本金</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> days 持有天数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">calculateAnnualizedReturn</span><span class="params">(BigDecimal profit, </span></span><br><span class="line"><span class="params">                                                       BigDecimal principal, </span></span><br><span class="line"><span class="params">                                                       <span class="type">int</span> days)</span> &#123;</span><br><span class="line">        <span class="comment">// 总收益率</span></span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">totalReturn</span> <span class="operator">=</span> safeDivide(profit, principal, <span class="number">6</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 年化收益率</span></span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">annualized</span> <span class="operator">=</span> totalReturn</span><br><span class="line">            .multiply(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;365&quot;</span>))</span><br><span class="line">            .divide(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(days), <span class="number">6</span>, RoundingMode.HALF_UP);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 转换为百分比，保留4位小数</span></span><br><span class="line">        <span class="keyword">return</span> annualized.multiply(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;100&quot;</span>))</span><br><span class="line">                         .setScale(<span class="number">4</span>, RoundingMode.HALF_UP);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 错误示例: 未指定精度会导致异常</span></span><br><span class="line">        <span class="comment">// BigDecimal result = new BigDecimal(&quot;10&quot;).divide(new BigDecimal(&quot;3&quot;)); // ArithmeticException</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 正确做法</span></span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">result</span> <span class="operator">=</span> safeDivide(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;10&quot;</span>), <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;3&quot;</span>), <span class="number">4</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;10 ÷ 3 = &quot;</span> + result); <span class="comment">// 3.3333</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 年化收益率计算</span></span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">annualReturn</span> <span class="operator">=</span> calculateAnnualizedReturn(</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;1500&quot;</span>), </span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;100000&quot;</span>), </span><br><span class="line">            <span class="number">180</span></span><br><span class="line">        );</span><br><span class="line">        System.out.println(<span class="string">&quot;年化收益率: &quot;</span> + annualReturn + <span class="string">&quot;%&quot;</span>); <span class="comment">// 约3.0417%</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="⚠️-金融计算黄金法则"><a href="#⚠️-金融计算黄金法则" class="headerlink" title="⚠️ 金融计算黄金法则"></a>⚠️ 金融计算黄金法则</h2><ol>
+<li> <strong>永远不要使用 <code>double</code>/<code>float</code></strong> 进行金融计算</li>
+<li><strong>始终使用 <code>String</code> 构造 <code>BigDecimal</code></strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误 (精度已丢失!)</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="number">0.1</span>);</span><br></pre></td></tr></table></figure></li>
+<li><strong>除法必须指定精度和舍入模式</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 必须三参数版本</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">result</span> <span class="operator">=</span> a.divide(b, <span class="number">6</span>, RoundingMode.HALF_UP);</span><br></pre></td></tr></table></figure></li>
+<li><strong>设置统一精度上下文</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">MathContext</span> <span class="variable">mc</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MathContext</span>(<span class="number">10</span>, RoundingMode.HALF_UP);</span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;123.456789&quot;</span>, mc);</span><br></pre></td></tr></table></figure></li>
+<li><strong>金额比较使用 <code>compareTo()</code></strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (amount1.compareTo(amount2) &gt; <span class="number">0</span>) &#123; <span class="comment">// 大于</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="🔧-实用工具类"><a href="#🔧-实用工具类" class="headerlink" title="🔧 实用工具类"></a>🔧 实用工具类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">MoneyUtil</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MONEY_SCALE</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">RoundingMode</span> <span class="variable">DEFAULT_ROUNDING</span> <span class="operator">=</span> RoundingMode.HALF_UP;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">MoneyUtil</span><span class="params">()</span> &#123;&#125; <span class="comment">// 工具类，防止实例化</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 金额格式化 (添加千分位)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">format</span><span class="params">(BigDecimal amount)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (amount == <span class="literal">null</span>) <span class="keyword">return</span> <span class="string">&quot;¥0.00&quot;</span>;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">rounded</span> <span class="operator">=</span> amount.setScale(MONEY_SCALE, DEFAULT_ROUNDING);</span><br><span class="line">        <span class="type">DecimalFormat</span> <span class="variable">formatter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DecimalFormat</span>(<span class="string">&quot;¥#,###.##&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> formatter.format(rounded);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 安全的加法 (处理null)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">safeAdd</span><span class="params">(BigDecimal a, BigDecimal b)</span> &#123;</span><br><span class="line">        a = (a == <span class="literal">null</span>) ? BigDecimal.ZERO : a;</span><br><span class="line">        b = (b == <span class="literal">null</span>) ? BigDecimal.ZERO : b;</span><br><span class="line">        <span class="keyword">return</span> a.add(b).setScale(MONEY_SCALE, DEFAULT_ROUNDING);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 批量求和</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">sum</span><span class="params">(BigDecimal... amounts)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">total</span> <span class="operator">=</span> BigDecimal.ZERO;</span><br><span class="line">        <span class="keyword">for</span> (BigDecimal amount : amounts) &#123;</span><br><span class="line">            total = safeAdd(total, amount);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> total;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 百分比计算</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">percentage</span><span class="params">(BigDecimal part, BigDecimal total)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (total.compareTo(BigDecimal.ZERO) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> BigDecimal.ZERO;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> part.multiply(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;100&quot;</span>))</span><br><span class="line">                   .divide(total, <span class="number">4</span>, DEFAULT_ROUNDING); <span class="comment">// 保留4位小数</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(format(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;1234567.895&quot;</span>))); <span class="comment">// ¥1,234,567.90</span></span><br><span class="line">        System.out.println(safeAdd(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;100.001&quot;</span>), <span class="literal">null</span>)); <span class="comment">// 100.00</span></span><br><span class="line">        System.out.println(percentage(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;25&quot;</span>), <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;200&quot;</span>))); <span class="comment">// 12.5000</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>记住：<strong>金融计算无小事</strong>，错误的舍入可能导致累计误差、监管不合规或财务损失。在开始编码前，务必与业务部门确认具体的舍入规则。</p>
+<p>金融行业的Java数值计算有九条不可违背的“铁律”，违反任何一条都可能导致资金损失、监管处罚或系统故障。</p>
+<h2 id="📜-九大核心铁律"><a href="#📜-九大核心铁律" class="headerlink" title="📜 九大核心铁律"></a>📜 九大核心铁律</h2><h3 id="铁律1：绝对禁用浮点型"><a href="#铁律1：绝对禁用浮点型" class="headerlink" title="铁律1：绝对禁用浮点型"></a>铁律1：<strong>绝对禁用浮点型</strong></h3><blockquote>
+<p>金融计算中永远不要使用 <code>float</code> 或 <code>double</code></p>
+</blockquote>
+<p><strong>错误示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> <span class="variable">price</span> <span class="operator">=</span> <span class="number">0.1</span>;</span><br><span class="line"><span class="type">double</span> <span class="variable">quantity</span> <span class="operator">=</span> <span class="number">0.2</span>;</span><br><span class="line">System.out.println(price + quantity); <span class="comment">// 输出：0.30000000000000004 ❌</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>正确做法</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BigDecimal</span> <span class="variable">price</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>);</span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">quantity</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.2&quot;</span>);</span><br><span class="line">System.out.println(price.add(quantity)); <span class="comment">// 输出：0.3 ✅</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律2：字符串构造BigDecimal"><a href="#铁律2：字符串构造BigDecimal" class="headerlink" title="铁律2：字符串构造BigDecimal"></a>铁律2：<strong>字符串构造BigDecimal</strong></h3><blockquote>
+<p>必须使用 <code>String</code> 构造函数，禁用 <code>double</code> 构造函数</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 灾难性错误</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">wrong</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="number">0.1</span>); <span class="comment">// 内部已是0.100000000000000005551115...</span></span><br><span class="line"><span class="comment">// 正确做法</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">correct</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>);</span><br><span class="line"><span class="comment">// 或使用valueOf（内部调用toString）</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">alsoCorrect</span> <span class="operator">=</span> BigDecimal.valueOf(<span class="number">0.1</span>); <span class="comment">// 仅适用于double字面量</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律3：除法必须指定精度"><a href="#铁律3：除法必须指定精度" class="headerlink" title="铁律3：除法必须指定精度"></a>铁律3：<strong>除法必须指定精度</strong></h3><blockquote>
+<p><code>divide()</code> 必须使用三参数版本，明确舍入模式</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BigDecimal</span> <span class="variable">dividend</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;10&quot;</span>);</span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">divisor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;3&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 会抛出ArithmeticException ❌</span></span><br><span class="line"><span class="comment">// BigDecimal result = dividend.divide(divisor);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确：指定小数位数和舍入规则 ✅</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">result</span> <span class="operator">=</span> dividend.divide(divisor, <span class="number">8</span>, RoundingMode.HALF_UP); <span class="comment">// 3.33333333</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律4：舍入模式必须明确"><a href="#铁律4：舍入模式必须明确" class="headerlink" title="铁律4：舍入模式必须明确"></a>铁律4：<strong>舍入模式必须明确</strong></h3><blockquote>
+<p>金融业务必须根据场景选择舍入模式</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">FinancialRounding</span> &#123;</span><br><span class="line">    INTEREST(RoundingMode.HALF_UP),      <span class="comment">// 利息计算：四舍五入</span></span><br><span class="line">    TAX(RoundingMode.HALF_UP),           <span class="comment">// 税费计算：四舍五入</span></span><br><span class="line">    BANKERS(RoundingMode.HALF_EVEN),     <span class="comment">// 统计计算：银行家舍入</span></span><br><span class="line">    PENALTY(RoundingMode.UP),            <span class="comment">// 罚金计算：向上取整</span></span><br><span class="line">    DISCOUNT(RoundingMode.DOWN);         <span class="comment">// 折扣计算：向下取整</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RoundingMode mode;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律5：统一精度管理"><a href="#铁律5：统一精度管理" class="headerlink" title="铁律5：统一精度管理"></a>铁律5：<strong>统一精度管理</strong></h3><blockquote>
+<p>使用 <code>MathContext</code> 统一管理计算精度</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义全局金融计算上下文</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">FinancialContext</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">MathContext</span> <span class="variable">MC_CURRENCY</span> <span class="operator">=</span> </span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">MathContext</span>(<span class="number">34</span>, RoundingMode.HALF_UP); <span class="comment">// 34位精度，足够货币计算</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">MathContext</span> <span class="variable">MC_PERCENTAGE</span> <span class="operator">=</span> </span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">MathContext</span>(<span class="number">10</span>, RoundingMode.HALF_UP); <span class="comment">// 百分比计算</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 不允许实例化</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">FinancialContext</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用示例</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;123.4567890123456789012345678901234&quot;</span>, </span><br><span class="line">                                   FinancialContext.MC_CURRENCY);</span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律6：比较必须用compareTo"><a href="#铁律6：比较必须用compareTo" class="headerlink" title="铁律6：比较必须用compareTo"></a>铁律6：<strong>比较必须用compareTo</strong></h3><blockquote>
+<p>禁止使用 <code>equals()</code> 比较金额</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BigDecimal</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;100.00&quot;</span>);</span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;100.000&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误：equals比较精度，会导致意外结果</span></span><br><span class="line">System.out.println(a.equals(b)); <span class="comment">// false ❌</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确：compareTo比较数值</span></span><br><span class="line">System.out.println(a.compareTo(b) == <span class="number">0</span>); <span class="comment">// true ✅</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 金额比较方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareAmount</span><span class="params">(BigDecimal amount1, BigDecimal amount2)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> amount1.setScale(<span class="number">2</span>, RoundingMode.HALF_UP)</span><br><span class="line">                  .compareTo(amount2.setScale(<span class="number">2</span>, RoundingMode.HALF_UP));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律7：零值必须用BigDecimal-ZERO"><a href="#铁律7：零值必须用BigDecimal-ZERO" class="headerlink" title="铁律7：零值必须用BigDecimal.ZERO"></a>铁律7：<strong>零值必须用BigDecimal.ZERO</strong></h3><blockquote>
+<p>禁止使用 <code>new BigDecimal(0)</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误 ❌</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">zero</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="number">0</span>);    <span class="comment">// 每次创建新对象</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">zero2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0&quot;</span>); <span class="comment">// 每次创建新对象</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确 ✅</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">zero3</span> <span class="operator">=</span> BigDecimal.ZERO;     <span class="comment">// 单例，性能更好</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">zero4</span> <span class="operator">=</span> BigDecimal.ZERO;</span><br><span class="line">System.out.println(zero3 == zero4);     <span class="comment">// true，同一对象</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律8：序列化必须保持精度"><a href="#铁律8：序列化必须保持精度" class="headerlink" title="铁律8：序列化必须保持精度"></a>铁律8：<strong>序列化必须保持精度</strong></h3><blockquote>
+<p>JSON/数据库传输必须保持完整精度</p>
+</blockquote>
+<p><strong>JSON序列化配置</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JsonSerialize(using = BigDecimalSerializer.class)</span></span><br><span class="line"><span class="meta">@JsonDeserialize(using = BigDecimalDeserializer.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FinancialDTO</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> BigDecimal amount;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 自定义序列化器</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">BigDecimalSerializer</span> <span class="keyword">extends</span> <span class="title class_">JsonSerializer</span>&lt;BigDecimal&gt; &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">serialize</span><span class="params">(BigDecimal value, JsonGenerator gen, </span></span><br><span class="line"><span class="params">                            SerializerProvider provider)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">            <span class="comment">// 保持完整精度序列化为字符串</span></span><br><span class="line">            gen.writeString(value.toPlainString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据库映射</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;transactions&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Transaction</span> &#123;</span><br><span class="line">    <span class="meta">@Column(name = &quot;amount&quot;, precision = 34, scale = 8)</span> <span class="comment">// 34位精度，8位小数</span></span><br><span class="line">    <span class="keyword">private</span> BigDecimal amount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="铁律9：边界条件必须处理"><a href="#铁律9：边界条件必须处理" class="headerlink" title="铁律9：边界条件必须处理"></a>铁律9：<strong>边界条件必须处理</strong></h3><blockquote>
+<p>必须处理溢出、除零、null值</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">FinancialCalculator</span> &#123;</span><br><span class="line">    <span class="comment">// 安全除法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">safeDivide</span><span class="params">(BigDecimal dividend, BigDecimal divisor, </span></span><br><span class="line"><span class="params">                                       <span class="type">int</span> scale, RoundingMode rounding)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (dividend == <span class="literal">null</span> || divisor == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;参数不能为null&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (divisor.compareTo(BigDecimal.ZERO) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ArithmeticException</span>(<span class="string">&quot;除数不能为零&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dividend.divide(divisor, scale, rounding);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 安全加法（防溢出）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">safeAdd</span><span class="params">(BigDecimal a, BigDecimal b)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> a.add(b);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ArithmeticException e) &#123;</span><br><span class="line">            <span class="comment">// 记录审计日志</span></span><br><span class="line">            auditLogger.error(<span class="string">&quot;加法溢出&quot;</span>, e);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">FinancialException</span>(<span class="string">&quot;金额计算溢出，请拆分处理&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="🏦-金融业务专用计算模式"><a href="#🏦-金融业务专用计算模式" class="headerlink" title="🏦 金融业务专用计算模式"></a>🏦 金融业务专用计算模式</h2><h3 id="模式一：利息计算套件"><a href="#模式一：利息计算套件" class="headerlink" title="模式一：利息计算套件"></a>模式一：<strong>利息计算套件</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InterestCalculator</span> &#123;</span><br><span class="line">    <span class="comment">// 日息计算（实际/365）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">calculateDailyInterest</span><span class="params">(BigDecimal principal, </span></span><br><span class="line"><span class="params">                                                   BigDecimal annualRate, </span></span><br><span class="line"><span class="params">                                                   <span class="type">int</span> days)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">dailyRate</span> <span class="operator">=</span> annualRate.divide(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;365&quot;</span>), </span><br><span class="line">                                                <span class="number">10</span>, RoundingMode.HALF_UP);</span><br><span class="line">        <span class="keyword">return</span> principal.multiply(dailyRate)</span><br><span class="line">                       .multiply(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(days))</span><br><span class="line">                       .setScale(<span class="number">2</span>, RoundingMode.HALF_UP);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 复利计算</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title function_">calculateCompound</span><span class="params">(BigDecimal principal,</span></span><br><span class="line"><span class="params">                                              BigDecimal annualRate,</span></span><br><span class="line"><span class="params">                                              <span class="type">int</span> periods)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">ratePerPeriod</span> <span class="operator">=</span> annualRate.divide(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(periods),</span><br><span class="line">                                                    <span class="number">10</span>, RoundingMode.HALF_UP);</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">multiplier</span> <span class="operator">=</span> BigDecimal.ONE.add(ratePerPeriod);</span><br><span class="line">        <span class="keyword">return</span> principal.multiply(multiplier.pow(periods))</span><br><span class="line">                       .setScale(<span class="number">2</span>, RoundingMode.HALF_UP);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="模式二：税务计算引擎"><a href="#模式二：税务计算引擎" class="headerlink" title="模式二：税务计算引擎"></a>模式二：<strong>税务计算引擎</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TaxCalculator</span> &#123;</span><br><span class="line">    <span class="comment">// 增值税计算（不同税率）</span></span><br><span class="line">    <span class="keyword">public</span> BigDecimal <span class="title function_">calculateVAT</span><span class="params">(BigDecimal amount, TaxRate rate)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">tax</span> <span class="operator">=</span> amount.multiply(rate.getRate())</span><br><span class="line">                              .setScale(<span class="number">2</span>, RoundingMode.HALF_UP);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 满足最小纳税单位（分）</span></span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">minTaxUnit</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.01&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (tax.compareTo(minTaxUnit) &lt; <span class="number">0</span> &amp;&amp; tax.compareTo(BigDecimal.ZERO) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> minTaxUnit; <span class="comment">// 不足1分按1分计</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> tax;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="模式三：金额格式化标准"><a href="#模式三：金额格式化标准" class="headerlink" title="模式三：金额格式化标准"></a>模式三：<strong>金额格式化标准</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MoneyFormatter</span> &#123;</span><br><span class="line">    <span class="comment">// 金额格式化（含千分位、货币符号）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">DecimalFormat</span> <span class="variable">CNY_FORMAT</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DecimalFormat</span>(<span class="string">&quot;¥#,##0.00&quot;</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">DecimalFormat</span> <span class="variable">USD_FORMAT</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DecimalFormat</span>(<span class="string">&quot;$#,##0.00&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="comment">// 固定舍入模式</span></span><br><span class="line">        CNY_FORMAT.setRoundingMode(RoundingMode.HALF_UP);</span><br><span class="line">        USD_FORMAT.setRoundingMode(RoundingMode.HALF_UP);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">formatCNY</span><span class="params">(BigDecimal amount)</span> &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (CNY_FORMAT) &#123;</span><br><span class="line">            <span class="keyword">return</span> CNY_FORMAT.format(amount);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="🔍-审计与监控"><a href="#🔍-审计与监控" class="headerlink" title="🔍 审计与监控"></a>🔍 审计与监控</h2><h3 id="计算审计日志"><a href="#计算审计日志" class="headerlink" title="计算审计日志"></a>计算审计日志</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FinancialCalculationAudit</span> &#123;</span><br><span class="line">    <span class="meta">@Around(&quot;@annotation(AuditedCalculation)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">auditCalculation</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> joinPoint.proceed();</span><br><span class="line">        <span class="type">long</span> <span class="variable">duration</span> <span class="operator">=</span> System.nanoTime() - start;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 记录计算详情（审计要求）</span></span><br><span class="line">        auditLogger.info(<span class="string">&quot;金融计算审计 - 方法: &#123;&#125;, 参数: &#123;&#125;, 结果: &#123;&#125;, 耗时: &#123;&#125;ns&quot;</span>,</span><br><span class="line">                        joinPoint.getSignature().getName(),</span><br><span class="line">                        Arrays.toString(joinPoint.getArgs()),</span><br><span class="line">                        result, duration);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="精度监控告警"><a href="#精度监控告警" class="headerlink" title="精度监控告警"></a>精度监控告警</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PrecisionMonitor</span> &#123;</span><br><span class="line">    <span class="comment">// 监控精度损失</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">monitorPrecisionLoss</span><span class="params">(BigDecimal original, BigDecimal calculated)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">diff</span> <span class="operator">=</span> original.subtract(calculated).abs();</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">tolerance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.00000001&quot;</span>); <span class="comment">// 容忍度</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (diff.compareTo(tolerance) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            alertService.sendPrecisionAlert(original, calculated, diff);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="📊-铁律检查清单"><a href="#📊-铁律检查清单" class="headerlink" title="📊 铁律检查清单"></a>📊 铁律检查清单</h2><table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>通过标准</th>
+<th>检查方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>浮点型使用</strong></td>
+<td>代码中无 <code>float</code>/<code>double</code> 金融计算</td>
+<td>静态代码扫描</td>
+</tr>
+<tr>
+<td><strong>BigDecimal构造</strong></td>
+<td>全部使用 <code>String</code> 构造函数</td>
+<td>代码审查</td>
+</tr>
+<tr>
+<td><strong>除法精度</strong></td>
+<td>所有除法调用都有舍入模式</td>
+<td>运行时监控</td>
+</tr>
+<tr>
+<td><strong>舍入一致性</strong></td>
+<td>同业务使用相同舍入模式</td>
+<td>业务验证</td>
+</tr>
+<tr>
+<td><strong>零值引用</strong></td>
+<td>使用 <code>BigDecimal.ZERO</code> 单例</td>
+<td>代码检查</td>
+</tr>
+<tr>
+<td><strong>比较方法</strong></td>
+<td>使用 <code>compareTo()</code> 而非 <code>equals()</code></td>
+<td>单元测试</td>
+</tr>
+<tr>
+<td><strong>序列化精度</strong></td>
+<td>JSON/DB传输保持完整精度</td>
+<td>集成测试</td>
+</tr>
+<tr>
+<td><strong>边界处理</strong></td>
+<td>除零、溢出、null值都有处理</td>
+<td>异常测试</td>
+</tr>
+<tr>
+<td><strong>审计日志</strong></td>
+<td>关键计算都有审计记录</td>
+<td>日志检查</td>
+</tr>
+</tbody></table>
+<h2 id="💎-终极原则"><a href="#💎-终极原则" class="headerlink" title="💎 终极原则"></a>💎 终极原则</h2><p>记住这三条不可妥协的原则：</p>
+<ol>
+<li> <strong>精度高于性能</strong>：宁愿慢，不能错</li>
+<li> <strong>审计高于便利</strong>：每一步都要可追溯</li>
+<li> <strong>合规高于一切</strong>：必须满足监管要求</li>
+</ol>
+<p>金融系统的数值计算不是技术问题，而是<strong>风险控制问题</strong>。每一次计算都涉及真实资金，任何误差都是不可接受的。</p>
+<p>完~</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/blog/">首页</a></li>
+         
+          <li><a href="/blog/about/">关于</a></li>
+         
+          <li><a href="/blog/archives/">归档</a></li>
+         
+          <li><a href="/blog/categories/">分类</a></li>
+         
+          <li><a href="/blog/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8A-%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9%EF%BC%9ARoundingMode-%E6%9E%9A%E4%B8%BE"><span class="toc-number">1.</span> <span class="toc-text">📊 核心要点：RoundingMode 枚举</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%B0-%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">💰 金融业务代码示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5-%E9%87%91%E9%A2%9D%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">1. 基础四舍五入 (金额格式化)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%8D%E5%90%8C%E9%87%91%E8%9E%8D%E5%9C%BA%E6%99%AF%E7%9A%84%E8%88%8D%E5%85%A5%E7%AD%96%E7%95%A5"><span class="toc-number">2.2.</span> <span class="toc-text">2. 不同金融场景的舍入策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%99%A4%E6%B3%95%E8%BF%90%E7%AE%97%E7%9A%84%E7%B2%BE%E5%BA%A6%E6%8E%A7%E5%88%B6-%E5%85%B3%E9%94%AE"><span class="toc-number">2.3.</span> <span class="toc-text">3. 除法运算的精度控制 (关键!)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E9%87%91%E8%9E%8D%E8%AE%A1%E7%AE%97%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99"><span class="toc-number">3.</span> <span class="toc-text">⚠️ 金融计算黄金法则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%A7-%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-number">4.</span> <span class="toc-text">🔧 实用工具类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9C-%E4%B9%9D%E5%A4%A7%E6%A0%B8%E5%BF%83%E9%93%81%E5%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">📜 九大核心铁律</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B1%EF%BC%9A%E7%BB%9D%E5%AF%B9%E7%A6%81%E7%94%A8%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">铁律1：绝对禁用浮点型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B2%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9E%84%E9%80%A0BigDecimal"><span class="toc-number">5.2.</span> <span class="toc-text">铁律2：字符串构造BigDecimal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B3%EF%BC%9A%E9%99%A4%E6%B3%95%E5%BF%85%E9%A1%BB%E6%8C%87%E5%AE%9A%E7%B2%BE%E5%BA%A6"><span class="toc-number">5.3.</span> <span class="toc-text">铁律3：除法必须指定精度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B4%EF%BC%9A%E8%88%8D%E5%85%A5%E6%A8%A1%E5%BC%8F%E5%BF%85%E9%A1%BB%E6%98%8E%E7%A1%AE"><span class="toc-number">5.4.</span> <span class="toc-text">铁律4：舍入模式必须明确</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B5%EF%BC%9A%E7%BB%9F%E4%B8%80%E7%B2%BE%E5%BA%A6%E7%AE%A1%E7%90%86"><span class="toc-number">5.5.</span> <span class="toc-text">铁律5：统一精度管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B6%EF%BC%9A%E6%AF%94%E8%BE%83%E5%BF%85%E9%A1%BB%E7%94%A8compareTo"><span class="toc-number">5.6.</span> <span class="toc-text">铁律6：比较必须用compareTo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B7%EF%BC%9A%E9%9B%B6%E5%80%BC%E5%BF%85%E9%A1%BB%E7%94%A8BigDecimal-ZERO"><span class="toc-number">5.7.</span> <span class="toc-text">铁律7：零值必须用BigDecimal.ZERO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B8%EF%BC%9A%E5%BA%8F%E5%88%97%E5%8C%96%E5%BF%85%E9%A1%BB%E4%BF%9D%E6%8C%81%E7%B2%BE%E5%BA%A6"><span class="toc-number">5.8.</span> <span class="toc-text">铁律8：序列化必须保持精度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%81%E5%BE%8B9%EF%BC%9A%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6%E5%BF%85%E9%A1%BB%E5%A4%84%E7%90%86"><span class="toc-number">5.9.</span> <span class="toc-text">铁律9：边界条件必须处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%A6-%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1%E4%B8%93%E7%94%A8%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">🏦 金融业务专用计算模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E4%B8%80%EF%BC%9A%E5%88%A9%E6%81%AF%E8%AE%A1%E7%AE%97%E5%A5%97%E4%BB%B6"><span class="toc-number">6.1.</span> <span class="toc-text">模式一：利息计算套件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E4%BA%8C%EF%BC%9A%E7%A8%8E%E5%8A%A1%E8%AE%A1%E7%AE%97%E5%BC%95%E6%93%8E"><span class="toc-number">6.2.</span> <span class="toc-text">模式二：税务计算引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E4%B8%89%EF%BC%9A%E9%87%91%E9%A2%9D%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%A0%87%E5%87%86"><span class="toc-number">6.3.</span> <span class="toc-text">模式三：金额格式化标准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%8D-%E5%AE%A1%E8%AE%A1%E4%B8%8E%E7%9B%91%E6%8E%A7"><span class="toc-number">7.</span> <span class="toc-text">🔍 审计与监控</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%AE%A1%E8%AE%A1%E6%97%A5%E5%BF%97"><span class="toc-number">7.1.</span> <span class="toc-text">计算审计日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E5%BA%A6%E7%9B%91%E6%8E%A7%E5%91%8A%E8%AD%A6"><span class="toc-number">7.2.</span> <span class="toc-text">精度监控告警</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8A-%E9%93%81%E5%BE%8B%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">8.</span> <span class="toc-text">📊 铁律检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%8E-%E7%BB%88%E6%9E%81%E5%8E%9F%E5%88%99"><span class="toc-number">9.</span> <span class="toc-text">💎 终极原则</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&text=如何使用BigDecimal处理金融领域问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&is_video=false&description=如何使用BigDecimal处理金融领域问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=如何使用BigDecimal处理金融领域问题&body=Check out this article: https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&title=如何使用BigDecimal处理金融领域问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&name=如何使用BigDecimal处理金融领域问题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2025/12/12/%E9%87%91%E8%9E%8D%E6%96%B9%E9%9D%A2%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8BigDecimal%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5/&t=如何使用BigDecimal处理金融领域问题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2025 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/blog/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/shenjy06"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/blog/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'shenjy06/blog';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
