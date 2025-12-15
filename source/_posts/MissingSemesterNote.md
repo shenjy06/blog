@@ -6,6 +6,8 @@ tags:
 ---
 
 > Linux command line tldr: https://tldr.sh
+>
+> 课程 2026 年度更新：https://missing.csail.mit.edu/
 
 ## [Lecture 1 Course Overview + the Shell](https://missing.csail.mit.edu/2020/course-shell/)
 
@@ -1414,10 +1416,10 @@ nnn
 
 #### 相关文章
 
-- [游戏：VIM大冒险](https://coolshell.org/articles/7166.html/)
+- [游戏：VIM 大冒险](https://coolshell.org/articles/7166.html/)
   - https://vim-adventures.com/
-- [无插件Vim编程技巧](https://coolshell.org/articles/11312.html/)
-- [给程序员的VIM速查卡](https://coolshell.org/articles/5479.html/)
+- [无插件 Vim 编程技巧](https://coolshell.org/articles/11312.html/)
+- [给程序员的 VIM 速查卡](https://coolshell.org/articles/5479.html/)
 - [简明 Vim 练级攻略](https://coolshell.org/articles/5426.html/)
 
 ### Vim 编辑器模式
