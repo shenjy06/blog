@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://coolshell.org/wp-content/uploads/2011/09/vim_cheat_sheet_for_programmers_print.png">
 <meta property="og:image" content="https://github.com/user-attachments/assets/70bfc79c-1b76-45ef-a9b1-45ab732f0958">
 <meta property="article:published_time" content="2025-12-10T19:54:30.000Z">
-<meta property="article:modified_time" content="2025-12-16T07:47:02.542Z">
+<meta property="article:modified_time" content="2025-12-16T08:12:58.892Z">
 <meta property="article:author" content="Mark Shen">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -854,7 +854,36 @@
 <li>**137 (128 + SIGKILL, 9)**：进程被强制终止（<code>kill -9</code>）。</li>
 <li>**143 (128 + SIGTERM, 15)**：进程收到终止信号（默认的 <code>kill</code>）。</li>
 </ul>
-<p>常见信号编号：<br>| 信号编号 | 信号名 | 含义 |<br>| ——– | ——- | —————— |<br>| 1 | SIGHUP | 终端挂断 |<br>| 2 | SIGINT | 键盘中断（Ctrl+C） |<br>| 9 | SIGKILL | 强制终止 |<br>| 15 | SIGTERM | 优雅终止 |</p>
+<p>常见信号编号：</p>
+<table>
+<thead>
+<tr>
+<th>信号编号</th>
+<th>信号名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>SIGHUP</td>
+<td>终端挂断</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SIGINT</td>
+<td>键盘中断（Ctrl+C）</td>
+</tr>
+<tr>
+<td>9</td>
+<td>SIGKILL</td>
+<td>强制终止</td>
+</tr>
+<tr>
+<td>15</td>
+<td>SIGTERM</td>
+<td>优雅终止</td>
+</tr>
+</tbody></table>
 <hr>
 <h3 id="编程中自定义的退出状态"><a href="#编程中自定义的退出状态" class="headerlink" title="编程中自定义的退出状态"></a><strong>编程中自定义的退出状态</strong></h3><p>开发者可以自定义非零退出状态（通常为 1-127）。例如：</p>
 <ul>
