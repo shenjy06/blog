@@ -1430,24 +1430,30 @@ Entering AI mode. Type your prompt (or 'exit' to quit):
 prompt> Linux 程序 exit status 都有啥？
 
 DeepSeek-v3:
-在Linux中，程序的退出状态（exit status）是一个0到255之间的整数值，用于表示程序的终止状态。通常，退出状态为0表示成功，非零值表示错误或异常情况。以下是常见的退出状态及其含义：
+在 Linux 中，程序的退出状态（exit status）是一个 0 到 255 之间的整数值，用于表示程序的终止状态。通常，退出状态为 0 表示成功，非零值表示错误或异常情况。以下是常见的退出状态及其含义：
 
 ---
 
 ### **标准退出状态**
+
 1. **0**
+
    - **成功**：程序正常执行完毕，没有错误。
 
 2. **1**
+
    - **通用错误**：未指定的错误（常见于脚本或命令行工具）。
 
 3. **2**
+
    - **命令行用法错误**（例如`bash`中`Misuse of shell builtins`）。
 
 4. **126**
+
    - **命令不可执行**：权限不足或文件不是可执行程序。
 
 5. **127**
+
    - **命令未找到**：输入的命令或脚本不存在。
 
 6. **128**
@@ -1456,30 +1462,36 @@ DeepSeek-v3:
 ---
 
 ### **信号相关的退出状态（128 + 信号编号）**
+
 当程序被信号（Signal）终止时，退出状态为 **128 + 信号编号**：
+
 - **130 (128 + SIGINT, 2)**：用户按下 `Ctrl+C` 中断程序。
 - **137 (128 + SIGKILL, 9)**：进程被强制终止（`kill -9`）。
 - **143 (128 + SIGTERM, 15)**：进程收到终止信号（默认的 `kill`）。
 
 常见信号编号：
-| 信号编号 | 信号名  | 含义               |
+| 信号编号 | 信号名 | 含义 |
 | -------- | ------- | ------------------ |
-| 1        | SIGHUP  | 终端挂断           |
-| 2        | SIGINT  | 键盘中断（Ctrl+C） |
-| 9        | SIGKILL | 强制终止           |
-| 15       | SIGTERM | 优雅终止           |
+| 1 | SIGHUP | 终端挂断 |
+| 2 | SIGINT | 键盘中断（Ctrl+C） |
+| 9 | SIGKILL | 强制终止 |
+| 15 | SIGTERM | 优雅终止 |
 
 ---
 
 ### **编程中自定义的退出状态**
-开发者可以自定义非零退出状态（通常为1-127）。例如：
-- **64**：BSD系统中用于表示命令行用法错误（类似`EX_USAGE`）。
-- **其他值**：程序文档中会明确约定（如`grep`返回1表示未匹配到内容）。
+
+开发者可以自定义非零退出状态（通常为 1-127）。例如：
+
+- **64**：BSD 系统中用于表示命令行用法错误（类似`EX_USAGE`）。
+- **其他值**：程序文档中会明确约定（如`grep`返回 1 表示未匹配到内容）。
 
 ---
 
 ### **如何获取退出状态？**
-在Shell中通过 `$?` 查看上一个命令的退出状态：
+
+在 Shell 中通过 `$?` 查看上一个命令的退出状态：
+
 ```bash
 ls /nonexistent
 echo $?  # 输出2（文件不存在）
@@ -1488,6 +1500,7 @@ echo $?  # 输出2（文件不存在）
 ---
 
 ### **总结**
+
 - **0** = 成功。
 - **1-127** = 错误或自定义状态。
 - **128+** = 信号终止（`128 + 信号编号`）。
@@ -1500,61 +1513,70 @@ DeepSeek-v3:
 To display line numbers in Vim, you can use the following methods:
 
 ### 1. **Enable Relative Line Numbers**
-   - Shows line numbers relative to the current line:
-     ```vim
-     :set relativenumber
-     ```
-   - Short form:
-     ```vim
-     :set rnu
-     ```
+
+- Shows line numbers relative to the current line:
+  ```vim
+  :set relativenumber
+  ```
+- Short form:
+  ```vim
+  :set rnu
+  ```
 
 ### 2. **Enable Absolute Line Numbers**
-   - Shows standard line numbers:
-     ```vim
-     :set number
-     ```
-   - Short form:
-     ```vim
-     :set nu
-     ```
+
+- Shows standard line numbers:
+  ```vim
+  :set number
+  ```
+- Short form:
+  ```vim
+  :set nu
+  ```
 
 ### 3. **Enable Both Relative and Absolute Line Numbers**
-   - Current line shows absolute number, others show relative:
-     ```vim
-     :set relativenumber
-     :set number
-     ```
-   - Or combined:
-     ```vim
-     :set number relativenumber
-     ```
+
+- Current line shows absolute number, others show relative:
+  ```vim
+  :set relativenumber
+  :set number
+  ```
+- Or combined:
+  ```vim
+  :set number relativenumber
+  ```
 
 ### 4. **Disable Line Numbers**
-   ```vim
-   :set nonumber
-   ```
-   ```vim
-   :set norelativenumber
-   ```
-   - Short forms:
-     ```vim
-     :set nonu
-     :set nornu
-     ```
+
+```vim
+:set nonumber
+```
+
+```vim
+:set norelativenumber
+```
+
+- Short forms:
+  ```vim
+  :set nonu
+  :set nornu
+  ```
 
 ### 5. **Permanently Enable Line Numbers**
-   Add these lines to your `.vimrc` or `init.vim` (Neovim):
-   ```vim
-   " For absolute line numbers
-   set number
 
-   " For hybrid mode (relative + absolute)
-   set relativenumber
-   set number
-   ```
+Add these lines to your `.vimrc` or `init.vim` (Neovim):
+
+```vim
+" For absolute line numbers
+set number
+
+" For hybrid mode (relative + absolute)
+set relativenumber
+set number
+```
 
 ### Bonus
+
 - Toggle line numbers quickly by adding a keybinding (e.g., `<Leader>n`) in your `.vimrc`:
   ```vim
   nnoremap <Leader>n :set number! relativenumber!<CR>
@@ -1564,9 +1586,11 @@ To display line numbers in Vim, you can use the following methods:
 Let me know if you'd like further customization!
 
 ### **Normal Mode (Default Mode)**
+
 These commands work when you start Vim or press `Esc`.
 
 #### **Cursor Movement**
+
 - `h`, `j`, `k`, `l` – Move (left, down, up, right)
 - `w` / `b` – Move forward/backward by word
 - `0` / `^` / `$` – Jump to start/start-of-line/end-of-line
@@ -1575,6 +1599,7 @@ These commands work when you start Vim or press `Esc`.
 - `{` / `}` – Jump between paragraphs
 
 #### **Editing**
+
 - `x` – Delete character under cursor
 - `dd` – Delete (cut) current line
 - `yy` – Yank (copy) current line
@@ -1583,6 +1608,7 @@ These commands work when you start Vim or press `Esc`.
 - `.` – Repeat last edit
 
 #### **Search & Replace**
+
 - `/pattern` – Search forward
 - `?pattern` – Search backward
 - `n` / `N` – Next/previous match
@@ -1590,6 +1616,7 @@ These commands work when you start Vim or press `Esc`.
 - `:%s/old/new/gc` – Replace with confirmation
 
 #### **File Operations**
+
 - `:w` – Save
 - `:q` – Quit
 - `:wq` or `:x` – Save and quit
@@ -1599,6 +1626,7 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **Insert Mode (Enter with `i`, `a`, etc.)**
+
 - `i` – Insert before cursor
 - `a` – Append after cursor
 - `o` / `O` – Insert new line below/above
@@ -1607,6 +1635,7 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **Visual Mode (Enter with `v`, `V`, `Ctrl+v`)**
+
 - `v` – Character-wise selection
 - `V` – Line-wise selection
 - `Ctrl + v` – Block selection
@@ -1616,6 +1645,7 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **Command-Line Mode (`:` commands)**
+
 - `:set nu` / `:set nonu` – Show/hide line numbers
 - `:split filename` – Horizontal split
 - `:vsplit filename` – Vertical split
@@ -1625,6 +1655,7 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **Advanced**
+
 - `Ctrl + w` + `hjkl` – Switch between split windows
 - `*` / `#` – Search word under cursor
 - `q<letter>` – Start recording macro to register `<letter>`
@@ -1633,6 +1664,7 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **Tips**
+
 1. Combine commands with numbers:
    - `5dd` – Delete 5 lines
    - `3p` – Paste 3 times
@@ -1643,9 +1675,10 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **1. 删除从光标位置到行首（删除开头部分）**
+
 - **Linux/macOS (Bash, Zsh 等)**:
   `Ctrl + U`
-  （多数Unix-like系统的默认设置）
+  （多数 Unix-like 系统的默认设置）
 
 - **Windows (CMD)**:
   无默认快捷键，但可以用：
@@ -1657,6 +1690,7 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **2. 删除从光标位置到行尾（删除末尾部分）**
+
 - **Linux/macOS (Bash, Zsh 等)**:
   `Ctrl + K`
 
@@ -1669,6 +1703,7 @@ These commands work when you start Vim or press `Esc`.
 ---
 
 ### **3. 删除整行内容**
+
 - **Linux/macOS/Windows (通用方法)**:
   连用 `Ctrl + U` + `Ctrl + K`（先删行首，再删行尾）
   或 `Ctrl + C` 终止当前行（会换新行）。
@@ -1677,23 +1712,26 @@ These commands work when you start Vim or press `Esc`.
   `Esc`
 
 - **Windows (PowerShell)**:
-  `Ctrl + C`（类似Linux行为）
+  `Ctrl + C`（类似 Linux 行为）
 
 ---
 
 ### **4. 其他场景**
-- **在文本编辑器（如Vim）中**：
+
+- **在文本编辑器（如 Vim）中**：
+
   - 删除到行首：`d0`
   - 删除到行尾：`d$` 或 `D`
 
-- **在Emacs风格的终端中**：
+- **在 Emacs 风格的终端中**：
   - 行首：`Ctrl + A` → `Ctrl + K`
   - 行尾：直接 `Ctrl + K`
 
 ---
 
 ### **注意事项**
-- 不同终端或Shell（如Fish、Tcsh）可能有差异，可通过 `stty -a`（Linux/macOS）查看当前键位绑定。
+
+- 不同终端或 Shell（如 Fish、Tcsh）可能有差异，可通过 `stty -a`（Linux/macOS）查看当前键位绑定。
 - 如果修改过终端配置（如`.bashrc`），快捷键可能被覆盖。
 
 希望这些方法能覆盖你的需求！如果有特定环境需要进一步说明，请补充提问。
@@ -1704,6 +1742,7 @@ DeepSeek-v3:
 Here's a `tldr`-style cheat sheet for `tmux`:
 
 ### **Basic Commands**
+
 ```sh
 tmux                      # Start new session
 tmux new -s <name>        # Start new named session
@@ -1714,6 +1753,7 @@ tmux kill-session -t <name> # Kill session
 ```
 
 ### **Session Management**
+
 ```sh
 ctrl-b $                  # Rename session
 ctrl-b s                  # Switch sessions
@@ -1722,6 +1762,7 @@ ctrl-b )                  # Move to next session
 ```
 
 ### **Window Management**
+
 ```sh
 ctrl-b c                  # Create new window
 ctrl-b ,                  # Rename window
@@ -1732,6 +1773,7 @@ ctrl-b &                  # Kill current window
 ```
 
 ### **Pane Management**
+
 ```sh
 ctrl-b "                  # Split pane horizontally
 ctrl-b %                  # Split pane vertically
@@ -1744,6 +1786,7 @@ ctrl-b space              # Toggle layouts
 ```
 
 ### **Copy Mode (Scroll/Buffer)**
+
 ```sh
 ctrl-b [                  # Enter copy mode
 q                         # Exit copy mode
@@ -1756,6 +1799,7 @@ ctrl-b ]                  # Paste
 ```
 
 ### **Miscellaneous**
+
 ```sh
 ctrl-b :                  # Enter command mode
 ctrl-b t                  # Show clock
@@ -1768,21 +1812,25 @@ tmux -V                   # Show version
 
 Want a specific deep dive on any part? 🚀
 
-在Linux或Unix系统中，`jobs`命令用于查看当前shell会话中正在运行或暂停（后台）的作业（jobs）。以下是它的基本用法和示例：
+在 Linux 或 Unix 系统中，`jobs`命令用于查看当前 shell 会话中正在运行或暂停（后台）的作业（jobs）。以下是它的基本用法和示例：
 
 ---
 
 ### **1. 基本命令**
+
 ```bash
 jobs
 ```
+
 **作用**：列出当前终端会话中的所有作业，并显示它们的状态（运行中、暂停、终止等）和作业编号（如 `[1]`, `[2]`）。
 
 示例输出：
+
 ```
 [1]-  Running                 sleep 100 &
 [2]+  Stopped                 vim file.txt
 ```
+
 - `[n]`：作业编号。
 - `+`：默认作业（最近一次放到后台的作业）。
 - `-`：次默认作业（倒数第二个放到后台的作业）。
@@ -1791,14 +1839,16 @@ jobs
 ---
 
 ### **2. 常用选项**
+
 | 选项 | 作用                            |
 | ---- | ------------------------------- |
-| `-l` | 显示作业的PID（进程ID）。       |
-| `-p` | 仅显示作业的PID。               |
+| `-l` | 显示作业的 PID（进程 ID）。     |
+| `-p` | 仅显示作业的 PID。              |
 | `-r` | 仅显示运行中的作业（Running）。 |
 | `-s` | 仅显示暂停的作业（Stopped）。   |
 
 示例：
+
 ```bash
 jobs -l    # 显示作业及其PID
 jobs -r    # 仅显示运行中的作业
@@ -1807,11 +1857,15 @@ jobs -r    # 仅显示运行中的作业
 ---
 
 ### **3. 结合作业控制命令**
+
 - **将命令放到后台运行**：
+
   ```bash
   command &
   ```
+
   例如：
+
   ```bash
   sleep 100 &  # 后台运行sleep命令
   ```
@@ -1820,7 +1874,8 @@ jobs -r    # 仅显示运行中的作业
   按 `Ctrl + Z`，作业会变为`Stopped`状态。
 
 - **恢复作业**：
-  - 恢复到前台：****
+
+  - 恢复到前台：\*\*\*\*
     ```bash
     fg %n    # n是作业编号，如 fg %1
     ```
@@ -1830,7 +1885,7 @@ jobs -r    # 仅显示运行中的作业
     ```
 
 - **终止作业**：
-  
+
   ```bash
   kill %n    # 如 kill %1
   ```
@@ -1838,28 +1893,32 @@ jobs -r    # 仅显示运行中的作业
 ---
 
 ### **4. 使用场景示例**
+
 1. **启动一个后台作业**：
-   
+
    ```bash
    sleep 300 &
    ```
-   
+
 2. **查看作业列表**：
-   
+
    ```bash
    jobs -l
    ```
+
    输出：
+
    ```
    [1]+ 12345 Running                 sleep 300 &
    ```
-   
+
 3. **暂停一个前台作业**：
-   
+
    - 运行 `vim file.txt`。
    - 按 `Ctrl + Z` 暂停，状态变为 `Stopped`。
-   
+
 4. **恢复暂停的作业到后台**：
+
    ```bash
    bg %2    # 假设vim是作业2
    ```
@@ -1874,6 +1933,7 @@ jobs -r    # 仅显示运行中的作业
 ---
 
 ### **1. 安装 tmux**
+
 - **Linux (Debian/Ubuntu)**:
   ```bash
   sudo apt-get install tmux
@@ -1888,33 +1948,42 @@ jobs -r    # 仅显示运行中的作业
 ### **2. 基本操作**
 
 #### **启动 tmux**
+
 ```bash
 tmux
 ```
+
 或指定会话名称：
+
 ```bash
 tmux new -s session_name
 ```
 
 #### **断开当前会话（保持后台运行）**
+
 - 快捷键：`Ctrl + B`，然后按 `D`
   （先按 `Ctrl+B`，松手后再按 `D`）
 
 #### **重新连接会话**
+
 ```bash
 tmux attach -t session_name
 ```
+
 或使用会话 ID：
+
 ```bash
 tmux attach -t 0
 ```
 
 #### **查看所有会话**
+
 ```bash
 tmux ls
 ```
 
 #### **关闭会话**
+
 - 在会话内直接输入 `exit` 或 `Ctrl + D`。
 - 从外部关闭：
   ```bash
@@ -1924,6 +1993,7 @@ tmux ls
 ---
 
 ### **3. 窗口（Window）管理**
+
 - **新建窗口**：`Ctrl + B`，然后按 `C`
 - **切换窗口**：
   - 下一个窗口：`Ctrl + B` + `N`
@@ -1935,6 +2005,7 @@ tmux ls
 ---
 
 ### **4. 面板（Pane）管理**
+
 - **水平分割**：`Ctrl + B` + `"`
 - **垂直分割**：`Ctrl + B` + `%`
 - **切换面板**：`Ctrl + B` + 方向键（`↑↓←→`）
@@ -1944,6 +2015,7 @@ tmux ls
 ---
 
 ### **5. 其他实用功能**
+
 - **滚动查看历史输出**：`Ctrl + B` + `[`，用方向键滚动，按 `Q` 退出。
 - **复制模式**：
   1. `Ctrl + B` + `[` 进入复制模式。
@@ -1956,7 +2028,9 @@ tmux ls
 ---
 
 ### **6. 配置文件**
+
 自定义配置（如快捷键、主题）需编辑 `~/.tmux.conf`。例如：
+
 ```plaintext
 # 设置前缀键为 Ctrl+A（默认是 Ctrl+B）
 set -g prefix C-a
@@ -1969,7 +2043,9 @@ set -g mouse on
 # 设置状态栏颜色
 set -g status-bg blue
 ```
+
 重新加载配置：
+
 ```bash
 tmux source-file ~/.tmux.conf
 ```
@@ -1977,6 +2053,7 @@ tmux source-file ~/.tmux.conf
 ---
 
 ### **7. 小技巧**
+
 - **快速创建会话并运行命令**：
   ```bash
   tmux new -s mysession "ping example.com"
@@ -1990,5 +2067,9 @@ tmux source-file ~/.tmux.conf
 ## [Lecture 4 Data Wrangling](https://missing.csail.mit.edu/2020/data-wrangling/)
 
 > 中文版本：https://missing-semester-cn.github.io/2020/data-wrangling/
+
+```shell
+ssh tsp journalctl
+```
 
 todo...
