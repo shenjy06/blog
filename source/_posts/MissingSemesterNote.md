@@ -2069,6 +2069,14 @@ tmux source-file ~/.tmux.conf
 
 > 中文版本：https://missing-semester-cn.github.io/2020/data-wrangling/
 
+### AWK 相关文章
+
+- [AWK 简明教程](https://coolshell.org/articles/9070.html/)
+
+### SED 简明教程
+
+- [sed 简明教程](https://coolshell.org/articles/9104.html/)
+
 ```shell
 ssh tsp journalctl
 ```
