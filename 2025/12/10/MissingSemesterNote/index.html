@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://coolshell.org/wp-content/uploads/2011/09/vim_cheat_sheet_for_programmers_print.png">
 <meta property="og:image" content="https://github.com/user-attachments/assets/70bfc79c-1b76-45ef-a9b1-45ab732f0958">
 <meta property="article:published_time" content="2025-12-10T19:54:30.000Z">
-<meta property="article:modified_time" content="2025-12-16T06:58:05.420Z">
+<meta property="article:modified_time" content="2025-12-16T07:47:02.542Z">
 <meta property="article:author" content="Mark Shen">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -813,7 +813,7 @@
 </ul>
 <h3 id="Vim-编辑器模式"><a href="#Vim-编辑器模式" class="headerlink" title="Vim 编辑器模式"></a>Vim 编辑器模式</h3><p><img src="https://github.com/user-attachments/assets/70bfc79c-1b76-45ef-a9b1-45ab732f0958"></p>
 <p>Entering AI mode. Type your prompt (or ‘exit’ to quit):<br>prompt&gt; Linux 程序 exit status 都有啥？</p>
-<p>DeepSeek-v3:<br>在Linux中，程序的退出状态（exit status）是一个0到255之间的整数值，用于表示程序的终止状态。通常，退出状态为0表示成功，非零值表示错误或异常情况。以下是常见的退出状态及其含义：</p>
+<p>DeepSeek-v3:<br>在 Linux 中，程序的退出状态（exit status）是一个 0 到 255 之间的整数值，用于表示程序的终止状态。通常，退出状态为 0 表示成功，非零值表示错误或异常情况。以下是常见的退出状态及其含义：</p>
 <hr>
 <h3 id="标准退出状态"><a href="#标准退出状态" class="headerlink" title="标准退出状态"></a><strong>标准退出状态</strong></h3><ol>
 <li><p><strong>0</strong></p>
@@ -854,15 +854,15 @@
 <li>**137 (128 + SIGKILL, 9)**：进程被强制终止（<code>kill -9</code>）。</li>
 <li>**143 (128 + SIGTERM, 15)**：进程收到终止信号（默认的 <code>kill</code>）。</li>
 </ul>
-<p>常见信号编号：<br>| 信号编号 | 信号名  | 含义               |<br>| ——– | ——- | —————— |<br>| 1        | SIGHUP  | 终端挂断           |<br>| 2        | SIGINT  | 键盘中断（Ctrl+C） |<br>| 9        | SIGKILL | 强制终止           |<br>| 15       | SIGTERM | 优雅终止           |</p>
+<p>常见信号编号：<br>| 信号编号 | 信号名 | 含义 |<br>| ——– | ——- | —————— |<br>| 1 | SIGHUP | 终端挂断 |<br>| 2 | SIGINT | 键盘中断（Ctrl+C） |<br>| 9 | SIGKILL | 强制终止 |<br>| 15 | SIGTERM | 优雅终止 |</p>
 <hr>
-<h3 id="编程中自定义的退出状态"><a href="#编程中自定义的退出状态" class="headerlink" title="编程中自定义的退出状态"></a><strong>编程中自定义的退出状态</strong></h3><p>开发者可以自定义非零退出状态（通常为1-127）。例如：</p>
+<h3 id="编程中自定义的退出状态"><a href="#编程中自定义的退出状态" class="headerlink" title="编程中自定义的退出状态"></a><strong>编程中自定义的退出状态</strong></h3><p>开发者可以自定义非零退出状态（通常为 1-127）。例如：</p>
 <ul>
-<li><strong>64</strong>：BSD系统中用于表示命令行用法错误（类似<code>EX_USAGE</code>）。</li>
-<li><strong>其他值</strong>：程序文档中会明确约定（如<code>grep</code>返回1表示未匹配到内容）。</li>
+<li><strong>64</strong>：BSD 系统中用于表示命令行用法错误（类似<code>EX_USAGE</code>）。</li>
+<li><strong>其他值</strong>：程序文档中会明确约定（如<code>grep</code>返回 1 表示未匹配到内容）。</li>
 </ul>
 <hr>
-<h3 id="如何获取退出状态？"><a href="#如何获取退出状态？" class="headerlink" title="如何获取退出状态？"></a><strong>如何获取退出状态？</strong></h3><p>在Shell中通过 <code>$?</code> 查看上一个命令的退出状态：</p>
+<h3 id="如何获取退出状态？"><a href="#如何获取退出状态？" class="headerlink" title="如何获取退出状态？"></a><strong>如何获取退出状态？</strong></h3><p>在 Shell 中通过 <code>$?</code> 查看上一个命令的退出状态：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /nonexistent</span><br><span class="line"><span class="built_in">echo</span> $?  <span class="comment"># 输出2（文件不存在）</span></span><br></pre></td></tr></table></figure>
 
 <hr>
@@ -886,12 +886,16 @@
 <li>Current line shows absolute number, others show relative:<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> relativenumber</span><br><span class="line">:<span class="keyword">set</span> <span class="keyword">number</span></span><br></pre></td></tr></table></figure></li>
 <li>Or combined:<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> <span class="keyword">number</span> relativenumber</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="4-Disable-Line-Numbers"><a href="#4-Disable-Line-Numbers" class="headerlink" title="4. Disable Line Numbers"></a>4. <strong>Disable Line Numbers</strong></h3>   <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> nonumber</span><br></pre></td></tr></table></figure>
-   <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> norelativenumber</span><br></pre></td></tr></table></figure>
+<h3 id="4-Disable-Line-Numbers"><a href="#4-Disable-Line-Numbers" class="headerlink" title="4. Disable Line Numbers"></a>4. <strong>Disable Line Numbers</strong></h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> nonumber</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> norelativenumber</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>Short forms:<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> nonu</span><br><span class="line">:<span class="keyword">set</span> nornu</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="5-Permanently-Enable-Line-Numbers"><a href="#5-Permanently-Enable-Line-Numbers" class="headerlink" title="5. Permanently Enable Line Numbers"></a>5. <strong>Permanently Enable Line Numbers</strong></h3><p>   Add these lines to your <code>.vimrc</code> or <code>init.vim</code> (Neovim):<br>   <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&quot; For absolute line numbers</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&quot; For hybrid mode (relative + absolute)</span></span><br><span class="line"><span class="keyword">set</span> relativenumber</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">number</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="5-Permanently-Enable-Line-Numbers"><a href="#5-Permanently-Enable-Line-Numbers" class="headerlink" title="5. Permanently Enable Line Numbers"></a>5. <strong>Permanently Enable Line Numbers</strong></h3><p>Add these lines to your <code>.vimrc</code> or <code>init.vim</code> (Neovim):</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&quot; For absolute line numbers</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&quot; For hybrid mode (relative + absolute)</span></span><br><span class="line"><span class="keyword">set</span> relativenumber</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">number</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h3><ul>
 <li>Toggle line numbers quickly by adding a keybinding (e.g., <code>&lt;Leader&gt;n</code>) in your <code>.vimrc</code>:<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">nnoremap</span> <span class="symbol">&lt;Leader&gt;</span>n :<span class="keyword">set</span> number! relativenumber!<span class="symbol">&lt;CR&gt;</span></span><br></pre></td></tr></table></figure>
 Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
@@ -970,7 +974,7 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 <p>在命令行中，”从头删除到尾” 可以理解为删除从光标当前位置到行首或行尾的内容，或者删除整行内容。以下是不同操作系统和终端环境下的常用方法：</p>
 <hr>
 <h3 id="1-删除从光标位置到行首（删除开头部分）"><a href="#1-删除从光标位置到行首（删除开头部分）" class="headerlink" title="1. 删除从光标位置到行首（删除开头部分）"></a><strong>1. 删除从光标位置到行首（删除开头部分）</strong></h3><ul>
-<li><p><strong>Linux/macOS (Bash, Zsh 等)</strong>:<br><code>Ctrl + U</code><br>（多数Unix-like系统的默认设置）</p>
+<li><p><strong>Linux/macOS (Bash, Zsh 等)</strong>:<br><code>Ctrl + U</code><br>（多数 Unix-like 系统的默认设置）</p>
 </li>
 <li><p><strong>Windows (CMD)</strong>:<br>无默认快捷键，但可以用：<br><code>Esc</code>（清除整行）或手动退格</p>
 </li>
@@ -992,18 +996,18 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 </li>
 <li><p><strong>Windows (CMD)</strong>:<br><code>Esc</code></p>
 </li>
-<li><p><strong>Windows (PowerShell)</strong>:<br><code>Ctrl + C</code>（类似Linux行为）</p>
+<li><p><strong>Windows (PowerShell)</strong>:<br><code>Ctrl + C</code>（类似 Linux 行为）</p>
 </li>
 </ul>
 <hr>
 <h3 id="4-其他场景"><a href="#4-其他场景" class="headerlink" title="4. 其他场景"></a><strong>4. 其他场景</strong></h3><ul>
-<li><p><strong>在文本编辑器（如Vim）中</strong>：</p>
+<li><p><strong>在文本编辑器（如 Vim）中</strong>：</p>
 <ul>
 <li>删除到行首：<code>d0</code></li>
 <li>删除到行尾：<code>d$</code> 或 <code>D</code></li>
 </ul>
 </li>
-<li><p><strong>在Emacs风格的终端中</strong>：</p>
+<li><p><strong>在 Emacs 风格的终端中</strong>：</p>
 <ul>
 <li>行首：<code>Ctrl + A</code> → <code>Ctrl + K</code></li>
 <li>行尾：直接 <code>Ctrl + K</code></li>
@@ -1012,7 +1016,7 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 </ul>
 <hr>
 <h3 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h3><ul>
-<li>不同终端或Shell（如Fish、Tcsh）可能有差异，可通过 <code>stty -a</code>（Linux/macOS）查看当前键位绑定。</li>
+<li>不同终端或 Shell（如 Fish、Tcsh）可能有差异，可通过 <code>stty -a</code>（Linux/macOS）查看当前键位绑定。</li>
 <li>如果修改过终端配置（如<code>.bashrc</code>），快捷键可能被覆盖。</li>
 </ul>
 <p>希望这些方法能覆盖你的需求！如果有特定环境需要进一步说明，请补充提问。</p>
@@ -1032,12 +1036,14 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 
 <p>🔥 <strong>Pro Tip</strong>: Default prefix is <code>ctrl-b</code>, but many users remap it to <code>ctrl-a</code> (add <code>set -g prefix C-a</code> in <code>~/.tmux.conf</code>).</p>
 <p>Want a specific deep dive on any part? 🚀</p>
-<p>在Linux或Unix系统中，<code>jobs</code>命令用于查看当前shell会话中正在运行或暂停（后台）的作业（jobs）。以下是它的基本用法和示例：</p>
+<p>在 Linux 或 Unix 系统中，<code>jobs</code>命令用于查看当前 shell 会话中正在运行或暂停（后台）的作业（jobs）。以下是它的基本用法和示例：</p>
 <hr>
 <h3 id="1-基本命令"><a href="#1-基本命令" class="headerlink" title="1. 基本命令"></a><strong>1. 基本命令</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">jobs</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>作用</strong>：列出当前终端会话中的所有作业，并显示它们的状态（运行中、暂停、终止等）和作业编号（如 <code>[1]</code>, <code>[2]</code>）。</p>
 <p>示例输出：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1]-  Running                 sleep 100 &amp;</span><br><span class="line">[2]+  Stopped                 vim file.txt</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>[n]</code>：作业编号。</li>
 <li><code>+</code>：默认作业（最近一次放到后台的作业）。</li>
@@ -1054,11 +1060,11 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 </thead>
 <tbody><tr>
 <td><code>-l</code></td>
-<td>显示作业的PID（进程ID）。</td>
+<td>显示作业的 PID（进程 ID）。</td>
 </tr>
 <tr>
 <td><code>-p</code></td>
-<td>仅显示作业的PID。</td>
+<td>仅显示作业的 PID。</td>
 </tr>
 <tr>
 <td><code>-r</code></td>
@@ -1076,6 +1082,7 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 <h3 id="3-结合作业控制命令"><a href="#3-结合作业控制命令" class="headerlink" title="3. 结合作业控制命令"></a><strong>3. 结合作业控制命令</strong></h3><ul>
 <li><p><strong>将命令放到后台运行</strong>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">command</span> &amp;</span><br></pre></td></tr></table></figure>
+
 <p>例如：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sleep</span> 100 &amp;  <span class="comment"># 后台运行sleep命令</span></span><br></pre></td></tr></table></figure></li>
 <li><p><strong>暂停当前前台作业</strong>：<br>按 <code>Ctrl + Z</code>，作业会变为<code>Stopped</code>状态。</p>
@@ -1095,6 +1102,7 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sleep</span> 300 &amp;</span><br></pre></td></tr></table></figure></li>
 <li><p><strong>查看作业列表</strong>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">jobs</span> -l</span><br></pre></td></tr></table></figure>
+
 <p>输出：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[1]+ 12345 Running                 sleep 300 &amp;</span><br></pre></td></tr></table></figure></li>
 <li><p><strong>暂停一个前台作业</strong>：</p>
@@ -1116,6 +1124,7 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 </ul>
 <hr>
 <h3 id="2-基本操作"><a href="#2-基本操作" class="headerlink" title="2. 基本操作"></a><strong>2. 基本操作</strong></h3><h4 id="启动-tmux"><a href="#启动-tmux" class="headerlink" title="启动 tmux"></a><strong>启动 tmux</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux</span><br></pre></td></tr></table></figure>
+
 <p>或指定会话名称：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new -s session_name</span><br></pre></td></tr></table></figure>
 
@@ -1123,6 +1132,7 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 <li>快捷键：<code>Ctrl + B</code>，然后按 <code>D</code><br>（先按 <code>Ctrl+B</code>，松手后再按 <code>D</code>）</li>
 </ul>
 <h4 id="重新连接会话"><a href="#重新连接会话" class="headerlink" title="重新连接会话"></a><strong>重新连接会话</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t session_name</span><br></pre></td></tr></table></figure>
+
 <p>或使用会话 ID：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t 0</span><br></pre></td></tr></table></figure>
 
@@ -1170,6 +1180,7 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 <hr>
 <h3 id="6-配置文件"><a href="#6-配置文件" class="headerlink" title="6. 配置文件"></a><strong>6. 配置文件</strong></h3><p>自定义配置（如快捷键、主题）需编辑 <code>~/.tmux.conf</code>。例如：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 设置前缀键为 Ctrl+A（默认是 Ctrl+B）</span><br><span class="line">set -g prefix C-a</span><br><span class="line">unbind C-b</span><br><span class="line">bind C-a send-prefix</span><br><span class="line"></span><br><span class="line"># 启用鼠标支持（切换窗口/调整面板大小）</span><br><span class="line">set -g mouse on</span><br><span class="line"></span><br><span class="line"># 设置状态栏颜色</span><br><span class="line">set -g status-bg blue</span><br></pre></td></tr></table></figure>
+
 <p>重新加载配置：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux source-file ~/.tmux.conf</span><br></pre></td></tr></table></figure>
 
@@ -1183,6 +1194,8 @@ Press <code>&lt;Leader&gt;n</code> to toggle line numbers on/off.</li>
 <h2 id="Lecture-4-Data-Wrangling"><a href="#Lecture-4-Data-Wrangling" class="headerlink" title="Lecture 4 Data Wrangling"></a><a target="_blank" rel="noopener" href="https://missing.csail.mit.edu/2020/data-wrangling/">Lecture 4 Data Wrangling</a></h2><blockquote>
 <p>中文版本：<a target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/2020/data-wrangling/">https://missing-semester-cn.github.io/2020/data-wrangling/</a></p>
 </blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh tsp journalctl</span><br></pre></td></tr></table></figure>
+
 <p>todo…</p>
 
   </div>
