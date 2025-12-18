@@ -9,6 +9,8 @@ category:
   - 运维
 ---
 
+> Linux Syscall Table: https://filippo.io/linux-syscall-table/
+
 ## 性能之巅
 
 ![性能之巅](https://github.com/user-attachments/assets/87e7789c-db16-47b0-af77-24b577094e7a)
