@@ -3806,7 +3806,7 @@ alias mtrg='mtr 8.8.8.8'                        # 到谷歌的路由追踪
    ```bash
    # 错误：无法传递参数
    alias ll='ls -l *.txt'      # *.txt 会在定义时展开
-   
+
    # 正确：使用函数
    ll() { ls -l "$@" *.txt; }
    ```
@@ -5527,3 +5527,1566 @@ git checkout --
 4. 建立适合团队的工作流规范
 
 Git 是现代软件开发的基石，掌握它对于任何开发者都是必不可少的技能。
+
+```bash
+zh01@zh01-pc:~/version_controll$ ls -R ./.git/
+./.git/:
+branches  config  description  HEAD  hooks  info  objects  refs
+
+./.git/branches:
+
+./.git/hooks:
+applypatch-msg.sample      post-update.sample     pre-merge-commit.sample    pre-rebase.sample
+commit-msg.sample          pre-applypatch.sample  prepare-commit-msg.sample  pre-receive.sample
+fsmonitor-watchman.sample  pre-commit.sample      pre-push.sample            update.sample
+
+./.git/info:
+exclude
+
+./.git/objects:
+info  pack
+
+./.git/objects/info:
+
+./.git/objects/pack:
+
+./.git/refs:
+heads  tags
+
+./.git/refs/heads:
+
+./.git/refs/tags:
+
+zh01@zh01-pc:~/version_controll$ echo "hello world" > hello.txt
+zh01@zh01-pc:~/version_controll$ git add hello.txt
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+
+尚无提交
+
+要提交的变更：
+  （使用 "git rm --cached <文件>..." 以取消暂存）
+        新文件：   hello.txt
+
+git help init
+
+h01@zh01-pc:~/version_controll$ echo "hello world again." >> hello.txt
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+
+尚无提交
+
+要提交的变更：
+  （使用 "git rm --cached <文件>..." 以取消暂存）
+        新文件：   hello.txt
+
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+        修改：     hello.txt
+
+zh01@zh01-pc:~/version_controll$ echo "new file" > new_file.txt
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+
+尚无提交
+
+要提交的变更：
+  （使用 "git rm --cached <文件>..." 以取消暂存）
+        新文件：   hello.txt
+
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+        修改：     hello.txt
+
+未跟踪的文件:
+  （使用 "git add <文件>..." 以包含要提交的内容）
+        new_file.txt
+zh01@zh01-pc:~/version_controll$ git add .
+zh01@zh01-pc:~/version_controll$ git commit
+
+*** 请告诉我你是谁。
+
+运行
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+来设置您账号的缺省身份标识。
+如果仅在本仓库设置身份标识，则省略 --global 参数。
+fatal: 无法自动探测邮件地址（得到 'zh01@zh01-pc.(none)'）
+zh01@zh01-pc:~/version_controll$ git config --global user.email "shenjunyu1030@hotmail.com"
+zh01@zh01-pc:~/version_controll$ git config --global user.name "shenjunyu"
+zh01@zh01-pc:~/version_controll$ git commit
+[master（根提交） 4acae0d] add two file to this repo
+ 2 files changed, 3 insertions(+)
+ create mode 100644 hello.txt
+ create mode 100644 new_file.txt
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+无文件要提交，干净的工作区
+zh01@zh01-pc:~/version_controll$ git log
+commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402 (HEAD -> master)
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:09:13 2025 +0800
+
+    add two file to this repo
+zh01@zh01-pc:~/version_controll$ git log
+commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402 (HEAD -> master)
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:09:13 2025 +0800
+
+    add two file to this repo
+zh01@zh01-pc:~/version_controll$ git cat-file -p 4acae
+tree 2e527c3fc79da9bfa05e14f91ebff55d30fc6d0a
+author shenjunyu <shenjunyu1030@hotmail.com> 1766322553 +0800
+committer shenjunyu <shenjunyu1030@hotmail.com> 1766322553 +0800
+
+add two file to this repo
+zh01@zh01-pc:~/version_controll$ git cat-file -p 2e527c3fc79da9bfa05e14f91ebff55d30fc6d0a
+100644 blob 898d6fc69db29e5d1cecb9f0acfee700b15712d3    hello.txt
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92    new_file.txt
+zh01@zh01-pc:~/version_controll$ git cat-file -p 898d6fc69db29e5d1cecb9f0acfee700b15712d3
+hello world
+hello world again.
+zh01@zh01-pc:~/version_controll$ git cat-file -p fa49b
+new file
+
+zh01@zh01-pc:~/version_controll$ git log
+commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402 (HEAD -> master)
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:09:13 2025 +0800
+
+    add two file to this repo
+zh01@zh01-pc:~/version_controll$ git cat-file -p 4acae
+tree 2e527c3fc79da9bfa05e14f91ebff55d30fc6d0a
+author shenjunyu <shenjunyu1030@hotmail.com> 1766322553 +0800
+committer shenjunyu <shenjunyu1030@hotmail.com> 1766322553 +0800
+
+add two file to this repo
+zh01@zh01-pc:~/version_controll$ git cat-file -p 2e527c3fc79da9bfa05e14f91ebff55d30fc6d0a
+100644 blob 898d6fc69db29e5d1cecb9f0acfee700b15712d3    hello.txt
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92    new_file.txt
+zh01@zh01-pc:~/version_controll$ git cat-file -p 898d6fc69db29e5d1cecb9f0acfee700b15712d3
+hello world
+hello world again.
+zh01@zh01-pc:~/version_controll$ git cat-file -p fa
+fatal: Not a valid object name fa
+zh01@zh01-pc:~/version_controll$ git cat-file -p fa49b
+new file
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate
+* commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402 (HEAD -> master)
+  Author: shenjunyu <shenjunyu1030@hotmail.com>
+  Date:   Sun Dec 21 21:09:13 2025 +0800
+
+      add two file to this repo
+zh01@zh01-pc:~/version_controll$ cat ./hello.txt
+hello world
+hello world again.
+zh01@zh01-pc:~/version_controll$ echo "another line" >> hello.txt
+zh01@zh01-pc:~/version_controll$ cat ./hello.txt
+hello world
+hello world again.
+another line
+zh01@zh01-pc:~/version_controll$ git commit
+位于分支 master
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+        修改：     hello.txt
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+zh01@zh01-pc:~/version_controll$ git add hello.txt
+zh01@zh01-pc:~/version_controll$ git commit
+[master 057c72e] add a new line for file hello.txt.
+ 1 file changed, 1 insertion(+)
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate
+* commit 057c72e5f8f21917cc993e14debab0681f8f2a42 (HEAD -> master)
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:23:22 2025 +0800
+|
+|     add a new line for file hello.txt.
+|
+* commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+  Author: shenjunyu <shenjunyu1030@hotmail.com>
+  Date:   Sun Dec 21 21:09:13 2025 +0800
+
+      add two file to this repo
+zh01@zh01-pc:~/version_controll$ git checkout 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+注意：正在切换到 '4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402'。
+
+您正处于分离头指针状态。您可以查看、做试验性的修改及提交，并且您可以在切换
+回一个分支时，丢弃在此状态下所做的提交而不对分支造成影响。
+
+如果您想要通过创建分支来保留在此状态下所做的提交，您可以通过在 switch 命令
+中添加参数 -c 来实现（现在或稍后）。例如：
+
+  git switch -c <新分支名>
+
+或者撤销此操作：
+
+  git switch -
+
+通过将配置变量 advice.detachedHead 设置为 false 来关闭此建议
+
+HEAD 目前位于 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ cat ./hello.txt
+hello world
+hello world again.
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate
+* commit 057c72e5f8f21917cc993e14debab0681f8f2a42 (master)
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:23:22 2025 +0800
+|
+|     add a new line for file hello.txt.
+|
+* commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402 (HEAD)
+  Author: shenjunyu <shenjunyu1030@hotmail.com>
+  Date:   Sun Dec 21 21:09:13 2025 +0800
+
+      add two file to this repo
+zh01@zh01-pc:~/version_controll$ git checkout master
+之前的 HEAD 位置是 4acae0d add two file to this repo
+切换到分支 'master'
+zh01@zh01-pc:~/version_controll$ cat ./hello.txt
+hello world
+hello world again.
+another line
+zh01@zh01-pc:~/version_controll$ vim ./hello.txt
+zh01@zh01-pc:~/version_controll$ git checkout 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+error: 您对下列文件的本地修改将被检出操作覆盖：
+        hello.txt
+请在切换分支前提交或贮藏您的修改。
+正在终止
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+        修改：     hello.txt
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+zh01@zh01-pc:~/version_controll$ git checkout -f 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+注意：正在切换到 '4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402'。
+
+您正处于分离头指针状态。您可以查看、做试验性的修改及提交，并且您可以在切换
+回一个分支时，丢弃在此状态下所做的提交而不对分支造成影响。
+
+如果您想要通过创建分支来保留在此状态下所做的提交，您可以通过在 switch 命令
+中添加参数 -c 来实现（现在或稍后）。例如：
+
+  git switch -c <新分支名>
+
+或者撤销此操作：
+
+  git switch -
+
+通过将配置变量 advice.detachedHead 设置为 false 来关闭此建议
+
+HEAD 目前位于 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ git checkout master
+之前的 HEAD 位置是 4acae0d add two file to this repo
+切换到分支 'master'
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+无文件要提交，干净的工作区
+zh01@zh01-pc:~/version_controll$ cat hello.txt
+hello world
+hello world again.
+another line
+zh01@zh01-pc:~/version_controll$ vim ./hello.txt
+zh01@zh01-pc:~/version_controll$ git diff
+diff --git a/hello.txt b/hello.txt
+index 5696a4e..b03bcc3 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1,3 +1,4 @@
+ hello world
+ hello world again.
+ another line
++adfjalsjdfs
+zh01@zh01-pc:~/version_controll$ git diff hello.txt
+diff --git a/hello.txt b/hello.txt
+index 5696a4e..b03bcc3 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1,3 +1,4 @@
+ hello world
+ hello world again.
+ another line
++adfjalsjdfs
+zh01@zh01-pc:~/version_controll$ git log
+commit 057c72e5f8f21917cc993e14debab0681f8f2a42 (HEAD -> master)
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:23:22 2025 +0800
+
+    add a new line for file hello.txt.
+
+commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:09:13 2025 +0800
+
+    add two file to this repo
+zh01@zh01-pc:~/version_controll$ git diff 4acae0d hello.txt
+diff --git a/hello.txt b/hello.txt
+index 898d6fc..b03bcc3 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1,2 +1,4 @@
+ hello world
+ hello world again.
++another line
++adfjalsjdfs
+
+zh01@zh01-pc:~/version_controll$ git diff HEAD hello.txt
+diff --git a/hello.txt b/hello.txt
+index 5696a4e..b03bcc3 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1,3 +1,4 @@
+ hello world
+ hello world again.
+ another line
++adfjalsjdfs
+zh01@zh01-pc:~/version_controll$ git diff 4acae0d HEAD hello.txt
+diff --git a/hello.txt b/hello.txt
+index 898d6fc..5696a4e 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1,2 +1,3 @@
+ hello world
+ hello world again.
++another line
+
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+        修改：     hello.txt
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+zh01@zh01-pc:~/version_controll$ git checkout hello.txt
+从索引区更新了 1 个路径
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate
+* commit 057c72e5f8f21917cc993e14debab0681f8f2a42 (HEAD -> master)
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:23:22 2025 +0800
+|
+|     add a new line for file hello.txt.
+|
+* commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+  Author: shenjunyu <shenjunyu1030@hotmail.com>
+  Date:   Sun Dec 21 21:09:13 2025 +0800
+
+      add two file to this repo
+zh01@zh01-pc:~/version_controll$ cat ./hello.txt
+hello world
+hello world again.
+another line
+zh01@zh01-pc:~/version_controll$ ls
+hello.txt  new_file.txt
+zh01@zh01-pc:~/version_controll$ vim animal.py
+zh01@zh01-pc:~/version_controll$ python3 ./animal.py
+hello
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 master
+未跟踪的文件:
+  （使用 "git add <文件>..." 以包含要提交的内容）
+        animal.py
+
+提交为空，但是存在尚未跟踪的文件（使用 "git add" 建立跟踪）
+zh01@zh01-pc:~/version_controll$ git add animal.py
+zh01@zh01-pc:~/version_controll$ git commit
+[master 1e50a3e] add animal.py to this repo
+ 1 file changed, 10 insertions(+)
+ create mode 100644 animal.py
+
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate
+* commit 1e50a3e95285f4dd51eacb123177ae1b5da91f23 (HEAD -> master)
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:48:02 2025 +0800
+|
+|     add animal.py to this repo
+|
+* commit 057c72e5f8f21917cc993e14debab0681f8f2a42
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:23:22 2025 +0800
+|
+|     add a new line for file hello.txt.
+|
+* commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+  Author: shenjunyu <shenjunyu1030@hotmail.com>
+  Date:   Sun Dec 21 21:09:13 2025 +0800
+
+      add two file to this repo
+zh01@zh01-pc:~/version_controll$ git branch
+* master
+zh01@zh01-pc:~/version_controll$ git branch -vv
+* master 1e50a3e add animal.py to this repo
+zh01@zh01-pc:~/version_controll$ git branch cat
+zh01@zh01-pc:~/version_controll$ git branch
+  cat
+* master
+zh01@zh01-pc:~/version_controll$ git checkout cat
+切换到分支 'cat'
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate
+* commit 1e50a3e95285f4dd51eacb123177ae1b5da91f23 (HEAD -> cat, master)
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:48:02 2025 +0800
+|
+|     add animal.py to this repo
+|
+* commit 057c72e5f8f21917cc993e14debab0681f8f2a42
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:23:22 2025 +0800
+|
+|     add a new line for file hello.txt.
+|
+* commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+  Author: shenjunyu <shenjunyu1030@hotmail.com>
+  Date:   Sun Dec 21 21:09:13 2025 +0800
+
+      add two file to this repo
+zh01@zh01-pc:~/version_controll$ git checkout master
+切换到分支 'master'
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate
+* commit 1e50a3e95285f4dd51eacb123177ae1b5da91f23 (HEAD -> master, cat)
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:48:02 2025 +0800
+|
+|     add animal.py to this repo
+|
+* commit 057c72e5f8f21917cc993e14debab0681f8f2a42
+| Author: shenjunyu <shenjunyu1030@hotmail.com>
+| Date:   Sun Dec 21 21:23:22 2025 +0800
+|
+|     add a new line for file hello.txt.
+|
+* commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+  Author: shenjunyu <shenjunyu1030@hotmail.com>
+  Date:   Sun Dec 21 21:09:13 2025 +0800
+
+      add two file to this repo
+zh01@zh01-pc:~/version_controll$ git branch
+  cat
+* master
+zh01@zh01-pc:~/version_controll$ git checkout cat
+切换到分支 'cat'
+zh01@zh01-pc:~/version_controll$ git help checkout
+zh01@zh01-pc:~/version_controll$ git help switch
+zh01@zh01-pc:~/version_controll$ git switch master
+切换到分支 'master'
+zh01@zh01-pc:~/version_controll$ git checkout cat
+切换到分支 'cat'
+
+zh01@zh01-pc:~/version_controll$ git add animal.py
+zh01@zh01-pc:~/version_controll$ git commit
+[cat 263b714] add new feature for animal.py
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+zh01@zh01-pc:~/version_controll$ git log
+commit 263b714c42ec3e4b81fc8786abd225da4bf3cca7 (HEAD -> cat)
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 22:02:09 2025 +0800
+
+    add new feature for animal.py
+
+commit 1e50a3e95285f4dd51eacb123177ae1b5da91f23 (master)
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:48:02 2025 +0800
+
+    add animal.py to this repo
+
+commit 057c72e5f8f21917cc993e14debab0681f8f2a42
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:23:22 2025 +0800
+
+    add a new line for file hello.txt.
+
+commit 4acae0d500d77b6d5e89d0db8c1f04d0d7fb6402
+Author: shenjunyu <shenjunyu1030@hotmail.com>
+Date:   Sun Dec 21 21:09:13 2025 +0800
+
+    add two file to this repo
+zh01@zh01-pc:~/version_controll$ git diff 263b714 1e50a3e
+diff --git a/animal.py b/animal.py
+index bfd213d..2852ea9 100644
+--- a/animal.py
++++ b/animal.py
+@@ -1,16 +1,10 @@
+ import sys
+
+-def cat():
+-    print("print cat")
+-
+ def default():
+     print("hello")
+
+ def main():
+-    if len(sys.argv) < 2:
+-        default()
+-    elif sys.argv[1] == 'cat':
+-        cat()
++    default()
+
+ if __name__ == '__main__':
+     main()
+zh01@zh01-pc:~/version_controll$
+zh01@zh01-pc:~/version_controll$ git diff HEAD
+zh01@zh01-pc:~/version_controll$ git diff
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 cat
+无文件要提交，干净的工作区
+zh01@zh01-pc:~/version_controll$ git status
+位于分支 cat
+无文件要提交，干净的工作区
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* 263b714 (HEAD -> cat) add new feature for animal.py
+* 1e50a3e (master) add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ git checkout master
+切换到分支 'master'
+zh01@zh01-pc:~/version_controll$ cat ./animal.py
+import sys
+
+def default():
+    print("hello")
+
+def main():
+    default()
+
+if __name__ == '__main__':
+    main()
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* 263b714 (cat) add new feature for animal.py
+* 1e50a3e (HEAD -> master) add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ git branch dog
+zh01@zh01-pc:~/version_controll$ git checkout dog
+切换到分支 'dog'
+zh01@zh01-pc:~/version_controll$ vim ./animal.py
+zh01@zh01-pc:~/version_controll$ git branch
+  cat
+* dog
+  master
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* 263b714 (cat) add new feature for animal.py
+* 1e50a3e (HEAD -> dog, master) add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ vim ./animal.py
+zh01@zh01-pc:~/version_controll$ python3 ./animal.py dog
+Woof!
+zh01@zh01-pc:~/version_controll$ python3 ./animal.py d
+hello
+zh01@zh01-pc:~/version_controll$ git add .
+zh01@zh01-pc:~/version_controll$ ls
+animal.py  hello.txt  new_file.txt
+zh01@zh01-pc:~/version_controll$ git commit
+[dog 2807677] add dog function for animal.py
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* 2807677 (HEAD -> dog) add dog function for animal.py
+| * 263b714 (cat) add new feature for animal.py
+|/
+* 1e50a3e (master) add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+
+zh01@zh01-pc:~/version_controll$ git checkout master
+切换到分支 'master'
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* 2807677 (dog) add dog function for animal.py
+| * 263b714 (cat) add new feature for animal.py
+|/
+* 1e50a3e (HEAD -> master) add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ git merge cat
+更新 1e50a3e..263b714
+Fast-forward
+ animal.py | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+zh01@zh01-pc:~/version_controll$ cat ./animal.py
+import sys
+
+def cat():
+    print("print cat")
+
+def default():
+    print("hello")
+
+def main():
+    if len(sys.argv) < 2:
+        default()
+    elif sys.argv[1] == 'cat':
+        cat()
+
+if __name__ == '__main__':
+    main()
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* 2807677 (dog) add dog function for animal.py
+| * 263b714 (HEAD -> master, cat) add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ git merge dog
+自动合并 animal.py
+冲突（内容）：合并冲突于 animal.py
+自动合并失败，修正冲突然后提交修正的结果。
+zh01@zh01-pc:~/version_controll$ git mergetool
+
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+opendiff kdiff3 tkdiff xxdiff meld tortoisemerge gvimdiff diffuse diffmerge ecmerge p4merge araxis bc codecompare smerge emerge vimdiff
+Merging:
+animal.py
+
+Normal merge conflict for 'animal.py':
+  {local}: modified file
+  {remote}: modified file
+Hit return to start merge resolution tool (bc): vimdiff
+animal.py seems unchanged.
+Was the merge successful [y/n]? n
+merge of animal.py failed
+zh01@zh01-pc:~/version_controll$ git merge --abort
+zh01@zh01-pc:~/version_controll$ git merge dog
+自动合并 animal.py
+冲突（内容）：合并冲突于 animal.py
+自动合并失败，修正冲突然后提交修正的结果。
+zh01@zh01-pc:~/version_controll$ vim ./animal.py
+zh01@zh01-pc:~/version_controll$ git merge --continue
+U       animal.py
+error: 无法提交，因为您有未合并的文件。
+提示：请在工作区改正文件，然后酌情使用 'git add/rm <文件>' 命令标记
+提示：解决方案并提交。
+fatal: 因为存在未解决的冲突而退出。
+zh01@zh01-pc:~/version_controll$ git add animal.py
+zh01@zh01-pc:~/version_controll$ git merge --continue
+[master efd4f8b] Merge branch 'dog'
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+*   efd4f8b (HEAD -> master) Merge branch 'dog'
+|\
+| * 2807677 (dog) add dog function for animal.py
+* | 263b714 (cat) add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+
+zh01@zh01-pc:~/version_controll$ git remote
+origin
+zh01@zh01-pc:~/version_controll$ git remote add origin ../remote/
+fatal: 远程 origin 已经存在。
+zh01@zh01-pc:~/version_controll$ git remote remove origin
+zh01@zh01-pc:~/version_controll$ git remote
+zh01@zh01-pc:~/version_controll$ git remote add origin ../remote
+zh01@zh01-pc:~/version_controll$ git push origin master:master
+fatal: '../remote' does not appear to be a git repository
+fatal: 无法读取远程仓库。
+
+请确认您有正确的访问权限并且仓库存在。
+zh01@zh01-pc:~/version_controll$ ls -lh
+总用量 12K
+-rw-rw-r-- 1 zh01 zh01 280 12月 21 22:23 animal.py
+-rw-rw-r-- 1 zh01 zh01  44 12月 21 21:44 hello.txt
+-rw-rw-r-- 1 zh01 zh01   9 12月 21 21:07 new_file.txt
+zh01@zh01-pc:~/version_controll$ cd ..
+zh01@zh01-pc:~$ ls
+10月    模板  图片  下载  专属应用文件夹  CodeGeeXProjects  IdeaProjects  Postman  soft      version_controll
+公共的  视频  文档  音乐  桌面            Edraw             logs          remote   uemdisks
+zh01@zh01-pc:~$ cd remote
+zh01@zh01-pc:~/remote$ ls
+zh01@zh01-pc:~/remote$ ls -lh
+总用量 0
+zh01@zh01-pc:~/remote$ ll
+总用量 12
+drwxrwxr-x  2 zh01 zh01 4096 12月 21 22:34 ./
+drwxrwxr-x 45 zh01 zh01 4096 12月 21 22:34 ../
+```
+
+Prompt> how to set local directory as remote repo with git?
+
+DeepSeek:
+
+### Setting a Local Directory as a Remote Git Repository
+
+To use a local directory as a remote Git repository, you can follow these steps:
+
+### Method 1: Using Local Path as Remote
+
+1. **Initialize your main repository** (if you haven't already):
+
+   ```bash
+   git init /path/to/main/repo
+   cd /path/to/main/repo
+   ```
+
+2. **Create your "remote" repository** (which is just another local directory):
+
+   ```bash
+   git init --bare /path/to/remote/repo.git
+   ```
+
+   (The `--bare` flag creates a repository without a working directory, which is typical for remote repos)
+
+3. **Add the local remote to your main repository**:
+
+   ```bash
+   git remote add origin /path/to/remote/repo.git
+   ```
+
+4. **Push to the local remote**:
+   ```bash
+   git push -u origin master  # or main, depending on your branch name
+   ```
+
+### Method 2: Using file:// Protocol
+
+Alternatively, you can use the `file://` protocol for more explicit local remotes:
+
+```bash
+git remote add origin file:///path/to/remote/repo.git
+```
+
+### Important Notes
+
+- Use absolute paths to avoid issues with relative paths changing based on your working directory
+- The "remote" repository should ideally be in a different directory than your working repository
+- For Windows paths, use forward slashes or double backslashes: `C:/path/to/repo.git` or `C:\\path\\to\\repo.git`
+- This approach is useful for testing before pushing to real remote servers, or for local backup scenarios
+
+Would you like me to explain any part of this process in more detail?
+
+Prompt> quit
+
+Exiting AI mode.
+
+```bash
+zh01@zh01-pc:~/remote$ git init --bare
+已初始化空的 Git 仓库于 /home/zh01/remote/
+zh01@zh01-pc:~/version_controll$ ls
+animal.py  hello.txt  new_file.txt
+zh01@zh01-pc:~/version_controll$ git push origin master:master
+枚举对象: 19, 完成.
+对象计数中: 100% (19/19), 完成.
+使用 8 个线程进行压缩
+压缩对象中: 100% (16/16), 完成.
+写入对象中: 100% (19/19), 1.98 KiB | 1.98 MiB/s, 完成.
+总共 19 （差异 3），复用 0 （差异 0）
+To ../remote
+ * [new branch]      master -> master
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+*   efd4f8b (HEAD -> master, origin/master) Merge branch 'dog'
+|\
+| * 2807677 (dog) add dog function for animal.py
+* | 263b714 (cat) add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+*   efd4f8b (HEAD -> master, origin/master) Merge branch 'dog'
+|\
+| * 2807677 (dog) add dog function for animal.py
+* | 263b714 (cat) add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ ls
+animal.py  hello.txt  new_file.txt
+zh01@zh01-pc:~/version_controll$ vim ./animal.py
+zh01@zh01-pc:~/version_controll$ git add .
+zh01@zh01-pc:~/version_controll$ git commit -m 'refactoring source code'
+[master fb3be48] refactoring source code
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* fb3be48 (HEAD -> master) refactoring source code
+*   efd4f8b (origin/master) Merge branch 'dog'
+|\
+| * 2807677 (dog) add dog function for animal.py
+* | 263b714 (cat) add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+
+zh01@zh01-pc:~/version_controll$ git log --all --graph --decorate --oneline
+* fb3be48 (HEAD -> master) refactoring source code
+*   efd4f8b (origin/master) Merge branch 'dog'
+|\
+| * 2807677 (dog) add dog function for animal.py
+* | 263b714 (cat) add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/version_controll$ git branch --set-upstream-to=origin/master
+分支 'master' 设置为跟踪来自 'origin' 的远程分支 'master'。
+zh01@zh01-pc:~/version_controll$ git branch -vv
+  cat    263b714 add new feature for animal.py
+  dog    2807677 add dog function for animal.py
+* master fb3be48 [origin/master: 领先 1] refactoring source code
+zh01@zh01-pc:~/version_controll$ git push
+枚举对象: 5, 完成.
+对象计数中: 100% (5/5), 完成.
+使用 8 个线程进行压缩
+压缩对象中: 100% (3/3), 完成.
+写入对象中: 100% (3/3), 361 字节 | 361.00 KiB/s, 完成.
+总共 3 （差异 1），复用 0 （差异 0）
+To ../remote
+   efd4f8b..fb3be48  master -> master
+
+zh01@zh01-pc:~/vc$ git log --all --graph --decorate --oneline
+* fb3be48 (origin/master, origin/HEAD) refactoring source code
+*   efd4f8b (HEAD -> master) Merge branch 'dog'
+|\
+| * 2807677 add dog function for animal.py
+* | 263b714 add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+zh01@zh01-pc:~/vc$ git pull # equals to git fetch + git merge
+更新 efd4f8b..fb3be48
+Fast-forward
+ animal.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+zh01@zh01-pc:~/vc$ git log --all --graph --decorate --oneline
+* fb3be48 (HEAD -> master, origin/master, origin/HEAD) refactoring source code
+*   efd4f8b Merge branch 'dog'
+|\
+| * 2807677 add dog function for animal.py
+* | 263b714 add new feature for animal.py
+|/
+* 1e50a3e add animal.py to this repo
+* 057c72e add a new line for file hello.txt.
+* 4acae0d add two file to this repo
+
+# get latest snapshot of source code
+git clone --shallow
+
+# add file to this repo
+git add -p animal.py
+diff --git a/animal.py b/animal.py
+index 00c2edd..80a3972 100644
+--- a/animal.py
++++ b/animal.py
+@@ -7,9 +7,10 @@ def default():
+     print("hello")
+
+ def dog():
+-    print('woof')
++    print('Woof')
+
+ def main():
++    print('debug print')
+     if sys.argv[1] == 'cat':
+         cat()
+     elif sys.argv[1] == 'dog':
+(1/1) Stage this hunk [y,n,q,a,d,s,e,?]?
+```
+
+DeepSeek:
+The prompt `(1/1) Stage this hunk [y,n,q,a,d,s,e,?]?` is commonly seen when using Git's interactive patch staging feature (e.g., `git add -p` or `git add --patch`). Here's what it means and how to respond:
+
+### **Explanation:**
+
+- **(1/1):** This indicates you're viewing the first (and only) hunk in the current file. If there were multiple hunks, it would show something like `(1/3)`, meaning the first of three hunks.
+- **Stage this hunk?** Git is asking whether you want to stage (add to the next commit) the highlighted changes shown in the diff.
+- **Options (`[y,n,q,a,d,s,e,?]`):** These are the choices you can make:
+  - **`y`** (yes): Stage this hunk.
+  - **`n`** (no): Do not stage this hunk.
+  - **`q`** (quit): Abort the interactive session and leave remaining hunks unstaged.
+  - **`a`** (all): Stage this hunk and all remaining hunks in the file.
+  - **`d`** (don't stage): Do not stage this hunk or any remaining hunks in the file (opposite of `a`).
+  - **`s`** (split): Split the hunk into smaller hunks (if possible) for more precise staging.
+  - **`e`** (edit): Manually edit the hunk—useful for fine-tuning changes before staging (advanced).
+  - **`?`** (help): Show this help message again.
+
+---
+
+### **When to Use This:**
+
+- **`git add -p`** is powerful for reviewing changes carefully before committing.
+- Use it to avoid staging unwanted code (like debug logs or accidental changes).
+- Split (`s`) or edit (`e`) hunks if you want to stage only part of the changes in a file.
+
+Let me know if you'd like further clarification!
+
+```bash
+zh01@zh01-pc:~/version_controll$ git diff --cached
+diff --git a/animal.py b/animal.py
+index 00c2edd..80a3972 100644
+--- a/animal.py
++++ b/animal.py
+@@ -7,9 +7,10 @@ def default():
+     print("hello")
+
+ def dog():
+-    print('woof')
++    print('Woof')
+
+ def main():
++    print('debug print')
+     if sys.argv[1] == 'cat':
+         cat()
+     elif sys.argv[1] == 'dog':
+```
+
+Prompt> introduce git blame and tell me how to use it.
+
+DeepSeek:
+
+### Git Blame: Introduction and Usage
+
+### What is Git Blame?
+
+`git blame` is a Git command that helps you track changes in a file by showing detailed information about:
+
+- Who last modified each line
+- Which commit introduced the change
+- When the change was made
+
+It's especially useful for:
+
+- Identifying the author of specific code changes
+- Tracking when a particular line was modified
+- Debugging by understanding the history of code changes
+- Resolving conflicts or understanding why certain code exists
+
+### How to Use Git Blame
+
+### Basic Syntax
+
+```bash
+git blame [options] <file>
+```
+
+### Common Examples
+
+1. **Basic blame for a file:**
+
+   ```bash
+   git blame myfile.py
+   ```
+
+2. **View blame with line numbers:**
+
+   ```bash
+   git blame -n myfile.py
+   ```
+
+3. **See the commit hash and author name in brief output:**
+
+   ```bash
+   git blame -l myfile.py
+   ```
+
+4. **Ignore whitespace changes:**
+
+   ```bash
+   git blame -w myfile.py
+   ```
+
+5. **Blame a file up to a specific revision:**
+   ```bash
+   git blame HEAD~10 -- myfile.py
+   ```
+
+### Useful Options
+
+- `-L <start>,<end>` - Limit blame to specific lines:
+
+  ```bash
+  git blame -L 10,15 myfile.py
+  ```
+
+- `-C` - Detect lines moved or copied from other files in the same commit
+
+- `-M` - Detect lines moved or copied within the same file
+
+- `-e` - Show email addresses instead of author names
+
+- `-f` - Show filename in the original commit
+
+### Advanced Usage
+
+1. **Combine with other Git commands** to see the commit details:
+
+   ```bash
+   git blame myfile.py | grep "interesting_function" | awk '{print $1}' | xargs git show
+   ```
+
+2. **Use an interactive blame viewer** (requires GUI tools):
+
+   - For VSCode: Built-in GitLens extension
+   - For Git GUI: `git gui blame <file>`
+   - For terminal: `tig blame <file>`
+
+3. **Ignore certain commits** (like mass reformatting):
+   ```bash
+   git blame --ignore-revs-file .git-blame-ignore-revs myfile.py
+   ```
+
+### Practical Scenario
+
+If you're debugging an issue and find problematic code in line 42 of `app.js`, you could:
+
+```bash
+git blame -L 42,42 app.js
+```
+
+This shows you the commit hash and author. Then you can:
+
+```bash
+git show <commit-hash>
+```
+
+to examine the full changeset that introduced that line.
+
+Would you like me to explain any specific aspect of `git blame` in more detail?
+
+```bash
+git show asjf
+```
+
+Prompt> introduce git stash and tell me how to use it?
+
+DeepSeek:
+
+### Introduction to Git Stash
+
+Git stash is a handy command that allows you to temporarily save changes you've made to your working directory without committing them. It's particularly useful when you need to switch contexts quickly—like when you're in the middle of working on something but need to address an urgent bug fix or switch branches.
+
+### Key Concepts of Git Stash
+
+- **Stashing** saves your uncommitted changes (both staged and unstaged) and reverts your working directory to match the HEAD commit
+- Stashes are stored locally in your Git repository
+- You can have multiple stashes saved at once
+- Stashes don't get transferred when you push/pull from remote repositories
+
+### Basic Git Stash Commands
+
+### 1. Stash Your Changes
+
+```bash
+git stash
+```
+
+or with a descriptive message:
+
+```bash
+git stash save "your descriptive message"
+```
+
+### 2. View Your Stashes
+
+```bash
+git stash list
+```
+
+This shows you all stashes in the format `stash@{n}: branch: message`
+
+### 3. Apply Stashed Changes
+
+To apply the most recent stash and keep it in the stash list:
+
+```bash
+git stash apply
+```
+
+To apply a specific stash:
+
+```bash
+git stash apply stash@{n}
+```
+
+(where `n` is the stash number from `git stash list`)
+
+### 4. Apply and Remove from Stash (pop)
+
+```bash
+git stash pop
+```
+
+This applies the stash and removes it from the stash list.
+
+### 5. Remove a Stash Without Applying
+
+```bash
+git stash drop stash@{n}
+```
+
+### 6. Clear All Stashes
+
+```bash
+git stash clear
+```
+
+### Advanced Usage
+
+### Stash Specific Files
+
+```bash
+git stash push -p
+```
+
+This lets you interactively select which changes to stash.
+
+### Stash Untracked Files
+
+```bash
+git stash -u
+```
+
+### Stash Ignored Files
+
+```bash
+git stash -a
+```
+
+### Create a Branch from a Stash
+
+```bash
+git stash branch new-branch-name stash@{n}
+```
+
+This creates a new branch starting from the commit where you created the stash, then applies the stash changes to it.
+
+### When to Use Git Stash
+
+1. When you need to quickly switch branches but aren't ready to commit
+2. Before pulling remote changes that might conflict with your local changes
+3. When you need to test something on a clean working directory
+4. To temporarily save experimental changes while you work on something else
+
+Remember, stashes are meant to be temporary storage—don't use them as a substitute for proper commits over long periods.
+
+```bash
+zh01@zh01-pc:~/version_controll$ vim ./new_file.txt
+zh01@zh01-pc:~/version_controll$ git diff
+diff --git a/new_file.txt b/new_file.txt
+index fa49b07..b44b31c 100644
+--- a/new_file.txt
++++ b/new_file.txt
+@@ -1 +1,2 @@
+ new file
++git stash here
+zh01@zh01-pc:~/version_controll$ git stash
+保存工作目录和索引状态 WIP on master: fb3be48 refactoring source code
+zh01@zh01-pc:~/version_controll$ cat ./new_file.txt
+new file
+zh01@zh01-pc:~/version_controll$ git stash pop
+位于分支 master
+您的分支与上游分支 'origin/master' 一致。
+
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+        修改：     animal.py
+        修改：     new_file.txt
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+丢弃了 refs/stash@{0}（ee40adca5f13520e2599114aba984c74d9027675）
+zh01@zh01-pc:~/version_controll$ cat ./new_file.txt
+new file
+git stash here
+```
+
+Prompt> introduce git stash and tell me how to use it.
+
+DeepSeek:
+
+### **Git Stash: Introduction**
+
+Git `stash` is a powerful command that allows you to temporarily save changes in your working directory without committing them. This is useful when you need to switch branches or tasks but are not ready to commit your current work.
+
+### **What Does Stash Do?**
+
+- Saves uncommitted changes (both staged & unstaged)
+- Reverts your working directory to the last commit (`HEAD`)
+- Lets you reapply the saved changes later
+
+### **Basic Usage of `git stash`**
+
+#### **1. Stash Changes**
+
+To stash your current changes:
+
+```bash
+git stash
+```
+
+Alternatively, you can include a descriptive message:
+
+```bash
+git stash save "work in progress on feature X"
+```
+
+By default, `git stash` only stashes tracked files. To include untracked files:
+
+```bash
+git stash -u
+```
+
+For including ignored files (rarely needed):
+
+```bash
+git stash -a  # (--all)
+```
+
+#### **2. List Saved Stashes**
+
+View all stored stashes:
+
+```bash
+git stash list
+```
+
+Output:
+
+```
+stash@{0}: On main: work in progress on login feature
+stash@{1}: On dev: temporary experiment
+```
+
+#### **3. Reapply (Pop) Stashed Changes**
+
+To reapply the most recent stash **and remove it** from the stash list:
+
+```bash
+git stash pop
+```
+
+To apply a specific stash (`stash@{n}`):
+
+```bash
+git stash pop stash@{1}
+```
+
+To reapply stash **without deleting it**:
+
+```bash
+git stash apply stash@{0}
+```
+
+#### **4. Delete a Stash**
+
+Drop (delete) a specific stash:
+
+```bash
+git stash drop stash@{1}
+```
+
+Clear all stashes (**use with caution**):
+
+```bash
+git stash clear
+```
+
+#### **5. Stash Individual Files**
+
+Stash only specific changes (requires Git 2.13+):
+
+```bash
+git stash push -p  # (--patch)
+```
+
+This opens an interactive prompt where you can choose which hunks to stash.
+
+### **Common Use Cases**
+
+✅ **Switching Branches**: Stash work before switching branches.  
+✅ **Pulling Latest Changes**: Stash changes before doing `git pull`.  
+✅ **Testing Something Quickly**: Stash your current changes to test another idea.
+
+### **Summary**
+
+| Command                                  | Description                     |
+| ---------------------------------------- | ------------------------------- |
+| `git stash` / `git stash save "message"` | Stash changes                   |
+| `git stash list`                         | List all stashes                |
+| `git stash pop`                          | Apply & remove the latest stash |
+| `git stash apply stash@{n}`              | Apply stash without removing it |
+| `git stash drop stash@{n}`               | Delete a stash                  |
+| `git stash clear`                        | Delete all stashes              |
+| `git stash -u`                           | Stash untracked files too       |
+
+Hope this helps! Let me know if you'd like examples for more advanced stash usage.
+
+Prompt> introduce git bisect and tell me how to use it.
+
+DeepSeek:
+
+### Introducing Git Bisect
+
+Git bisect is a powerful tool that helps you identify which specific commit introduced a bug or regression in your codebase. It uses a binary search algorithm to efficiently narrow down the problematic commit between a known "good" state and a known "bad" state.
+
+### How Git Bisect Works
+
+1. You specify a "good" commit where the bug didn't exist
+2. You specify a "bad" commit where the bug does exist
+3. Git checks out commits halfway between good and bad
+4. You test each commit and tell Git if it's good or bad
+5. Git repeats this process until it pinpoints the exact commit that introduced the bug
+
+### Using Git Bisect: Step by Step
+
+### 1. Start the bisect process
+
+```bash
+git bisect start
+```
+
+### 2. Mark the known bad commit (usually HEAD)
+
+```bash
+git bisect bad [commit-hash]  # omit hash for HEAD
+```
+
+### 3. Mark a known good commit
+
+```bash
+git bisect good [commit-hash]
+```
+
+### 4. Begin testing commits
+
+After marking good and bad commits, Git will automatically check out a commit halfway between them. At this point:
+
+1. Test the code (run tests, manually verify behavior, etc.)
+2. Tell Git the result:
+   - If the bug exists:
+     ```bash
+     git bisect bad
+     ```
+   - If the bug doesn't exist:
+     ```bash
+     git bisect good
+     ```
+3. Git will repeat the process until it finds the first bad commit
+
+### 5. When finished
+
+Once Git identifies the problematic commit:
+
+```bash
+git bisect reset  # returns you to your original HEAD
+```
+
+### Advanced Usage
+
+### Automating the process
+
+You can create a script to automatically determine if a commit is good or bad:
+
+```bash
+git bisect run [test-script]
+```
+
+The script should exit with:
+
+- 0 if the commit is good
+- 1-127 (except 125) if the commit is bad
+- 125 if the commit should be skipped
+
+### Skipping commits
+
+If you can't test a commit:
+
+```bash
+git bisect skip
+```
+
+### Viewing bisect status
+
+```bash
+git bisect log      # shows current bisect progress
+git bisect visualize  # shows remaining commits (requires gitk)
+```
+
+### Example Workflow
+
+1. You discover a bug in the current code
+2. You remember the feature worked correctly at v1.0
+3. You would then:
+   ```bash
+   git bisect start
+   git bisect bad       # current commit has the bug
+   git bisect good v1.0 # v1.0 didn't have the bug
+   ```
+4. Test commits and mark them good/bad until Git finds the culprit
+
+Git bisect is incredibly efficient - it can find a problematic commit among thousands in just ~log₂(n) steps!
+
+Prompt> how to write .gitignore file?
+
+DeepSeek:
+
+### How to Write a `.gitignore` File
+
+A `.gitignore` file tells Git which files or folders to ignore in your project. Here's how to create and use one effectively:
+
+### Basic Structure
+
+1. Create a file named `.gitignore` in your project's root directory
+2. Add patterns of files/directories you want Git to ignore
+3. Save the file
+4. Git will automatically apply these rules
+
+### Pattern Rules
+
+- **Ignore specific files**: `filename.ext`
+- **Ignore all files with an extension**: `*.ext`
+- **Ignore directories**: `dirname/`
+- **Ignore files in specific directories**: `dirname/filename.ext`
+- **Negate a pattern (don't ignore)**: `!filename.ext`
+- **Comment lines**: Start with `#`
+- **Recursive wildcards**: `**/`
+
+### Common Examples
+
+```
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore all .log files
+*.log
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+
+# But don't ignore this specific file
+!important.log
+```
+
+### Tips
+
+1. Git only ignores untracked files - if something is already tracked, add it to `.gitignore` then run:
+
+   ```bash
+   git rm --cached <file>
+   ```
+
+2. You can have multiple `.gitignore` files in different directories
+
+3. Global ignore patterns can be set in `~/.gitignore_global` and referenced in your Git config:
+
+   ```bash
+   git config --global core.excludesfile ~/.gitignore_global
+   ```
+
+4. For language-specific ignores, check GitHub's templates:
+   https://github.com/github/gitignore
+
+5. Validate your ignores using:
+   ```bash
+   git check-ignore -v <filename>
+   ```
+
+Remember to commit your `.gitignore` file to share these rules with your team!
+
+---
+
+Prompt> tell me the difference between git reset and git rebase.
+
+DeepSeek:
+Both `git reset` and `git rebase` are powerful Git commands used to modify commit history, but they serve different purposes and operate in distinct ways. Here’s a breakdown of their differences:
+
+### **1. `git reset`**
+
+- **Purpose**: Used to undo changes by moving the current branch pointer to a specified commit, optionally resetting the staging area (`--soft`/`--mixed`/`--hard`).
+- **Effect**:
+  - Rewrites commit history **locally** (changes are not pushed to remote unless forced).
+  - Can discard commits permanently (`--hard`) or keep changes (`--soft`/`--mixed`).
+- **Use Cases**:
+  - Undo commits (e.g., `git reset HEAD~1`).
+  - Discard changes (`git reset --hard`).
+- **Impact**:
+  - Affects only your local repository; can cause issues if shared commits are discarded.
+- **Modes**:
+  - `--soft`: Moves the branch pointer but keeps changes staged.
+  - `--mixed` (default): Moves branch pointer & unstages changes (changes remain in working dir).
+  - `--hard`: Discards all changes and resets to commit.
+
+#### **Example**:
+
+```bash
+# Undo the last commit but keep changes staged:
+git reset --soft HEAD~1
+
+# Undo the last commit & unstage changes:
+git reset HEAD~1
+
+# Discard the last commit & all changes permanently:
+git reset --hard HEAD~1
+```
+
+---
+
+### **2. `git rebase`**
+
+- **Purpose**: Used to rewrite commit history by reapplying commits on top of a different base commit (often used for linearizing histories).
+- **Effect**:
+  - Changes the commit history by creating new commits (old ones become dangling until garbage-collected).
+  - Often used to clean up history before merging (interactive rebase: `git rebase -i`).
+- **Use Cases**:
+  - Integrate changes from one branch into another (alternative to `git merge`).
+  - Combine/squash/edit commits (`git rebase -i`).
+- **Impact**:
+  - Can cause conflicts if rebased commits change underlying code.
+  - **Dangerous** if used on shared branches (requires force-pushing).
+
+#### **Example**:
+
+```bash
+# Rebase current branch onto another branch (e.g., `main`):
+git rebase main
+
+# Interactive rebase (edit/squash/fixup commits):
+git rebase -i HEAD~3
+```
+
+---
+
+### **Key Differences**
+
+| Feature           | `git reset`                                               | `git rebase`                    |
+| ----------------- | --------------------------------------------------------- | ------------------------------- |
+| **Purpose**       | Undo commits & reset state                                | Reapply commits onto a new base |
+| **Effect**        | Moves branch pointer                                      | Rewrites commit history         |
+| **Use Case**      | Discard/amend commits                                     | Integrate branches cleanly      |
+| **Safety**        | Affects local work                                        | Dangerous if shared history     |
+| **Interactive**   | No                                                        | Yes (`-i` flag)                 |
+| **Remote Impact** | Requires `git push --force` (if resetting pushed commits) | Requires `git push --force`     |
+
+---
+
+### **When to Use Which?**
+
+- Use `git reset`:
+  - To undo local commits (**not pushed yet**).
+  - To discard changes (`--hard`).
+- Use `git rebase`:
+  - To clean up commit history before merging into `main`.
+  - When working on a feature branch and want to avoid merge commits.
+
+⚠️ **Warning**: Both commands alter Git history. Avoid using them on commits already pushed unless you coordinate with collaborators (force-pushing may disrupt others’ work).
+
+Would you like clarification on specific scenarios?
