@@ -10,6 +10,8 @@ tags:
 > 课程 2026 年度更新：https://missing.csail.mit.edu/
 >
 > Linux man pages online: https://man7.org/linux/man-pages/index.html
+>
+> this course github repo: https://github.com/missing-semester/missing-semester
 
 ## [Lecture 1 Course Overview + the Shell](https://missing.csail.mit.edu/2020/course-shell/)
 
@@ -7090,3 +7092,695 @@ git rebase -i HEAD~3
 ⚠️ **Warning**: Both commands alter Git history. Avoid using them on commits already pushed unless you coordinate with collaborators (force-pushing may disrupt others’ work).
 
 Would you like clarification on specific scenarios?
+
+## [Lecture 7: Debugging and Profiling (2020)](https://missing.csail.mit.edu/2020/debugging-profiling/)
+
+> 中文版本：https://missing-semester-cn.github.io/2020/debugging-profiling/
+
+### Logger
+
+- 日志
+
+```python
+import logging
+import sys
+
+class CustomFormatter(logging.Formatter):
+    """Logging Formatter to add colors and count warning / errors"""
+
+    grey = "\x1b[38;21m"
+    yellow = "\x1b[33;21m"
+    red = "\x1b[31;21m"
+    bold_red = "\x1b[31;1m"
+    reset = "\x1b[0m"
+    format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
+
+    FORMATS = {
+        logging.DEBUG: grey + format + reset,
+        logging.INFO: grey + format + reset,
+        logging.WARNING: yellow + format + reset,
+        logging.ERROR: red + format + reset,
+        logging.CRITICAL: bold_red + format + reset
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+# create logger with 'spam_application'
+logger = logging.getLogger("My App")
+
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+# ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.ERROR)
+
+if len(sys.argv)> 1:
+    if sys.argv[1] == 'log':
+        ch.setFormatter(logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s'))
+    elif sys.argv[1] == 'color':
+        ch.setFormatter(CustomFormatter())
+
+if len(sys.argv) > 2:
+    logger.setLevel(logging.__getattribute__(sys.argv[2]))
+else:
+    logger.setLevel(logging.DEBUG)
+
+logger.addHandler(ch)
+
+# logger.debug("debug message")
+# logger.info("info message")
+# logger.warning("warning message")
+# logger.error("error message")
+# logger.critical("critical message")
+
+import random
+import time
+for _ in range(100):
+    i = random.randint(0, 10)
+    if i <= 4:
+        logger.info("Value is {} - Everything is fine".format(i))
+    elif i <= 6:
+        logger.warning("Value is {} - System is getting hot".format(i))
+    elif i <= 8:
+        logger.error("Value is {} - Dangerous region".format(i))
+    else:
+        logger.critical("Maximum value reached")
+    time.sleep(0.3)
+```
+
+```bash
+shenjy@shenjy:~/msoce/debug_profiling$ printf "\e[38;2;255;0;0m This is red \e[0m\n"
+ This is red
+
+cat /var/log/redis_6379.log | lnav
+log show --last 10s | wc -l
+
+logger "Hello Logs"
+log show --last 1m | grep Hello
+```
+
+Linux 系统的日志，一版保存在 `/var/log` 目录
+
+### Debug
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(n):
+            if arr[j] > arr[j+1]:
+                arr[j] =  arr[j+1]
+                arr[j+1] = arr[j]
+    return arr
+
+print(bubble_sort([4,2,1,8,7,6]))
+```
+
+```bash
+shenjy@shenjy:~/msoce/debug_profiling$ python -m ipdb bubble.py
+/usr/bin/python3: No module named ipdb
+shenjy@shenjy:~/msoce/debug_profiling$ pip install ipdb
+python3 -m pip install --upgrade pip
+
+shenjy@shenjy:~/msoce/debug_profiling$ python -m ipdb bubble.py
+/usr/lib/python3.10/runpy.py:126: RuntimeWarning: 'ipdb.__main__' found in sys.modules after import of package 'ipdb', but prior to execution of 'ipdb.__main__'; this may result in unpredictable behaviour
+  warn(RuntimeWarning(msg))
+> /home/shenjy/msoce/debug_profiling/bubble.py(1)<module>()
+----> 1 def bubble_sort(arr):
+      2     n = len(arr)
+      3     for i in range(n):
+
+ipdb> l
+----> 1 def bubble_sort(arr):
+      2     n = len(arr)
+      3     for i in range(n):
+      4         for j in range(n):
+      5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+      7                 arr[j+1] = arr[j]
+      8     return arr
+      9
+     10 print(bubble_sort([4,2,1,8,7,6]))
+
+ipdb> s
+> /home/shenjy/msoce/debug_profiling/bubble.py(10)<module>()
+      8     return arr
+      9
+---> 10 print(bubble_sort([4,2,1,8,7,6]))
+
+ipdb>
+--Call--
+> /home/shenjy/msoce/debug_profiling/bubble.py(1)bubble_sort()
+----> 1 def bubble_sort(arr):
+      2     n = len(arr)
+      3     for i in range(n):
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(2)bubble_sort()
+      1 def bubble_sort(arr):
+----> 2     n = len(arr)
+      3     for i in range(n):
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(3)bubble_sort()
+      2     n = len(arr)
+----> 3     for i in range(n):
+      4         for j in range(n):
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(4)bubble_sort()
+      3     for i in range(n):
+----> 4         for j in range(n):
+      5             if arr[j] > arr[j+1]:
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(6)bubble_sort()
+      5             if arr[j] > arr[j+1]:
+----> 6                 arr[j] =  arr[j+1]
+      7                 arr[j+1] = arr[j]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(7)bubble_sort()
+      6                 arr[j] =  arr[j+1]
+----> 7                 arr[j+1] = arr[j]
+      8     return arr
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(4)bubble_sort()
+      3     for i in range(n):
+----> 4         for j in range(n):
+      5             if arr[j] > arr[j+1]:
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(6)bubble_sort()
+      5             if arr[j] > arr[j+1]:
+----> 6                 arr[j] =  arr[j+1]
+      7                 arr[j+1] = arr[j]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(7)bubble_sort()
+      6                 arr[j] =  arr[j+1]
+----> 7                 arr[j+1] = arr[j]
+      8     return arr
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(4)bubble_sort()
+      3     for i in range(n):
+----> 4         for j in range(n):
+      5             if arr[j] > arr[j+1]:
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(4)bubble_sort()
+      3     for i in range(n):
+----> 4         for j in range(n):
+      5             if arr[j] > arr[j+1]:
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(6)bubble_sort()
+      5             if arr[j] > arr[j+1]:
+----> 6                 arr[j] =  arr[j+1]
+      7                 arr[j+1] = arr[j]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(7)bubble_sort()
+      6                 arr[j] =  arr[j+1]
+----> 7                 arr[j+1] = arr[j]
+      8     return arr
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(4)bubble_sort()
+      3     for i in range(n):
+----> 4         for j in range(n):
+      5             if arr[j] > arr[j+1]:
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(6)bubble_sort()
+      5             if arr[j] > arr[j+1]:
+----> 6                 arr[j] =  arr[j+1]
+      7                 arr[j+1] = arr[j]
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(7)bubble_sort()
+      6                 arr[j] =  arr[j+1]
+----> 7                 arr[j+1] = arr[j]
+      8     return arr
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(4)bubble_sort()
+      3     for i in range(n):
+----> 4         for j in range(n):
+      5             if arr[j] > arr[j+1]:
+
+ipdb>
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+IndexError: list index out of range
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+--Return--
+None
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb>
+IndexError: list index out of range
+> /home/shenjy/msoce/debug_profiling/bubble.py(10)<module>()
+      8     return arr
+      9
+---> 10 print(bubble_sort([4,2,1,8,7,6]))
+
+ipdb> restart
+Restarting bubble.py with arguments:
+
+> /home/shenjy/msoce/debug_profiling/bubble.py(1)<module>()
+----> 1 def bubble_sort(arr):
+      2     n = len(arr)
+      3     for i in range(n):
+
+ipdb> c
+Traceback (most recent call last):
+  File "/home/shenjy/.local/lib/python3.10/site-packages/ipdb/__main__.py", line 323, in main
+    pdb._runscript(mainpyfile)
+  File "/usr/lib/python3.10/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/usr/lib/python3.10/bdb.py", line 598, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/home/shenjy/msoce/debug_profiling/bubble.py", line 10, in <module>
+    print(bubble_sort([4,2,1,8,7,6]))
+  File "/home/shenjy/msoce/debug_profiling/bubble.py", line 5, in bubble_sort
+    if arr[j] > arr[j+1]:
+IndexError: list index out of range
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /home/shenjy/msoce/debug_profiling/bubble.py(5)bubble_sort()
+      4         for j in range(n):
+----> 5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+
+ipdb> p arr
+[2, 1, 1, 7, 6, 6]
+ipdb> p j
+5
+ipdb> q
+Post mortem debugger finished. The bubble.py will be restarted
+> /home/shenjy/msoce/debug_profiling/bubble.py(1)<module>()
+----> 1 def bubble_sort(arr):
+      2     n = len(arr)
+      3     for i in range(n):
+
+ipdb> q
+
+shenjy@shenjy:~/msoce/debug_profiling$ python -m ipdb bubble.py
+/usr/lib/python3.10/runpy.py:126: RuntimeWarning: 'ipdb.__main__' found in sys.modules after import of package 'ipdb', but prior to execution of 'ipdb.__main__'; this may result in unpredictable behaviour
+  warn(RuntimeWarning(msg))
+> /home/shenjy/msoce/debug_profiling/bubble.py(1)<module>()
+----> 1 def bubble_sort(arr):
+      2     n = len(arr)
+      3     for i in range(n):
+
+ipdb> l
+----> 1 def bubble_sort(arr):
+      2     n = len(arr)
+      3     for i in range(n):
+      4         for j in range(n-1):
+      5             if arr[j] > arr[j+1]:
+      6                 arr[j] =  arr[j+1]
+      7                 arr[j+1] = arr[j]
+      8     return arr
+      9
+     10 print(bubble_sort([4,2,1,8,7,6]))
+
+ipdb> b 6
+Breakpoint 1 at /home/shenjy/msoce/debug_profiling/bubble.py:6
+ipdb> c
+> /home/shenjy/msoce/debug_profiling/bubble.py(6)bubble_sort()
+      5             if arr[j] > arr[j+1]:
+1---> 6                 arr[j] =  arr[j+1]
+      7                 arr[j+1] = arr[j]
+
+ipdb> p locals()
+{'arr': [4, 2, 1, 8, 7, 6], 'n': 6, 'i': 0, 'j': 0}
+ipdb> s
+> /home/shenjy/msoce/debug_profiling/bubble.py(7)bubble_sort()
+1     6                 arr[j] =  arr[j+1]
+----> 7                 arr[j+1] = arr[j]
+      8     return arr
+
+ipdb> p locals()
+{'arr': [2, 2, 1, 8, 7, 6], 'n': 6, 'i': 0, 'j': 0}
+ipdb> q
+```
+
+prompt> 请详细介绍下 ipdb 工具已经常用指令。
+
+DeepSeek-v3:
+
+### IPDB 工具详细介绍
+
+IPDB 是 Python 的一个交互式调试工具，它是基于 IPython 的增强版 pdb（Python 调试器）。IPDB 提供了更好的用户界面、语法高亮、自动补全等特性，使得调试 Python 代码更加方便高效。
+
+### 安装 IPDB
+
+使用 pip 可以轻松安装 IPDB：
+
+```bash
+pip install ipdb
+```
+
+### 基本使用方法
+
+### 1. 在代码中设置断点
+
+在你的 Python 代码中，你可以在任何地方插入以下代码来设置断点：
+
+```python
+import ipdb; ipdb.set_trace()
+```
+
+当代码执行到这一行时，程序会暂停并进入 IPDB 调试环境。
+
+### 2. 命令行使用
+
+你也可以在命令行直接使用 IPDB 来调试脚本：
+
+```bash
+python -m ipdb your_script.py
+```
+
+### 常用 IPDB 指令
+
+IPDB 的指令与 pdb 基本相同，但提供了更好的交互体验。以下是最常用的命令：
+
+### 基本控制命令
+
+- `h(elp)` - 显示帮助信息
+- `q(uit)` - 退出调试器并终止程序
+- `c(ontinue)` - 继续执行程序直到下一个断点
+- `n(ext)` - 执行下一行代码（不进入函数内部）
+- `s(tep)` - 执行下一行代码（会进入函数内部）
+- `r(eturn)` - 继续执行直到当前函数返回
+
+### 查看代码
+
+- `l(ist)` - 显示当前行周围的代码
+- `l <first>, <last>` - 显示指定行范围的代码
+- `l <function>` - 显示指定函数的代码
+- `w(here)` - 显示当前执行的位置和调用栈
+
+### 变量操作
+
+- `p <expression>` - 打印表达式的值
+- `pp <expression>` - 使用漂亮打印(pretty-print)输出表达式值
+- `whatis <variable>` - 显示变量的类型
+- `a(rgs)` - 显示当前函数的参数
+
+### 断点管理
+
+- `b(reak)` - 显示所有断点
+- `b <line_number>` - 在当前文件的指定行设置断点
+- `b <file>:<line_number>` - 在指定文件的指定行设置断点
+- `b <function>` - 在指定函数的第一行设置断点
+- `cl(ear) <breakpoint_number>` - 删除指定编号的断点
+- `disable <breakpoint_number>` - 禁用断点
+- `enable <breakpoint_number>` - 启用断点
+
+### 执行环境
+
+- `u(p)` - 移动到上一层堆栈帧
+- `d(own)` - 移动到下一层堆栈帧
+- `interact` - 启动一个交互式 Python 解释器
+
+### 高级特性
+
+- `run` - 重新启动调试的程序（保留断点）
+- `restart` - 重新启动调试的程序（类似 run）
+- `debug <code>` - 进入一个新的调试器实例调试指定代码
+- `%run <script>` - 在调试器中运行另一个脚本（IPDB 特有）
+
+### IPDB 特有功能
+
+除了标准的 pdb 功能外，IPDB 还提供了一些增强功能：
+
+1. **语法高亮**：代码和输出会带有颜色高亮
+2. **制表符补全**：变量名、函数名等可以自动补全
+3. **更好的回溯信息**：异常信息显示更加详细和美观
+4. **魔术命令**：支持 IPython 的魔术命令（如 %timeit）
+
+### 使用示例
+
+假设有以下 Python 脚本 `example.py`：
+
+```python
+def calculate(a, b):
+    import ipdb; ipdb.set_trace()
+    result = a * b + a / b
+    return result
+
+x = 10
+y = 2
+print(calculate(x, y))
+```
+
+运行这个脚本时，会在 `calculate` 函数中进入 IPDB 调试环境：
+
+```
+> /path/to/example.py(3)calculate()
+      2     import ipdb; ipdb.set_trace()
+----> 3     result = a * b + a / b
+      4     return result
+
+ipdb> p a
+10
+ipdb> p b
+2
+ipdb> n
+> /path/to/example.py(4)calculate()
+      3     result = a * b + a / b
+----> 4     return result
+      5
+ipdb> p result
+25.0
+ipdb> c
+25.0
+```
+
+IPDB 是一个非常强大的调试工具，熟练掌握它可以显著提高 Python 开发效率和调试能力。
+
+### GDB
+
+GDB（GNU Debugger）是 GNU 项目开发的强大的命令行调试工具，主要用于 C、C++等语言的程序调试。它支持多种平台（如 Linux、Windows、macOS 等），能够帮助开发者定位程序中的错误、分析崩溃原因以及监控程序运行状态。
+
+---
+
+### **GDB 的核心功能**
+
+1. **启动程序调试**
+
+   - 加载可执行文件并启动调试：`gdb ./可执行文件名`
+   - 附加到正在运行的进程：`gdb -p 进程ID`
+
+2. **控制程序执行**
+
+   - `run`（或 `r`）：启动程序运行。
+   - `continue`（或 `c`）：继续运行直到下一个断点。
+   - `step`（或 `s`）：单步进入函数。
+   - `next`（或 `n`）：单步执行（不进入函数）。
+   - `finish`：执行完当前函数并暂停。
+   - `until`：执行到指定行或循环结束。
+
+3. **断点管理**
+
+   - `break`（或 `b`）：设置断点（支持行号、函数名、条件断点等）。
+     ```bash
+     b main.c:10      # 在文件main.c的第10行设断点
+     b foo            # 在函数foo()入口设断点
+     b *0x4005a6      # 在内存地址0x4005a6设断点
+     ```
+   - `watch`：监视变量或表达式的值变化。
+   - `delete`（或 `d`）：删除断点。
+
+4. **查看代码与数据**
+
+   - `list`（或 `l`）：显示源代码（默认显示当前行附近的代码）。
+   - `print`（或 `p`）：打印变量或表达式的值。
+     ```bash
+     p x             # 打印变量x的值
+     p *ptr@10       # 打印ptr指向的10个元素
+     ```
+   - `info`：查看程序状态（如 `info registers` 查看寄存器，`info breakpoints` 查看断点）。
+
+5. **栈帧与调用链**
+
+   - `backtrace`（或 `bt`）：显示调用栈。
+   - `frame`（或 `f`）：切换栈帧（用于查看局部变量）。
+
+6. **多线程调试**
+
+   - `info threads`：查看所有线程。
+   - `thread <ID>`：切换到指定线程。
+   - `thread apply all bt`：查看所有线程的调用栈。
+
+7. **处理信号与崩溃**
+
+   - `handle`：配置 GDB 对信号的处理方式（如忽略或暂停）。
+   - `core-file`：分析核心转储文件（Core Dump）。
+
+8. **反汇编与寄存器**
+   - `disassemble`：反汇编当前函数或指定地址的代码。
+   - `info registers`：查看寄存器值。
+
+---
+
+### **高级功能**
+
+1. **条件断点**
+   只在满足条件时触发断点：
+
+   ```bash
+   b main.c:10 if x == 5
+   ```
+
+2. **命令自动化**
+   在断点触发时自动执行一系列命令：
+
+   ```bash
+   commands <断点编号>
+   > print x
+   > continue
+   > end
+   ```
+
+3. **远程调试**
+   通过 `gdbserver` 调试远程目标（如嵌入式设备）：
+
+   ```bash
+   # 目标设备上运行
+   gdbserver :1234 ./program
+
+   # 主机上连接
+   gdb
+   target remote <IP>:1234
+   ```
+
+4. **Python 扩展**
+   新版 GDB 支持 Python 脚本扩展，可自定义调试命令或分析复杂数据结构。
+
+---
+
+### **实用技巧**
+
+- **启动配置**
+  在用户目录下创建 `.gdbinit` 文件，保存常用命令（如设置参数、断点）。
+
+  ```bash
+  set args arg1 arg2  # 设置程序命令行参数
+  ```
+
+- **可视化模式**
+  启用 TUI（文本用户界面）分屏查看代码：
+
+  ```bash
+  gdb -tui ./program
+  或运行时按 `Ctrl+X+A` 切换。
+  ```
+
+- **反向调试**
+  使用 `record` 和 `reverse` 命令反向执行程序（需要支持的环境）。
+
+---
+
+### **示例调试流程**
+
+1. 编译时加入调试符号（`-g` 选项）：
+
+   ```bash
+   gcc -g program.c -o program
+   ```
+
+2. 启动 GDB：
+
+   ```bash
+   gdb ./program
+   ```
+
+3. 设置断点并运行：
+
+   ```bash
+   (gdb) b main
+   (gdb) run
+   ```
+
+4. 单步调试并查看变量：
+
+   ```bash
+   (gdb) n
+   (gdb) p variable
+   ```
+
+5. 分析崩溃：
+   ```bash
+   (gdb) bt          # 查看崩溃时的调用栈
+   (gdb) p *pointer  # 检查空指针解引用
+   ```
+
+---
+
+### **适用场景**
+
+- 段错误（Segmentation Fault）分析。
+- 内存泄露、死锁或多线程问题。
+- 复杂逻辑错误的逐步排查。
+- 逆向工程与二进制分析。
+
+GDB 的学习曲线较陡，但熟练掌握后能极大提升调试效率。推荐结合官方文档（[GDB Manual](https://sourceware.org/gdb/documentation/)）和实战练习深入使用。
+
+```bash
+# 查看命令所用到的系统调用
+sudo strace ls -l > /dev/null
+
+shenjy@shenjy:~$ strace -e lstat ls -l > /dev/null
++++ exited with 0 +++
+```
