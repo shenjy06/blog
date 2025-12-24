@@ -7784,3 +7784,123 @@ sudo strace ls -l > /dev/null
 shenjy@shenjy:~$ strace -e lstat ls -l > /dev/null
 +++ exited with 0 +++
 ```
+
+`lint.py` 文件
+
+```python
+import time
+
+def foo():
+    return 42
+
+for foo in range(5):
+    print(foo)
+
+bar = 1
+bar *= 0.2
+time.sleep(60)
+print(baz)
+```
+
+```bash
+# 执行上面 python 程序
+python lint.py
+
+# pyflakes 命令
+# mypy 命令
+# writegood 命令
+time ls
+```
+
+```python
+import time
+
+# get current time
+start = time.time()
+
+# Do some work
+print("Sleep for {} s".format(n/1000))
+
+# compute time between start and now
+print(time.time() - start)
+```
+
+`grep.py`
+
+```python
+import sys, re
+
+def grep(pattern, file):
+    with open(file, 'r') as f:
+        print(file)
+        for i, line in enumerate(f.readlines()):
+            pattern = re.compile(pattern)
+            match = pattern.search(line)
+            if match is not None:
+                print("{}: {}".format(i, line), end="")
+
+if __name__ == '__main__':
+    times = int(sys.argv[1])
+    pattern = sys.argv[2]
+    for i in range(times):
+        for file in sys.argv[3:]:
+            grep(pattern, file)
+```
+
+```bash
+python -m cProfile -s tottime grep.py 1000 '^(import|\s*def)[^,]*$'
+
+kernprof -l -v urls.py
+```
+
+`url.py`
+
+```python
+from bs4 import BeautifulSoup
+
+@profile
+def get_urls():
+    response = requests.get('https://missing.csail.mit.edu')
+    s = BeautifulSoup9(response.content, 'lxml')
+    urls = []
+    for url in s.find_all('a')
+        urls.append(url['href'])
+
+if __name__ == '__main__':
+    get_urls()
+```
+
+```python
+@profile
+def my_func():
+    a = [1] * (10 ** 6)
+    b = [2] * (2 * 10 ** 7)
+    del b
+    return a
+if __name__ == '__main__':
+    my_func()
+```
+
+```bash
+python -m memory_profiler mem.py
+
+sudo perf stat stress -c 1
+sudo perf record stress -c 1
+sudo perf report
+
+htop
+
+du -h .
+
+python -m http.server 4444
+sudo lsof | grep ":4444 .LISTEN"
+
+hyperfine --warmup 3 'fd -e jpg' 'find . -iname "*.jpg"'
+```
+
+- [flamegraph](https://www.brendangregg.com/flamegraphs.html)
+- [call graph](https://en.wikipedia.org/wiki/Call_graph)
+
+## [Lecture 8: Metaprogramming (2020)](https://missing.csail.mit.edu/2020/metaprogramming/)
+
+> 中文版本：https://missing-semester-cn.github.io/2020/metaprogramming/
