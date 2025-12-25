@@ -7904,3 +7904,15 @@ hyperfine --warmup 3 'fd -e jpg' 'find . -iname "*.jpg"'
 ## [Lecture 8: Metaprogramming (2020)](https://missing.csail.mit.edu/2020/metaprogramming/)
 
 > 中文版本：https://missing-semester-cn.github.io/2020/metaprogramming/
+
+- [语义化版本 2.0.0](https://semver.org/lang/zh-CN/)
+- [cmake](https://cmake.org/)
+- [Maven](https://maven.apache.org/)
+- [Makefile 教程](https://liaoxuefeng.com/books/makefile/introduction/index.html)
+- [makefiletutorial](https://makefiletutorial.com/)
+- [跟我一起写 Makefile](https://seisman.github.io/how-to-write-makefile/index.html)
+- [Bazel](https://bazel.google.cn/)
+
+## [Lecture 9: Security and Cryptography (2020)](https://missing.csail.mit.edu/2020/security/)
+
+> 中文版本：https://missing-semester-cn.github.io/2020/security/
