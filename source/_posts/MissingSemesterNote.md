@@ -12,6 +12,8 @@ tags:
 > Linux man pages online: https://man7.org/linux/man-pages/index.html
 >
 > this course github repo: https://github.com/missing-semester/missing-semester
+>
+> 课程主讲：[Anish Athalye](https://anish.io/)、[Jon Gjengset](https://thesquareplanet.com/)、[Jose Javier Gonzalez Ortiz](https://josejg.com/)
 
 ## [Lecture 1 Course Overview + the Shell](https://missing.csail.mit.edu/2020/course-shell/)
 
