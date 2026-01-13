@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Python 相关</title>
+      <link href="/blog/2026/01/10/python_note/"/>
+      <url>/blog/2026/01/10/python_note/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Python-官网"><a href="#Python-官网" class="headerlink" title="Python 官网"></a>Python 官网</h2><ul><li><a href="https://www.python.org/">https://www.python.org/</a></li></ul><h2 id="Python-语言官方文档"><a href="#Python-语言官方文档" class="headerlink" title="Python 语言官方文档"></a>Python 语言官方文档</h2><ul><li><a href="https://docs.python.org/zh-cn">https://docs.python.org/zh-cn</a></li></ul><h2 id="Python-的包管理工具"><a href="#Python-的包管理工具" class="headerlink" title="Python 的包管理工具"></a>Python 的包管理工具</h2><ul><li>pip</li></ul><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install --upgrade pip</span><br></pre></td></tr></table></figure><ul><li>uv</li><li>pipx</li></ul><h2 id="Python-三方依赖搜索"><a href="#Python-三方依赖搜索" class="headerlink" title="Python 三方依赖搜索"></a>Python 三方依赖搜索</h2><ul><li><a href="https://pypi.org/">https://pypi.org/</a></li></ul><h2 id="Build-a-big-large-language-model"><a href="#Build-a-big-large-language-model" class="headerlink" title="Build a big large language model"></a>Build a big large language model</h2><blockquote><p><a href="https://github.com/rasbt/LLMs-from-scratch">https://github.com/rasbt/LLMs-from-scratch</a></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Neo4j 学习笔记</title>
       <link href="/blog/2025/12/28/Neo4j%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
       <url>/blog/2025/12/28/Neo4j%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
