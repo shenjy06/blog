@@ -28,7 +28,7 @@ python -m pip install --upgrade pip
 
 - https://pypi.org/
 
-## Build a big large language model
+## Build a large language model
 
 > https://github.com/rasbt/LLMs-from-scratch
 
@@ -68,7 +68,7 @@ hint: See PEP 668 for the detailed specification.
 pip install openai --break-system-packages
 ```
 
-第二种方式
+第二种方式【推荐使用】
 
 ```shell
 python3 -m venv ~/py_envs
