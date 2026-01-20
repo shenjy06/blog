@@ -35,13 +35,64 @@ info ls
 
 第三种：
 
+**View manual pages for commands, programs, and system functions.**
+
+#### Basic Usage
+
+```sh
+man [section] <command_name>
+```
+
+#### Common Sections
+
+- **1**: Executable programs (default)
+- **2**: System calls (e.g., `man 2 open`)
+- **3**: Library functions (e.g., `man 3 printf`)
+- **5**: File formats (e.g., `man 5 passwd`)
+- **8**: Admin commands (e.g., `man 8 ifconfig`)
+
+#### Key Options
+
+| Short | Long        | Description                            |
+| ----- | ----------- | -------------------------------------- |
+| `-f`  | `--whatis`  | Show short description (`whatis`).     |
+| `-k`  | `--apropos` | Search manuals by keyword (`apropos`). |
+| `-a`  | `--all`     | Show all matching sections.            |
+
+#### Navigation in `man`
+
+- **↑/↓**: Scroll line by line.
+- **Space**: Next page.
+- **/pattern**: Search forward (e.g., `/options`).
+- **n/N**: Next/previous match.
+- **q**: Quit.
+
+#### Examples
+
+1. View the manual for `ls`:
+   ```sh
+   man ls
+   ```
+2. Search for manuals about "network":
+   ```sh
+   man -k network
+   ```
+3. Show _all_ sections for `open` (command + system call):
+   ```sh
+   man -a open
+   ```
+
+---
+
+> ℹ️ **Pro Tip**: Use `tldr <command>` (if installed) for simplified, practical examples!
+
 ```sh
 man ls
 ```
 
 大家可以使用 `命令 --help`, `info + 命令`, `man + 命令` 三种方式来学习新的命令，大家也可以使用 [The Linux man-pages project](https://www.kernel.org/doc/man-pages/) 来查找对应的命令。说到这里，让我们来学习下 Linux 的常用网路命令吧
 
-同时，大家还是可以学习下 [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/) 这门课程，这门课程的讲解非常好，大家可以跟着学习下。中文版本是 [计算机教育中缺失的一课](https://missing-semester-cn.github.io/)，B 站上的视频是 [计算机教育中缺失的一课](https://www.bilibili.com/video/BV1w7411477L/)，大家可以跟着学习下。
+同时，大家还是可以学习下 [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/) 这门课程，这门课程的讲解非常好，大家可以跟着学习下。中文版本是 [计算机教育中缺失的一课](https://missing-semester-cn.github.io/)，B 站上的视频是 [计算机教育中缺失的一课](https://www.bilibili.com/video/BV1pFk3B3Eey/?spm_id_from=333.1387.collection.video_card.click)，大家可以跟着学习下。
 
 ### Linux 常用网络命令
 
