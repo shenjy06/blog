@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="在 MySQL 中有多种方法实现 “不存在则插入，存在则跳过” 的功能。以下是详细的实现方式： 方法1：使用 INSERT IGNORE（最简单）12345678910111213141516171819-- 创建测试表CREATE TABLE users (    id INT PRIMARY KEY,    name VARCHAR(50),    email VARCHAR(100));--">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 相关">
+<meta property="og:url" content="https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="在 MySQL 中有多种方法实现 “不存在则插入，存在则跳过” 的功能。以下是详细的实现方式： 方法1：使用 INSERT IGNORE（最简单）12345678910111213141516171819-- 创建测试表CREATE TABLE users (    id INT PRIMARY KEY,    name VARCHAR(50),    email VARCHAR(100));--">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-21T19:54:30.000Z">
+<meta property="article:modified_time" content="2026-01-22T08:51:53.181Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/blog/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/blog/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>MySQL 相关</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/blog/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/blog/">首页</a></li><!--
+     --><!--
+       --><li><a href="/blog/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/blog/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/blog/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/blog/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/blog/2026/01/12/bytebuddy_note/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&text=MySQL 相关"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&is_video=false&description=MySQL 相关"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySQL 相关&body=Check out this article: https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&name=MySQL 相关&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&t=MySQL 相关"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%951%EF%BC%9A%E4%BD%BF%E7%94%A8-INSERT-IGNORE%EF%BC%88%E6%9C%80%E7%AE%80%E5%8D%95%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">方法1：使用 INSERT IGNORE（最简单）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A%E4%BD%BF%E7%94%A8-ON-DUPLICATE-KEY-UPDATE%EF%BC%88%E6%9B%B4%E7%81%B5%E6%B4%BB%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">方法2：使用 ON DUPLICATE KEY UPDATE（更灵活）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%953%EF%BC%9A%E4%BD%BF%E7%94%A8-REPLACE-INTO%EF%BC%88%E5%88%A0%E9%99%A4%E5%90%8E%E6%8F%92%E5%85%A5%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">方法3：使用 REPLACE INTO（删除后插入）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%954%EF%BC%9A%E4%BD%BF%E7%94%A8-NOT-EXISTS-%E5%AD%90%E6%9F%A5%E8%AF%A2%EF%BC%88%E6%9C%80%E9%80%9A%E7%94%A8%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">方法4：使用 NOT EXISTS 子查询（最通用）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%955%EF%BC%9A%E4%BD%BF%E7%94%A8%E4%B8%B4%E6%97%B6%E8%A1%A8%E6%88%96CTE"><span class="toc-number">5.</span> <span class="toc-text">方法5：使用临时表或CTE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%956%EF%BC%9A%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="toc-number">6.</span> <span class="toc-text">方法6：存储过程实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%957%EF%BC%9A%E5%9F%BA%E4%BA%8E%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F%E7%9A%84%E5%A4%9A%E5%AD%97%E6%AE%B5%E5%88%A4%E6%96%AD"><span class="toc-number">7.</span> <span class="toc-text">方法7：基于唯一约束的多字段判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%958%EF%BC%9A%E4%BD%BF%E7%94%A8-INSERT-SELECT-WHERE-NOT-EXISTS-%E7%9A%84%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">方法8：使用 INSERT ... SELECT ... WHERE NOT EXISTS 的高级用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E6%AF%94%E8%BE%83%E5%92%8C%E9%80%89%E6%8B%A9%E5%BB%BA%E8%AE%AE"><span class="toc-number">9.</span> <span class="toc-text">综合比较和选择建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-number">10.</span> <span class="toc-text">性能优化建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E4%BA%8E%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5"><span class="toc-number">10.1.</span> <span class="toc-text">1. 对于批量插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5"><span class="toc-number">10.2.</span> <span class="toc-text">2. 大数据量导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BA%E5%90%88%E9%80%82%E7%B4%A2%E5%BC%95"><span class="toc-number">10.3.</span> <span class="toc-text">3. 创建合适索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">11.</span> <span class="toc-text">实际应用示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF1%EF%BC%9A%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E9%98%B2%E9%87%8D%E5%A4%8D"><span class="toc-number">11.1.</span> <span class="toc-text">场景1：用户注册防重复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF2%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="toc-number">11.2.</span> <span class="toc-text">场景2：数据同步</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        MySQL 相关
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-01-21T19:54:30.000Z" itemprop="datePublished">2026-01-21</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/blog/tags/MySQL/" rel="tag">MySQL</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>在 MySQL 中有多种方法实现 <strong>“不存在则插入，存在则跳过”</strong> 的功能。以下是详细的实现方式：</p>
+<h2 id="方法1：使用-INSERT-IGNORE（最简单）"><a href="#方法1：使用-INSERT-IGNORE（最简单）" class="headerlink" title="方法1：使用 INSERT IGNORE（最简单）"></a>方法1：使用 <code>INSERT IGNORE</code>（最简单）</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建测试表</span></span><br><span class="line"><span class="keyword">CREATE TABLE</span> users (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY KEY</span>,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>),</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 插入数据，如果id已存在则跳过整行</span></span><br><span class="line"><span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="string">&#x27;zhangsan@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">2</span>, <span class="string">&#x27;李四&#x27;</span>, <span class="string">&#x27;lisi@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">3</span>, <span class="string">&#x27;王五&#x27;</span>, <span class="string">&#x27;wangwu@example.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 再次执行相同的插入（不会插入，也不会报错）</span></span><br><span class="line"><span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="string">&#x27;zhangsan@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">4</span>, <span class="string">&#x27;赵六&#x27;</span>, <span class="string">&#x27;zhaoliu@example.com&#x27;</span>);  <span class="comment">-- 只有这行会插入</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li>简单易用</li>
+<li>如果存在重复，<strong>跳过整行插入</strong></li>
+<li>只检查 <strong>主键或唯一索引</strong> 的重复</li>
+<li>返回的 affected rows = 实际插入的行数</li>
+</ul>
+<h2 id="方法2：使用-ON-DUPLICATE-KEY-UPDATE（更灵活）"><a href="#方法2：使用-ON-DUPLICATE-KEY-UPDATE（更灵活）" class="headerlink" title="方法2：使用 ON DUPLICATE KEY UPDATE（更灵活）"></a>方法2：使用 <code>ON DUPLICATE KEY UPDATE</code>（更灵活）</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 如果id存在则更新某些字段，不存在则插入</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="string">&#x27;zhangsan@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">5</span>, <span class="string">&#x27;钱七&#x27;</span>, <span class="string">&#x27;qianqi@example.com&#x27;</span>)</span><br><span class="line"><span class="keyword">ON</span> DUPLICATE KEY <span class="keyword">UPDATE</span></span><br><span class="line">    name <span class="operator">=</span> <span class="keyword">VALUES</span>(name),  <span class="comment">-- 如果存在则更新name</span></span><br><span class="line">    email <span class="operator">=</span> <span class="keyword">VALUES</span>(email);  <span class="comment">-- 如果存在则更新email</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果不想更新，可以保持原值</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">&#x27;新名字&#x27;</span>, <span class="string">&#x27;new@example.com&#x27;</span>)</span><br><span class="line"><span class="keyword">ON</span> DUPLICATE KEY <span class="keyword">UPDATE</span></span><br><span class="line">    id <span class="operator">=</span> id;  <span class="comment">-- 什么都不更新，实际上就是跳过</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法3：使用-REPLACE-INTO（删除后插入）"><a href="#方法3：使用-REPLACE-INTO（删除后插入）" class="headerlink" title="方法3：使用 REPLACE INTO（删除后插入）"></a>方法3：使用 <code>REPLACE INTO</code>（删除后插入）</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 如果id存在，先删除再插入（相当于更新整行）</span></span><br><span class="line">REPLACE <span class="keyword">INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">&#x27;完全新的数据&#x27;</span>, <span class="string">&#x27;completely_new@example.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 批量替换</span></span><br><span class="line">REPLACE <span class="keyword">INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;新张三&#x27;</span>, <span class="string">&#x27;new_zhangsan@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">6</span>, <span class="string">&#x27;孙八&#x27;</span>, <span class="string">&#x27;sunba@example.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：<code>REPLACE</code> 会<strong>先删除再插入</strong>，如果表有自增字段，会生成新的自增值。</p>
+<h2 id="方法4：使用-NOT-EXISTS-子查询（最通用）"><a href="#方法4：使用-NOT-EXISTS-子查询（最通用）" class="headerlink" title="方法4：使用 NOT EXISTS 子查询（最通用）"></a>方法4：使用 <code>NOT EXISTS</code> 子查询（最通用）</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 单条插入</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">SELECT</span> <span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="string">&#x27;zhangsan@example.com&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> DUAL</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 批量插入，跳过已存在的</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">as</span> id, <span class="string">&#x27;张三&#x27;</span> <span class="keyword">as</span> name, <span class="string">&#x27;zhangsan@example.com&#x27;</span> <span class="keyword">as</span> email</span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="number">2</span>, <span class="string">&#x27;李四&#x27;</span>, <span class="string">&#x27;lisi@example.com&#x27;</span></span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="number">3</span>, <span class="string">&#x27;王五&#x27;</span>, <span class="string">&#x27;wangwu@example.com&#x27;</span></span><br><span class="line">) <span class="keyword">AS</span> new_data</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> users u <span class="keyword">WHERE</span> u.id <span class="operator">=</span> new_data.id</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法5：使用临时表或CTE"><a href="#方法5：使用临时表或CTE" class="headerlink" title="方法5：使用临时表或CTE"></a>方法5：使用临时表或CTE</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用临时表准备数据</span></span><br><span class="line"><span class="keyword">CREATE</span> TEMPORARY <span class="keyword">TABLE</span> temp_users (</span><br><span class="line">    id <span class="type">INT</span>,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>),</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT INTO</span> temp_users <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="string">&#x27;zhangsan@example.com&#x27;</span>),</span><br><span class="line">(<span class="number">2</span>, <span class="string">&#x27;李四&#x27;</span>, <span class="string">&#x27;lisi@example.com&#x27;</span>),</span><br><span class="line">(<span class="number">7</span>, <span class="string">&#x27;周九&#x27;</span>, <span class="string">&#x27;zhoujiu@example.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 插入不存在的记录</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">SELECT</span> t.id, t.name, t.email</span><br><span class="line"><span class="keyword">FROM</span> temp_users t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> users u <span class="keyword">ON</span> t.id <span class="operator">=</span> u.id</span><br><span class="line"><span class="keyword">WHERE</span> u.id <span class="keyword">IS</span> <span class="keyword">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 或者使用 NOT EXISTS</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">SELECT</span> id, name, email</span><br><span class="line"><span class="keyword">FROM</span> temp_users t</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> users u <span class="keyword">WHERE</span> u.id <span class="operator">=</span> t.id</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法6：存储过程实现"><a href="#方法6：存储过程实现" class="headerlink" title="方法6：存储过程实现"></a>方法6：存储过程实现</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">DELIMITER $$</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> insert_if_not_exists(</span><br><span class="line">    <span class="keyword">IN</span> p_id <span class="type">INT</span>,</span><br><span class="line">    <span class="keyword">IN</span> p_name <span class="type">VARCHAR</span>(<span class="number">50</span>),</span><br><span class="line">    <span class="keyword">IN</span> p_email <span class="type">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line">)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">DECLARE</span> v_exists <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 检查是否存在</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">INTO</span> v_exists</span><br><span class="line">    <span class="keyword">FROM</span> users</span><br><span class="line">    <span class="keyword">WHERE</span> id <span class="operator">=</span> p_id;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 如果不存在则插入</span></span><br><span class="line">    IF v_exists <span class="operator">=</span> <span class="number">0</span> <span class="keyword">THEN</span></span><br><span class="line">        <span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line">        <span class="keyword">VALUES</span> (p_id, p_name, p_email);</span><br><span class="line">        <span class="keyword">SELECT</span> <span class="string">&#x27;Insert successful&#x27;</span> <span class="keyword">as</span> <span class="keyword">result</span>;</span><br><span class="line">    <span class="keyword">ELSE</span></span><br><span class="line">        <span class="keyword">SELECT</span> <span class="string">&#x27;Record already exists, skipped&#x27;</span> <span class="keyword">as</span> <span class="keyword">result</span>;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>$$</span><br><span class="line"></span><br><span class="line">DELIMITER ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用存储过程</span></span><br><span class="line"><span class="keyword">CALL</span> insert_if_not_exists(<span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="string">&#x27;zhangsan@example.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法7：基于唯一约束的多字段判断"><a href="#方法7：基于唯一约束的多字段判断" class="headerlink" title="方法7：基于唯一约束的多字段判断"></a>方法7：基于唯一约束的多字段判断</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建有复合唯一约束的表</span></span><br><span class="line"><span class="keyword">CREATE TABLE</span> user_contacts (</span><br><span class="line">    id <span class="type">INT</span> AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,</span><br><span class="line">    user_id <span class="type">INT</span>,</span><br><span class="line">    contact_type <span class="type">VARCHAR</span>(<span class="number">20</span>),</span><br><span class="line">    contact_value <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    created_at <span class="type">TIMESTAMP</span> <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span>,</span><br><span class="line">    <span class="keyword">UNIQUE</span> KEY uk_user_contact (user_id, contact_type)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 方法1：INSERT IGNORE</span></span><br><span class="line"><span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> user_contacts (user_id, contact_type, contact_value)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;email&#x27;</span>, <span class="string">&#x27;user1@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;phone&#x27;</span>, <span class="string">&#x27;13800138000&#x27;</span>),</span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;email&#x27;</span>, <span class="string">&#x27;new_email@example.com&#x27;</span>);  <span class="comment">-- 这行会被忽略</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 方法2：ON DUPLICATE KEY UPDATE</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> user_contacts (user_id, contact_type, contact_value)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;email&#x27;</span>, <span class="string">&#x27;updated_email@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">2</span>, <span class="string">&#x27;phone&#x27;</span>, <span class="string">&#x27;13900139000&#x27;</span>)</span><br><span class="line"><span class="keyword">ON</span> DUPLICATE KEY <span class="keyword">UPDATE</span></span><br><span class="line">    contact_value <span class="operator">=</span> <span class="keyword">VALUES</span>(contact_value);</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法8：使用-INSERT-SELECT-WHERE-NOT-EXISTS-的高级用法"><a href="#方法8：使用-INSERT-SELECT-WHERE-NOT-EXISTS-的高级用法" class="headerlink" title="方法8：使用 INSERT ... SELECT ... WHERE NOT EXISTS 的高级用法"></a>方法8：使用 <code>INSERT ... SELECT ... WHERE NOT EXISTS</code> 的高级用法</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 从其他表导入数据，跳过已存在的</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">SELECT</span> o.customer_id, o.customer_name, o.customer_email</span><br><span class="line"><span class="keyword">FROM</span> orders o</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> users u <span class="keyword">WHERE</span> u.id <span class="operator">=</span> o.customer_id</span><br><span class="line">)</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> o.customer_id;  <span class="comment">-- 去重</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="综合比较和选择建议"><a href="#综合比较和选择建议" class="headerlink" title="综合比较和选择建议"></a>综合比较和选择建议</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSERT IGNORE</code></td>
+<td>简单，高效</td>
+<td>跳过整行，无法部分更新</td>
+<td>简单的不重复插入</td>
+</tr>
+<tr>
+<td><code>ON DUPLICATE KEY UPDATE</code></td>
+<td>灵活，可更新部分字段</td>
+<td>语法稍复杂</td>
+<td>需要更新已存在记录</td>
+</tr>
+<tr>
+<td><code>REPLACE INTO</code></td>
+<td>相当于删除后插入</td>
+<td>删除触发器会触发，自增ID会变</td>
+<td>需要完全替换记录</td>
+</tr>
+<tr>
+<td><code>NOT EXISTS</code> 子查询</td>
+<td>最灵活，逻辑清晰</td>
+<td>性能可能较差</td>
+<td>复杂条件判断</td>
+</tr>
+<tr>
+<td>存储过程</td>
+<td>可封装复杂逻辑</td>
+<td>需要创建和维护过程</td>
+<td>频繁调用的业务逻辑</td>
+</tr>
+</tbody></table>
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a>性能优化建议</h2><h3 id="1-对于批量插入"><a href="#1-对于批量插入" class="headerlink" title="1. 对于批量插入"></a>1. 对于批量插入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用 INSERT IGNORE + 批量VALUES</span></span><br><span class="line"><span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> users (id, name, email)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;a@example.com&#x27;</span>),</span><br><span class="line">    (<span class="number">2</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;b@example.com&#x27;</span>),</span><br><span class="line">    <span class="comment">-- ... 几百或几千行</span></span><br><span class="line">    (<span class="number">1000</span>, <span class="string">&#x27;Z&#x27;</span>, <span class="string">&#x27;z@example.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-大数据量导入"><a href="#2-大数据量导入" class="headerlink" title="2. 大数据量导入"></a>2. 大数据量导入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 分批处理</span></span><br><span class="line"><span class="keyword">SET</span> autocommit <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">SET</span> unique_checks <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">SET</span> foreign_key_checks <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 每批1000条</span></span><br><span class="line"><span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> target_table</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> source_table</span><br><span class="line">LIMIT <span class="number">100000</span>, <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> unique_checks <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">SET</span> foreign_key_checks <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-创建合适索引"><a href="#3-创建合适索引" class="headerlink" title="3. 创建合适索引"></a>3. 创建合适索引</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 确保有主键或唯一索引</span></span><br><span class="line"><span class="keyword">ALTER TABLE</span> users <span class="keyword">ADD</span> <span class="keyword">PRIMARY KEY</span> (id);</span><br><span class="line"><span class="comment">-- 或</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">UNIQUE</span> INDEX uk_users_id <span class="keyword">ON</span> users(id);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 多字段唯一约束</span></span><br><span class="line"><span class="keyword">ALTER TABLE</span> user_contacts</span><br><span class="line"><span class="keyword">ADD CONSTRAINT</span> uk_user_type <span class="keyword">UNIQUE</span> (user_id, contact_type);</span><br></pre></td></tr></table></figure>
+
+<h2 id="实际应用示例"><a href="#实际应用示例" class="headerlink" title="实际应用示例"></a>实际应用示例</h2><h3 id="场景1：用户注册防重复"><a href="#场景1：用户注册防重复" class="headerlink" title="场景1：用户注册防重复"></a>场景1：用户注册防重复</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 用户表有唯一用户名约束</span></span><br><span class="line"><span class="keyword">CREATE TABLE</span> users (</span><br><span class="line">    id <span class="type">INT</span> AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,</span><br><span class="line">    username <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">UNIQUE</span>,</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">UNIQUE</span>,</span><br><span class="line">    password_hash <span class="type">VARCHAR</span>(<span class="number">255</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 注册时检查</span></span><br><span class="line"><span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> users (username, email, password_hash)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="string">&#x27;john_doe&#x27;</span>, <span class="string">&#x27;john@example.com&#x27;</span>, <span class="string">&#x27;hashed_password&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 或者用 ON DUPLICATE KEY UPDATE 提供更友好的反馈</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> users (username, email, password_hash)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="string">&#x27;john_doe&#x27;</span>, <span class="string">&#x27;john@example.com&#x27;</span>, <span class="string">&#x27;hashed_password&#x27;</span>)</span><br><span class="line"><span class="keyword">ON</span> DUPLICATE KEY <span class="keyword">UPDATE</span></span><br><span class="line">    username <span class="operator">=</span> IF(username <span class="operator">=</span> <span class="keyword">VALUES</span>(username), username, <span class="keyword">NULL</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景2：数据同步"><a href="#场景2：数据同步" class="headerlink" title="场景2：数据同步"></a>场景2：数据同步</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 从API获取数据同步到数据库</span></span><br><span class="line"><span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> products (external_id, name, price, updated_at)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="string">&#x27;EXT001&#x27;</span>, <span class="string">&#x27;Product A&#x27;</span>, <span class="number">99.99</span>, NOW()),</span><br><span class="line">    (<span class="string">&#x27;EXT002&#x27;</span>, <span class="string">&#x27;Product B&#x27;</span>, <span class="number">149.50</span>, NOW()),</span><br><span class="line">    (<span class="string">&#x27;EXT003&#x27;</span>, <span class="string">&#x27;Product C&#x27;</span>, <span class="number">79.99</span>, NOW())</span><br><span class="line"><span class="keyword">ON</span> DUPLICATE KEY <span class="keyword">UPDATE</span></span><br><span class="line">    name <span class="operator">=</span> <span class="keyword">VALUES</span>(name),</span><br><span class="line">    price <span class="operator">=</span> <span class="keyword">VALUES</span>(price),</span><br><span class="line">    updated_at <span class="operator">=</span> NOW();</span><br></pre></td></tr></table></figure>
+
+<p><strong>最简单的推荐</strong>：如果只需要跳过重复记录，使用 <code>INSERT IGNORE</code>；如果需要更新部分字段，使用 <code>ON DUPLICATE KEY UPDATE</code>。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/blog/">首页</a></li>
+         
+          <li><a href="/blog/about/">关于</a></li>
+         
+          <li><a href="/blog/archives/">归档</a></li>
+         
+          <li><a href="/blog/categories/">分类</a></li>
+         
+          <li><a href="/blog/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%951%EF%BC%9A%E4%BD%BF%E7%94%A8-INSERT-IGNORE%EF%BC%88%E6%9C%80%E7%AE%80%E5%8D%95%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">方法1：使用 INSERT IGNORE（最简单）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A%E4%BD%BF%E7%94%A8-ON-DUPLICATE-KEY-UPDATE%EF%BC%88%E6%9B%B4%E7%81%B5%E6%B4%BB%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">方法2：使用 ON DUPLICATE KEY UPDATE（更灵活）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%953%EF%BC%9A%E4%BD%BF%E7%94%A8-REPLACE-INTO%EF%BC%88%E5%88%A0%E9%99%A4%E5%90%8E%E6%8F%92%E5%85%A5%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">方法3：使用 REPLACE INTO（删除后插入）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%954%EF%BC%9A%E4%BD%BF%E7%94%A8-NOT-EXISTS-%E5%AD%90%E6%9F%A5%E8%AF%A2%EF%BC%88%E6%9C%80%E9%80%9A%E7%94%A8%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">方法4：使用 NOT EXISTS 子查询（最通用）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%955%EF%BC%9A%E4%BD%BF%E7%94%A8%E4%B8%B4%E6%97%B6%E8%A1%A8%E6%88%96CTE"><span class="toc-number">5.</span> <span class="toc-text">方法5：使用临时表或CTE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%956%EF%BC%9A%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="toc-number">6.</span> <span class="toc-text">方法6：存储过程实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%957%EF%BC%9A%E5%9F%BA%E4%BA%8E%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F%E7%9A%84%E5%A4%9A%E5%AD%97%E6%AE%B5%E5%88%A4%E6%96%AD"><span class="toc-number">7.</span> <span class="toc-text">方法7：基于唯一约束的多字段判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%958%EF%BC%9A%E4%BD%BF%E7%94%A8-INSERT-SELECT-WHERE-NOT-EXISTS-%E7%9A%84%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">方法8：使用 INSERT ... SELECT ... WHERE NOT EXISTS 的高级用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E6%AF%94%E8%BE%83%E5%92%8C%E9%80%89%E6%8B%A9%E5%BB%BA%E8%AE%AE"><span class="toc-number">9.</span> <span class="toc-text">综合比较和选择建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-number">10.</span> <span class="toc-text">性能优化建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E4%BA%8E%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5"><span class="toc-number">10.1.</span> <span class="toc-text">1. 对于批量插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5"><span class="toc-number">10.2.</span> <span class="toc-text">2. 大数据量导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BA%E5%90%88%E9%80%82%E7%B4%A2%E5%BC%95"><span class="toc-number">10.3.</span> <span class="toc-text">3. 创建合适索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">11.</span> <span class="toc-text">实际应用示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF1%EF%BC%9A%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E9%98%B2%E9%87%8D%E5%A4%8D"><span class="toc-number">11.1.</span> <span class="toc-text">场景1：用户注册防重复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF2%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="toc-number">11.2.</span> <span class="toc-text">场景2：数据同步</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&text=MySQL 相关"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&is_video=false&description=MySQL 相关"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySQL 相关&body=Check out this article: https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&title=MySQL 相关"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&name=MySQL 相关&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2026/01/21/MySQL_SQL/&t=MySQL 相关"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2026 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/blog/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/shenjy06"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/blog/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'shenjy06/blog';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
