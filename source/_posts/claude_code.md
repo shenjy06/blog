@@ -38,6 +38,9 @@ claude --model Pro/zai-org/GLM-5
 
 - [Claude Code 技巧分享](https://shenjy0.substack.com/p/claude-code)
 - [Launch Claude Code with Claude Code Router](https://shenjy0.substack.com/p/launch-claude-code-with-claude-code)
+- [learn claude code](https://learn.shareai.run/zh/)
+  - https://github.com/shenjy06/learn-claude-code
+- [easy vibe](https://datawhalechina.github.io/easy-vibe/zh-cn/)
 
 ## 其他同类产品
 
