@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="reference: https:&#x2F;&#x2F;gist.github.com&#x2F;karpathy&#x2F;442a6bf555914893e9891c11519de94f  LLM WikiA pattern for building personal knowledge bases using LLMs. This is an idea file, it is designed to be copy paste">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM Wiki">
+<meta property="og:url" content="https://shenjy06.github.io/blog/2026/04/06/llm_wiki/index.html">
+<meta property="og:site_name" content="Mark&#39;s Blog">
+<meta property="og:description" content="reference: https:&#x2F;&#x2F;gist.github.com&#x2F;karpathy&#x2F;442a6bf555914893e9891c11519de94f  LLM WikiA pattern for building personal knowledge bases using LLMs. This is an idea file, it is designed to be copy paste">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-04-06T19:54:30.000Z">
+<meta property="article:modified_time" content="2026-04-07T01:35:29.263Z">
+<meta property="article:author" content="Mark Shen">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/blog/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/blog/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>LLM Wiki</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/blog/true" title="Mark&#39;s Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/blog/">首页</a></li><!--
+     --><!--
+       --><li><a href="/blog/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/blog/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/blog/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/blog/search/">搜索</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/blog/2026/02/18/claude_code/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&text=LLM Wiki"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&is_video=false&description=LLM Wiki"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=LLM Wiki&body=Check out this article: https://shenjy06.github.io/blog/2026/04/06/llm_wiki/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&name=LLM Wiki&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&t=LLM Wiki"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LLM-Wiki"><span class="toc-number">1.</span> <span class="toc-text">LLM Wiki</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-core-idea"><span class="toc-number">1.1.</span> <span class="toc-text">The core idea</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Architecture"><span class="toc-number">1.2.</span> <span class="toc-text">Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Operations"><span class="toc-number">1.3.</span> <span class="toc-text">Operations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Indexing-and-logging"><span class="toc-number">1.4.</span> <span class="toc-text">Indexing and logging</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optional-CLI-tools"><span class="toc-number">1.5.</span> <span class="toc-text">Optional: CLI tools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tips-and-tricks"><span class="toc-number">1.6.</span> <span class="toc-text">Tips and tricks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-this-works"><span class="toc-number">1.7.</span> <span class="toc-text">Why this works</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Note"><span class="toc-number">1.8.</span> <span class="toc-text">Note</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        LLM Wiki
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mark Shen</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-04-06T19:54:30.000Z" itemprop="datePublished">2026-04-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/blog/tags/LLM/" rel="tag">LLM</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>reference: <a target="_blank" rel="noopener" href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f</a></p>
+</blockquote>
+<h1 id="LLM-Wiki"><a href="#LLM-Wiki" class="headerlink" title="LLM Wiki"></a>LLM Wiki</h1><p>A pattern for building personal knowledge bases using LLMs.</p>
+<p>This is an idea file, it is designed to be copy pasted to your own LLM Agent (e.g. OpenAI Codex, Claude Code, OpenCode / Pi, or etc.). Its goal is to communicate the high level idea, but your agent will build out the specifics in collaboration with you.</p>
+<h2 id="The-core-idea"><a href="#The-core-idea" class="headerlink" title="The core idea"></a>The core idea</h2><p>Most people’s experience with LLMs and documents looks like RAG: you upload a collection of files, the LLM retrieves relevant chunks at query time, and generates an answer. This works, but the LLM is rediscovering knowledge from scratch on every question. There’s no accumulation. Ask a subtle question that requires synthesizing five documents, and the LLM has to find and piece together the relevant fragments every time. Nothing is built up. NotebookLM, ChatGPT file uploads, and most RAG systems work this way.</p>
+<p>The idea here is different. Instead of just retrieving from raw documents at query time, the LLM <strong>incrementally builds and maintains a persistent wiki</strong> — a structured, interlinked collection of markdown files that sits between you and the raw sources. When you add a new source, the LLM doesn’t just index it for later retrieval. It reads it, extracts the key information, and integrates it into the existing wiki — updating entity pages, revising topic summaries, noting where new data contradicts old claims, strengthening or challenging the evolving synthesis. The knowledge is compiled once and then <em>kept current</em>, not re-derived on every query.</p>
+<p>This is the key difference: <strong>the wiki is a persistent, compounding artifact.</strong> The cross-references are already there. The contradictions have already been flagged. The synthesis already reflects everything you’ve read. The wiki keeps getting richer with every source you add and every question you ask.</p>
+<p>You never (or rarely) write the wiki yourself — the LLM writes and maintains all of it. You’re in charge of sourcing, exploration, and asking the right questions. The LLM does all the grunt work — the summarizing, cross-referencing, filing, and bookkeeping that makes a knowledge base actually useful over time. In practice, I have the LLM agent open on one side and Obsidian open on the other. The LLM makes edits based on our conversation, and I browse the results in real time — following links, checking the graph view, reading the updated pages. Obsidian is the IDE; the LLM is the programmer; the wiki is the codebase.</p>
+<p>This can apply to a lot of different contexts. A few examples:</p>
+<ul>
+<li><strong>Personal</strong>: tracking your own goals, health, psychology, self-improvement — filing journal entries, articles, podcast notes, and building up a structured picture of yourself over time.</li>
+<li><strong>Research</strong>: going deep on a topic over weeks or months — reading papers, articles, reports, and incrementally building a comprehensive wiki with an evolving thesis.</li>
+<li><strong>Reading a book</strong>: filing each chapter as you go, building out pages for characters, themes, plot threads, and how they connect. By the end you have a rich companion wiki. Think of fan wikis like <a target="_blank" rel="noopener" href="https://tolkiengateway.net/wiki/Main_Page">Tolkien Gateway</a> — thousands of interlinked pages covering characters, places, events, languages, built by a community of volunteers over years. You could build something like that personally as you read, with the LLM doing all the cross-referencing and maintenance.</li>
+<li><strong>Business/team</strong>: an internal wiki maintained by LLMs, fed by Slack threads, meeting transcripts, project documents, customer calls. Possibly with humans in the loop reviewing updates. The wiki stays current because the LLM does the maintenance that no one on the team wants to do.</li>
+<li><strong>Competitive analysis, due diligence, trip planning, course notes, hobby deep-dives</strong> — anything where you’re accumulating knowledge over time and want it organized rather than scattered.</li>
+</ul>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p>There are three layers:</p>
+<p><strong>Raw sources</strong> — your curated collection of source documents. Articles, papers, images, data files. These are immutable — the LLM reads from them but never modifies them. This is your source of truth.</p>
+<p><strong>The wiki</strong> — a directory of LLM-generated markdown files. Summaries, entity pages, concept pages, comparisons, an overview, a synthesis. The LLM owns this layer entirely. It creates pages, updates them when new sources arrive, maintains cross-references, and keeps everything consistent. You read it; the LLM writes it.</p>
+<p><strong>The schema</strong> — a document (e.g. CLAUDE.md for Claude Code or AGENTS.md for Codex) that tells the LLM how the wiki is structured, what the conventions are, and what workflows to follow when ingesting sources, answering questions, or maintaining the wiki. This is the key configuration file — it’s what makes the LLM a disciplined wiki maintainer rather than a generic chatbot. You and the LLM co-evolve this over time as you figure out what works for your domain.</p>
+<h2 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h2><p><strong>Ingest.</strong> You drop a new source into the raw collection and tell the LLM to process it. An example flow: the LLM reads the source, discusses key takeaways with you, writes a summary page in the wiki, updates the index, updates relevant entity and concept pages across the wiki, and appends an entry to the log. A single source might touch 10-15 wiki pages. Personally I prefer to ingest sources one at a time and stay involved — I read the summaries, check the updates, and guide the LLM on what to emphasize. But you could also batch-ingest many sources at once with less supervision. It’s up to you to develop the workflow that fits your style and document it in the schema for future sessions.</p>
+<p><strong>Query.</strong> You ask questions against the wiki. The LLM searches for relevant pages, reads them, and synthesizes an answer with citations. Answers can take different forms depending on the question — a markdown page, a comparison table, a slide deck (Marp), a chart (matplotlib), a canvas. The important insight: <strong>good answers can be filed back into the wiki as new pages.</strong> A comparison you asked for, an analysis, a connection you discovered — these are valuable and shouldn’t disappear into chat history. This way your explorations compound in the knowledge base just like ingested sources do.</p>
+<p><strong>Lint.</strong> Periodically, ask the LLM to health-check the wiki. Look for: contradictions between pages, stale claims that newer sources have superseded, orphan pages with no inbound links, important concepts mentioned but lacking their own page, missing cross-references, data gaps that could be filled with a web search. The LLM is good at suggesting new questions to investigate and new sources to look for. This keeps the wiki healthy as it grows.</p>
+<h2 id="Indexing-and-logging"><a href="#Indexing-and-logging" class="headerlink" title="Indexing and logging"></a>Indexing and logging</h2><p>Two special files help the LLM (and you) navigate the wiki as it grows. They serve different purposes:</p>
+<p><strong>index.md</strong> is content-oriented. It’s a catalog of everything in the wiki — each page listed with a link, a one-line summary, and optionally metadata like date or source count. Organized by category (entities, concepts, sources, etc.). The LLM updates it on every ingest. When answering a query, the LLM reads the index first to find relevant pages, then drills into them. This works surprisingly well at moderate scale (~100 sources, ~hundreds of pages) and avoids the need for embedding-based RAG infrastructure.</p>
+<p><strong>log.md</strong> is chronological. It’s an append-only record of what happened and when — ingests, queries, lint passes. A useful tip: if each entry starts with a consistent prefix (e.g. <code>## [2026-04-02] ingest | Article Title</code>), the log becomes parseable with simple unix tools — <code>grep &quot;^## \[&quot; log.md | tail -5</code> gives you the last 5 entries. The log gives you a timeline of the wiki’s evolution and helps the LLM understand what’s been done recently.</p>
+<h2 id="Optional-CLI-tools"><a href="#Optional-CLI-tools" class="headerlink" title="Optional: CLI tools"></a>Optional: CLI tools</h2><p>At some point you may want to build small tools that help the LLM operate on the wiki more efficiently. A search engine over the wiki pages is the most obvious one — at small scale the index file is enough, but as the wiki grows you want proper search. <a target="_blank" rel="noopener" href="https://github.com/tobi/qmd">qmd</a> is a good option: it’s a local search engine for markdown files with hybrid BM25/vector search and LLM re-ranking, all on-device. It has both a CLI (so the LLM can shell out to it) and an MCP server (so the LLM can use it as a native tool). You could also build something simpler yourself — the LLM can help you vibe-code a naive search script as the need arises.</p>
+<h2 id="Tips-and-tricks"><a href="#Tips-and-tricks" class="headerlink" title="Tips and tricks"></a>Tips and tricks</h2><ul>
+<li><strong>Obsidian Web Clipper</strong> is a browser extension that converts web articles to markdown. Very useful for quickly getting sources into your raw collection.</li>
+<li><strong>Download images locally.</strong> In Obsidian Settings → Files and links, set “Attachment folder path” to a fixed directory (e.g. <code>raw/assets/</code>). Then in Settings → Hotkeys, search for “Download” to find “Download attachments for current file” and bind it to a hotkey (e.g. Ctrl+Shift+D). After clipping an article, hit the hotkey and all images get downloaded to local disk. This is optional but useful — it lets the LLM view and reference images directly instead of relying on URLs that may break. Note that LLMs can’t natively read markdown with inline images in one pass — the workaround is to have the LLM read the text first, then view some or all of the referenced images separately to gain additional context. It’s a bit clunky but works well enough.</li>
+<li><strong>Obsidian’s graph view</strong> is the best way to see the shape of your wiki — what’s connected to what, which pages are hubs, which are orphans.</li>
+<li><strong>Marp</strong> is a markdown-based slide deck format. Obsidian has a plugin for it. Useful for generating presentations directly from wiki content.</li>
+<li><strong>Dataview</strong> is an Obsidian plugin that runs queries over page frontmatter. If your LLM adds YAML frontmatter to wiki pages (tags, dates, source counts), Dataview can generate dynamic tables and lists.</li>
+<li>The wiki is just a git repo of markdown files. You get version history, branching, and collaboration for free.</li>
+</ul>
+<h2 id="Why-this-works"><a href="#Why-this-works" class="headerlink" title="Why this works"></a>Why this works</h2><p>The tedious part of maintaining a knowledge base is not the reading or the thinking — it’s the bookkeeping. Updating cross-references, keeping summaries current, noting when new data contradicts old claims, maintaining consistency across dozens of pages. Humans abandon wikis because the maintenance burden grows faster than the value. LLMs don’t get bored, don’t forget to update a cross-reference, and can touch 15 files in one pass. The wiki stays maintained because the cost of maintenance is near zero.</p>
+<p>The human’s job is to curate sources, direct the analysis, ask good questions, and think about what it all means. The LLM’s job is everything else.</p>
+<p>The idea is related in spirit to Vannevar Bush’s Memex (1945) — a personal, curated knowledge store with associative trails between documents. Bush’s vision was closer to this than to what the web became: private, actively curated, with the connections between documents as valuable as the documents themselves. The part he couldn’t solve was who does the maintenance. The LLM handles that.</p>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><p>This document is intentionally abstract. It describes the idea, not a specific implementation. The exact directory structure, the schema conventions, the page formats, the tooling — all of that will depend on your domain, your preferences, and your LLM of choice. Everything mentioned above is optional and modular — pick what’s useful, ignore what isn’t. For example: your sources might be text-only, so you don’t need image handling at all. Your wiki might be small enough that the index file is all you need, no search engine required. You might not care about slide decks and just want markdown pages. You might want a completely different set of output formats. The right way to use this is to share it with your LLM agent and work together to instantiate a version that fits your needs. The document’s only job is to communicate the pattern. Your LLM can figure out the rest.</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/blog/">首页</a></li>
+         
+          <li><a href="/blog/about/">关于</a></li>
+         
+          <li><a href="/blog/archives/">归档</a></li>
+         
+          <li><a href="/blog/categories/">分类</a></li>
+         
+          <li><a href="/blog/search/">搜索</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/shenjy06">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LLM-Wiki"><span class="toc-number">1.</span> <span class="toc-text">LLM Wiki</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-core-idea"><span class="toc-number">1.1.</span> <span class="toc-text">The core idea</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Architecture"><span class="toc-number">1.2.</span> <span class="toc-text">Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Operations"><span class="toc-number">1.3.</span> <span class="toc-text">Operations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Indexing-and-logging"><span class="toc-number">1.4.</span> <span class="toc-text">Indexing and logging</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optional-CLI-tools"><span class="toc-number">1.5.</span> <span class="toc-text">Optional: CLI tools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tips-and-tricks"><span class="toc-number">1.6.</span> <span class="toc-text">Tips and tricks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-this-works"><span class="toc-number">1.7.</span> <span class="toc-text">Why this works</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Note"><span class="toc-number">1.8.</span> <span class="toc-text">Note</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&text=LLM Wiki"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&is_video=false&description=LLM Wiki"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=LLM Wiki&body=Check out this article: https://shenjy06.github.io/blog/2026/04/06/llm_wiki/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&title=LLM Wiki"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&name=LLM Wiki&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shenjy06.github.io/blog/2026/04/06/llm_wiki/&t=LLM Wiki"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;   2020-2026 Mark Shen
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       -->
+        <li>
+          <a href="/blog/"
+            >首页</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/about/"
+            >关于</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/archives/"
+            >归档</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/categories/"
+            >分类</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a href="/blog/search/"
+            >搜索</a
+          >
+        </li>
+        <!--
+     --><!--
+       -->
+        <li>
+          <a target="_blank" rel="noopener" href="https://github.com/shenjy06"
+            >项目</a
+          >
+        </li>
+        <!--
+     -->
+      </ul>
+      <ul>
+        <!-- Baidu Web Analytics -->
+        <script>
+          var _hmt = _hmt || []
+          ;(function () {
+            var hm = document.createElement('script')
+            hm.src =
+              'https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057'
+            var s = document.getElementsByTagName('script')[0]
+            s.parentNode.insertBefore(hm, s)
+          })()
+        </script>
+        <!-- End Baidu Web Analytics -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/blog/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2bf556e2c4bfb436b933c9c12d4a0057";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'shenjy06/blog';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
