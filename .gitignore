@@ -10,3 +10,6 @@ coverage/
 .tmp*
 .vscode
 db.json
+claude.*
+claude_start.cmd
+cladue_blog
